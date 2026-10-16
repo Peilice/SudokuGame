@@ -31,9 +31,11 @@ npm run preview  # 預覽建置結果
 ## 部署到 GitHub Pages
 `vite.config.ts` 已設定 `base: './'`，建置結果可以放在任何子路徑下運作。
 
+> 不要直接用「Deploy from a branch」部署 repo 根目錄：根目錄的 `index.html` 是原始碼版，載入的是 TypeScript，畫面會沒有樣式也無法操作。
+
 **方式一：GitHub Actions（建議）**
 1. 在 repo 的 Settings → Pages，將 Source 設為「GitHub Actions」
-2. 新增 `.github/workflows/deploy.yml`，內容為：建置（`npm ci && npm run build`）後，用 `actions/upload-pages-artifact` 上傳 `dist`，再用 `actions/deploy-pages` 部署
+2. 推送到 `main` 後，`.github/workflows/deploy.yml` 會自動測試、建置並部署 `dist`（也可以在 Actions 頁面手動執行）
 
 **方式二：手動推送 `dist`**
 1. `npm run build`

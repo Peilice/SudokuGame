@@ -1,49 +1,109 @@
-:root {
-  color-scheme: light dark;
-
-  --bg: #f4f5f7;
-  --surface: #ffffff;
-  --surface-2: #eef0f4;
-  --text: #1c2230;
-  --text-muted: #6b7384;
-  --line: #dfe3ea;
-  --line-strong: #2a3140;
-  --accent: #2f6fed;
-  --accent-contrast: #ffffff;
-  --accent-soft: #e4ecfd;
-  --cell-related: #eff3fa;
-  --cell-same: #d5e1fb;
-  --cell-selected: #b9cefa;
-  --danger: #d6383f;
-  --danger-soft: #fde9ea;
-  --shadow: 0 1px 2px rgb(20 28 45 / 6%), 0 8px 24px rgb(20 28 45 / 7%);
-
-  --radius: 14px;
-  --font: 'Segoe UI', system-ui, -apple-system, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-
-  /* 盤面尺寸：手機以寬度為主，同時保留下方控制區的空間 */
-  --board-size: min(calc(100vw - 32px), calc(100dvh - 300px), 560px);
+/*
+ * 刊名與印章用的展示字：思源宋體 Black（Noto Serif TC，SIL OFL 1.1），
+ * 只子集化「數獨完成簡單中等困難專家」12 個字，約 7 KB。
+ * 來源：github.com/notofonts/noto-cjk Serif/SubsetOTF/TC/NotoSerifTC-Black.otf，以 fontTools subset 產生。
+ */
+@font-face {
+  font-family: 'Sudoku Display';
+  font-weight: 900;
+  font-display: swap;
+  src: url('./fonts/noto-serif-tc-black-subset.woff') format('woff');
 }
 
+/*
+ * 解謎雜誌頁：每種資訊對應一種書寫工具
+ * 印刷鉛字＝題目、原子筆＝玩家填的數字、鉛筆＝筆記、螢光筆＝選取、紅鉛筆圈＝衝突、紅印章＝完成
+ */
+:root {
+  color-scheme: light;
+
+  /* 紙與印刷 */
+  --ground: #e9ebe6; /* 偏冷的報紙灰白 */
+  --sheet: #fbfbf8;
+  --sheet-2: #f1f2ee;
+  --ink: #17191e; /* 印刷黑 */
+  --ink-soft: #4a4f57;
+  --rule: #c9cdc6; /* 細格線 */
+  --rule-strong: #17191e; /* 宮線 */
+
+  /* 書寫工具 */
+  --pen: #1d3a9e; /* 藍色原子筆 */
+  --pencil: #5a5f66; /* 鉛筆石墨 */
+  --red-pencil: #c8331f;
+  --danger-ink: #ffffff;
+  --hl-selected-edge: transparent;
+  --hl-related: #fbf4cc; /* 螢光筆淡塗 */
+  --hl-selected: #ffe35a; /* 螢光筆重塗 */
+  --hl-same: #cdeeb6; /* 綠色螢光筆 */
+
+  /* 雜誌色帶 */
+  --band: #0e5e57;
+  --band-ink: #f6f5f0;
+  --band-ink-soft: rgb(246 245 240 / 78%);
+  --band-raised: rgb(255 255 255 / 12%);
+
+  --shadow-sheet: 0 1px 1px rgb(23 25 30 / 8%), 0 6px 18px -6px rgb(23 25 30 / 18%);
+  --shadow-key: 0 1px 0 rgb(23 25 30 / 10%), 0 2px 6px -2px rgb(23 25 30 / 14%);
+
+  --font-ui: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-print: 'Libre Franklin', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  --font-hand: 'Shantell Sans', 'Comic Sans MS', cursive;
+  --font-display: 'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif;
+
+  --masthead-h: 60px;
+
+  /* 盤面尺寸：手機以寬度為主，同時保留下方控制區的空間 */
+  --board-size: min(calc(100vw - 24px), calc(100dvh - var(--masthead-h) - 200px), 560px);
+  --cell: calc(var(--board-size) / 9);
+}
+
+/* 夜間版：深炭灰紙、淺色墨水、亮一點的彩色鉛筆 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #111318;
-    --surface: #1a1d24;
-    --surface-2: #242832;
-    --text: #e7e9ee;
-    --text-muted: #8d95a5;
-    --line: #2c313c;
-    --line-strong: #8a93a6;
-    --accent: #6f9bff;
-    --accent-contrast: #0d1220;
-    --accent-soft: #1f2b47;
-    --cell-related: #1f232c;
-    --cell-same: #263452;
-    --cell-selected: #2f4a85;
-    --danger: #ff6b70;
-    --danger-soft: #3a1f25;
-    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 25%);
+    color-scheme: dark;
+    --ground: #1d1d1b;
+    --sheet: #2a2a27;
+    --sheet-2: #353531;
+    --ink: #eeece4;
+    --ink-soft: #bdbbb3;
+    --rule: #46453f;
+    --rule-strong: #d3d0c6;
+    --pen: #a3bbff;
+    --pencil: #b0aea6;
+    --red-pencil: #ff7a5c;
+    --hl-related: #36331f;
+    --hl-selected: #4f4512;
+    --hl-selected-edge: #d9bb2a;
+    --danger-ink: #1d1d1b;
+    --hl-same: #2f5230;
+    --band: #0a3f3a;
+    --band-raised: rgb(255 255 255 / 9%);
+    --shadow-sheet: 0 1px 1px rgb(0 0 0 / 40%), 0 8px 22px -8px rgb(0 0 0 / 60%);
+    --shadow-key: 0 1px 0 rgb(0 0 0 / 40%), 0 2px 6px -2px rgb(0 0 0 / 50%);
   }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --ground: #1d1d1b;
+  --sheet: #2a2a27;
+  --sheet-2: #353531;
+  --ink: #eeece4;
+  --ink-soft: #bdbbb3;
+  --rule: #46453f;
+  --rule-strong: #d3d0c6;
+  --pen: #a3bbff;
+  --pencil: #b0aea6;
+  --red-pencil: #ff7a5c;
+  --hl-related: #36331f;
+  --hl-selected: #4f4512;
+  --hl-selected-edge: #d9bb2a;
+  --danger-ink: #1d1d1b;
+  --hl-same: #2f5230;
+  --band: #0a3f3a;
+  --band-raised: rgb(255 255 255 / 9%);
+  --shadow-sheet: 0 1px 1px rgb(0 0 0 / 40%), 0 8px 22px -8px rgb(0 0 0 / 60%);
+  --shadow-key: 0 1px 0 rgb(0 0 0 / 40%), 0 2px 6px -2px rgb(0 0 0 / 50%);
 }
 
 * {
@@ -59,15 +119,23 @@ body {
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   /* 避免快速連點時選取到文字（iOS Safari 需要加前綴） */
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+}
+
+::selection {
+  background: var(--hl-selected);
+  color: var(--ink);
 }
 
 button {
@@ -80,10 +148,19 @@ button:disabled {
   cursor: default;
 }
 
-button:focus-visible,
-.difficulty-option:focus-visible {
-  outline: 2px solid var(--accent);
+:focus-visible {
+  outline: 3px solid var(--pen);
   outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .icon {
@@ -96,71 +173,121 @@ button:focus-visible,
   stroke-linejoin: round;
 }
 
-/* ───────── 版面 ───────── */
+/* ───────── 雜誌色帶 ───────── */
 
-.app {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: max(12px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+.masthead {
+  background: var(--band);
+  color: var(--band-ink);
+  padding-top: env(safe-area-inset-top);
 }
 
-.topbar {
+.masthead-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: var(--board-size);
-  margin: 0 auto 12px;
+  gap: 8px;
+  width: min(100%, var(--board-size) + 24px);
+  height: var(--masthead-h);
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
 
 .brand {
   margin: 0;
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
 }
 
 .difficulty-tag {
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 900;
+  padding: 2px 8px;
+  border: 1.5px solid var(--band-ink-soft);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .difficulty-tag:empty {
   display: none;
 }
 
+.status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .timer {
-  min-width: 3.6em;
-  font-size: 1.05rem;
-  font-weight: 600;
+  min-width: 3.4em;
+  margin-right: 2px;
+  font-family: var(--font-print);
+  font-size: 1.15rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
 
-.icon-btn {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
+.icon-btn,
+.text-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 44px;
   border: 0;
-  border-radius: 10px;
-  background: var(--surface-2);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--band-ink);
+  transition: background-color 0.15s ease;
+}
+
+.icon-btn {
+  width: 44px;
+}
+
+.text-btn {
+  padding: 0 10px 0 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.icon-btn:not(:disabled):hover,
+.text-btn:hover {
+  background: var(--band-raised);
+}
+
+.masthead :focus-visible {
+  outline-color: var(--band-ink);
+  outline-offset: -3px;
+}
+
+.text-btn .icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5;
 }
 
 .icon-btn .icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   fill: currentColor;
   stroke: none;
+}
+
+.icon-btn[hidden] {
+  display: none;
 }
 
 .icon-btn .icon-play,
@@ -176,17 +303,22 @@ button:focus-visible,
   opacity: 0.4;
 }
 
+/* ───────── 版面 ───────── */
+
 .layout {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
+  padding: 14px 12px max(14px, env(safe-area-inset-bottom));
 }
 
 /* ───────── 盤面 ───────── */
 
 .board-wrap {
   position: relative;
+  flex: none;
   width: var(--board-size);
   height: var(--board-size);
 }
@@ -198,88 +330,130 @@ button:focus-visible,
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border: 2px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  border: 2.5px solid var(--rule-strong);
+  border-radius: 3px;
+  background: var(--sheet);
+  box-shadow: var(--shadow-sheet);
+}
+
+.board-row {
+  display: contents;
 }
 
 .cell {
   position: relative;
   display: grid;
   place-items: center;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  font-size: calc(var(--board-size) / 9 * 0.55);
-  font-weight: 500;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.12s ease;
 }
 
-.cell:nth-child(9n) {
+.cell:focus-visible {
+  outline: 3px solid var(--pen);
+  outline-offset: -3px;
+}
+
+.cell:nth-child(9) {
   border-right: 0;
 }
 
-.cell:nth-child(n + 73) {
+.board-row:last-child .cell {
   border-bottom: 0;
 }
 
 .cell.box-right {
-  border-right: 2px solid var(--line-strong);
+  border-right: 2px solid var(--rule-strong);
 }
 
 .cell.box-bottom {
-  border-bottom: 2px solid var(--line-strong);
+  border-bottom: 2px solid var(--rule-strong);
 }
 
+/* 螢光筆：淡塗同列／行／宮，重塗選取格，綠色標相同數字 */
 .cell.related {
-  background: var(--cell-related);
+  background: var(--hl-related);
 }
 
 .cell.same-digit {
-  background: var(--cell-same);
+  background: var(--hl-same);
 }
 
 .cell.selected {
-  background: var(--cell-selected);
-}
-
-.cell.given {
-  font-weight: 650;
-}
-
-.cell.user .cell-value {
-  color: var(--accent);
-}
-
-.cell.user.conflict .cell-value {
-  color: var(--danger);
-}
-
-.cell.conflict:not(.selected) {
-  background: var(--danger-soft);
+  background: var(--hl-selected);
+  /* 夜間版選取格底色較暗，加一圈螢光筆邊讓它和同列淡塗分得開 */
+  box-shadow: inset 0 0 0 2px var(--hl-selected-edge);
 }
 
 .cell-value {
   grid-area: 1 / 1;
 }
 
+/* 印刷鉛字：題目 */
+.cell.given .cell-value {
+  font-family: var(--font-print);
+  font-size: calc(var(--cell) * 0.58);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* 原子筆：玩家填的數字 */
+.cell.user .cell-value {
+  font-family: var(--font-hand);
+  font-size: calc(var(--cell) * 0.62);
+  font-weight: 500;
+  color: var(--pen);
+  transform: rotate(-3deg);
+}
+
+/* 紅鉛筆圈：不只靠顏色，選取時也保留 */
+.cell.conflict:not(.given)::after {
+  content: '';
+  position: absolute;
+  inset: 7%;
+  background: var(--red-pencil);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M56 9C80 9 94 27 92 52C90 77 71 93 47 92C23 91 7 73 8 49C9 26 26 11 50 10C62 9 70 12 77 17' fill='none' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M56 9C80 9 94 27 92 52C90 77 71 93 47 92C23 91 7 73 8 49C9 26 26 11 50 10C62 9 70 12 77 17' fill='none' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+/* 和玩家數字重複的題目：紅鉛筆底線，不圈起來，避免看起來像題目印錯 */
+.cell.given.conflict::after {
+  content: '';
+  position: absolute;
+  left: 26%;
+  right: 26%;
+  bottom: 13%;
+  height: max(2px, calc(var(--cell) * 0.05));
+  border-radius: 2px;
+  background: var(--red-pencil);
+  transform: rotate(-2deg);
+  pointer-events: none;
+}
+
+/* 鉛筆：筆記 */
 .cell-notes {
   grid-area: 1 / 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   height: 100%;
-  padding: 6%;
+  padding: 4%;
 }
 
 .cell-notes span {
   display: grid;
   place-items: center;
-  color: var(--text-muted);
-  font-size: calc(var(--board-size) / 9 * 0.24);
+  border-radius: 3px;
+  color: var(--pencil);
+  font-family: var(--font-hand);
+  font-size: calc(var(--cell) * 0.32);
   font-weight: 500;
+  line-height: 1;
   visibility: hidden;
 }
 
@@ -288,9 +462,8 @@ button:focus-visible,
 }
 
 .cell-notes span.match {
-  border-radius: 4px;
-  background: var(--accent);
-  color: var(--accent-contrast);
+  background: var(--hl-same);
+  color: var(--ink);
 }
 
 .cell:not(.has-notes) .cell-notes {
@@ -298,7 +471,8 @@ button:focus-visible,
 }
 
 /* 暫停時遮蔽盤面內容，避免偷看 */
-.board.is-paused .cell-value {
+.board.is-paused .cell-value,
+.board.is-paused .cell::after {
   visibility: hidden;
 }
 
@@ -307,7 +481,7 @@ button:focus-visible,
 }
 
 .board.is-paused .cell {
-  background: var(--surface);
+  background: var(--sheet);
 }
 
 .board-overlay {
@@ -318,7 +492,6 @@ button:focus-visible,
   align-items: center;
   justify-content: center;
   gap: 14px;
-  border-radius: var(--radius);
 }
 
 .board-overlay[hidden] {
@@ -327,22 +500,78 @@ button:focus-visible,
 
 .board-overlay p {
   margin: 0;
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
-/* 過關動畫：逐格波浪 */
+/* 過關：波浪掃過盤面，接著蓋上完成印章 */
 .board.celebrate .cell {
-  animation: wave 0.6s ease both;
-  animation-delay: calc((var(--r, 0) + var(--c, 0)) * 40ms);
+  animation: wave 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc((var(--r, 0) + var(--c, 0)) * 28ms);
 }
 
 @keyframes wave {
-  40% {
-    background: var(--accent-soft);
-    transform: scale(0.9);
+  35% {
+    background: var(--hl-selected);
   }
+}
+
+.stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: calc(var(--board-size) * 0.03) calc(var(--board-size) * 0.07);
+  border: calc(var(--board-size) * 0.012) solid var(--red-pencil);
+  border-radius: calc(var(--board-size) * 0.03);
+  outline: calc(var(--board-size) * 0.004) solid var(--red-pencil);
+  outline-offset: calc(var(--board-size) * -0.028);
+  color: var(--red-pencil);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-9deg);
+  /* 印泥不均：用雜訊遮罩做出斑駁感 */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.75'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.75'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.stamp.is-visible {
+  opacity: 0.92;
+}
+
+.stamp.is-landing {
+  animation: stamp-down 0.42s cubic-bezier(0.2, 0.9, 0.25, 1.05) both;
+}
+
+@keyframes stamp-down {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-14deg) scale(1.7);
+  }
+  60% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) rotate(-9deg) scale(0.95);
+  }
+}
+
+.stamp-word {
+  font-family: var(--font-display);
+  font-size: calc(var(--board-size) * 0.16);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  margin-right: -0.18em;
+  line-height: 1.1;
+}
+
+/* 完成後題目的鉛字退後，玩家的手寫字保持全墨色，印章蓋在玩家的作品上 */
+.board.is-complete .cell.given .cell-value {
+  opacity: 0.45;
+  transition: opacity 0.6s ease 0.4s;
 }
 
 /* ───────── 控制區 ───────── */
@@ -352,6 +581,22 @@ button:focus-visible,
   flex-direction: column;
   gap: 12px;
   width: var(--board-size);
+  /* 手機：工具列與數字鍵貼近底部的拇指區 */
+  margin-top: auto;
+}
+
+.play-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.controls.is-complete {
+  margin-top: 0;
+}
+
+.controls.is-complete .play-controls {
+  display: none;
 }
 
 .tools {
@@ -361,166 +606,363 @@ button:focus-visible,
 }
 
 .tool {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 8px 4px;
+  justify-content: center;
+  gap: 3px;
+  min-height: clamp(56px, 7.5dvh, 68px);
+  padding: 6px 4px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 8px;
   background: transparent;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  transition: background-color 0.12s ease, color 0.12s ease;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .tool:not(:disabled):hover {
-  background: var(--surface-2);
-  color: var(--text);
+  background: var(--sheet-2);
+  color: var(--ink);
 }
 
 .tool:disabled {
-  opacity: 0.35;
+  opacity: 0.4;
 }
 
-.tool[aria-pressed='true'] {
-  background: var(--accent-soft);
-  color: var(--accent);
+/* 筆記模式：像拿起鉛筆，按鈕被螢光筆塗上 */
+.tool-notes[aria-pressed='true'] {
+  background: var(--hl-selected);
+  color: var(--ink);
 }
 
-.tool-badge {
-  position: absolute;
-  top: 2px;
-  right: calc(50% - 26px);
-  padding: 0 5px;
-  border-radius: 999px;
-  background: var(--surface-2);
-  color: var(--text-muted);
-  font-size: 0.65rem;
-  line-height: 1.5;
-}
-
-.tool[aria-pressed='true'] .tool-badge {
-  background: var(--accent);
-  color: var(--accent-contrast);
+.tool-notes[aria-pressed='true']:hover {
+  background: var(--hl-selected);
 }
 
 .numpad {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 6px;
+  gap: 4px;
+  padding: 3px;
+  border: 2px dashed transparent;
+  border-radius: 10px;
+  transition: border-color 0.15s ease;
 }
 
 .num {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  aspect-ratio: 3 / 4;
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(58px, 8.5dvh, 76px);
   border: 0;
-  border-radius: 10px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  transition: transform 0.08s ease, background-color 0.12s ease;
+  border-radius: 6px;
+  background: var(--sheet);
+  box-shadow: var(--shadow-key);
+  transition: transform 0.08s ease, background-color 0.15s ease;
 }
 
-.num:active {
-  transform: scale(0.94);
+.num:not(:disabled):active {
+  transform: translateY(1px) scale(0.96);
 }
 
 .num-digit {
-  color: var(--accent);
-  font-size: clamp(1.3rem, 6vw, 1.75rem);
-  font-weight: 500;
+  color: var(--ink);
+  font-family: var(--font-print);
+  font-size: 1.7rem;
+  font-weight: 700;
   line-height: 1;
 }
 
 .num-left {
-  min-height: 1em;
-  color: var(--text-muted);
-  font-size: 0.68rem;
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  color: var(--pencil);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .num.done {
-  opacity: 0.35;
+  background: transparent;
   box-shadow: none;
 }
 
-/* 筆記模式時數字鍵盤改為較淡的樣式，提示目前輸入的是筆記 */
+.num.done .num-digit {
+  color: var(--pencil);
+  opacity: 0.5;
+  text-decoration: line-through 2px;
+}
+
+.num:disabled:not(.done) {
+  opacity: 0.5;
+}
+
+/* 筆記模式：數字鍵換成鉛筆字、外框改成虛線，和平常的樣子明顯不同 */
+.notes-mode .numpad {
+  border-color: var(--pencil);
+}
+
 .notes-mode .num-digit {
-  color: var(--text-muted);
+  color: var(--pencil);
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight: 400;
 }
 
 .btn {
-  padding: 12px 20px;
+  min-height: 46px;
+  padding: 11px 20px;
   border: 0;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: filter 0.12s ease;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: filter 0.15s ease, background-color 0.15s ease;
 }
 
 .btn:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
 }
 
 .btn-primary {
-  background: var(--accent);
-  color: var(--accent-contrast);
+  background: var(--band);
+  color: var(--band-ink);
+}
+
+.btn-danger {
+  background: var(--red-pencil);
+  color: var(--danger-ink);
 }
 
 .btn-ghost {
-  background: var(--surface-2);
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--rule);
+}
+
+.btn-ghost:hover {
+  filter: none;
+  background: var(--sheet-2);
+}
+
+/* 完成後取代數字鍵盤的區塊 */
+.win-panel {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  padding: 8px 0 4px;
+  text-align: center;
+}
+
+.win-panel[hidden] {
+  display: none;
+}
+
+.win-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.win-summary {
+  margin: 0 0 10px;
+  color: var(--ink-soft);
+  font-family: var(--font-print);
+  font-weight: 700;
+}
+
+.win-panel .btn {
+  width: 100%;
+  max-width: 320px;
+}
+
+/* 暫停時不顯示剩餘數量，完成後收起快捷鍵 */
+.is-paused .num-left {
+  visibility: hidden;
+}
+
+.is-complete .shortcuts {
+  display: none !important;
+}
+
+/* 一次性說明：一張夾在盤面與工具列之間的便條 */
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 14px;
+  border: 1.5px dashed var(--pencil);
+  border-radius: 6px;
+  background: var(--sheet);
+  animation: hint-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hint[hidden] {
+  display: none;
+}
+
+@keyframes hint-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.hint-text {
+  flex: 1;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.hint-close {
+  flex: none;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--sheet-2);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hint-close:hover {
+  background: var(--hl-related);
 }
 
 .shortcuts {
   display: none;
   margin: 0;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  line-height: 1.6;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.shortcuts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.shortcuts div:last-child {
+  border-bottom: 0;
+}
+
+.shortcuts dt {
+  white-space: nowrap;
+}
+
+.shortcuts dd {
+  margin: 0;
+  white-space: nowrap;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--sheet);
+  box-shadow: inset 0 -1px 0 var(--rule), 0 0 0 1px var(--rule);
+  color: var(--ink);
+  font-family: var(--font-print);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* 手機高螢幕：空間足夠時數字鍵改成九宮 3×3，按鍵寬度足夠，也吃掉多餘空白 */
+@media (max-width: 859px) and (min-height: 760px) {
+  .numpad {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .num {
+    min-height: clamp(54px, 7dvh, 64px);
+  }
+
+  .num-digit {
+    font-size: 1.9rem;
+  }
+
+  .notes-mode .num-digit {
+    font-size: 1.8rem;
+  }
+
+  .num-left {
+    top: 6px;
+    right: 8px;
+    font-size: 0.75rem;
+  }
 }
 
 /* ───────── 桌機：盤面在左，控制區在右 ───────── */
 
-@media (min-width: 860px) and (min-height: 560px) {
+@media (min-width: 860px) and (min-height: 600px) {
   :root {
-    --board-size: min(calc(100dvh - 120px), 600px, calc(100vw - 380px));
+    --masthead-h: 64px;
+    --board-size: min(calc(100dvh - var(--masthead-h) - 64px), 720px, calc(100vw - 420px));
   }
 
-  .topbar {
-    width: calc(var(--board-size) + 32px + 280px);
+  .masthead-inner {
+    width: calc(var(--board-size) + 36px + 300px + 24px);
   }
 
   .layout {
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    gap: 32px;
+    flex: none;
+    gap: 36px;
+    padding-top: 28px;
   }
 
   .controls {
-    width: 280px;
-    gap: 16px;
+    width: 300px;
+    gap: 20px;
+    margin-top: 0;
+  }
+
+  .play-controls {
+    gap: 14px;
+  }
+
+  .tool {
+    min-height: 56px;
   }
 
   .numpad {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    padding: 6px;
   }
 
   .num {
+    min-height: 0;
     aspect-ratio: 1;
-    border-radius: 14px;
+    border-radius: 8px;
   }
 
   .num-digit {
-    font-size: 2rem;
+    font-size: 2.3rem;
   }
 
-  .num:not(.done):hover {
-    background: var(--accent-soft);
+  .notes-mode .num-digit {
+    font-size: 2.1rem;
+  }
+
+  .num-left {
+    top: 7px;
+    right: 9px;
+    font-size: 0.75rem;
+  }
+
+  .num:not(:disabled):hover {
+    background: var(--hl-related);
   }
 
   .shortcuts {
@@ -531,73 +973,98 @@ button:focus-visible,
 /* ───────── 對話框 ───────── */
 
 .dialog {
-  width: min(360px, calc(100vw - 32px));
-  padding: 24px;
+  width: min(380px, calc(100vw - 24px));
+  padding: 30px 22px 20px;
   border: 0;
-  border-radius: 20px;
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: 0 20px 60px rgb(0 0 0 / 25%);
-  text-align: center;
+  border-radius: 6px;
+  /* 頂端一條和頁首同色的雜誌色帶 */
+  background: linear-gradient(var(--band) 0 6px, var(--sheet) 0);
+  color: var(--ink);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 24px 60px -12px rgb(0 0 0 / 40%);
 }
 
 .dialog::backdrop {
-  background: rgb(15 20 30 / 45%);
-  backdrop-filter: blur(3px);
+  background: rgb(14 20 22 / 55%);
 }
 
 .dialog[open] {
-  animation: pop 0.18s ease;
+  animation: pop 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes pop {
   from {
     opacity: 0;
-    transform: scale(0.96);
+    transform: translateY(8px);
   }
 }
 
+.dialog-step[hidden] {
+  display: none;
+}
+
+.dialog h2:focus {
+  outline: none;
+}
+
 .dialog h2 {
-  margin: 0 0 16px;
-  font-size: 1.25rem;
+  margin: 0 0 14px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
 }
 
 .difficulty-list {
   display: grid;
-  gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  border-top: 2px solid var(--ink);
 }
 
 .difficulty-option {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
+  gap: 12px;
+  min-height: 54px;
+  padding: 14px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
   text-align: left;
-  transition: border-color 0.12s ease, background-color 0.12s ease;
+  transition: background-color 0.15s ease;
 }
 
-.difficulty-option:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+.difficulty-option:not(:disabled):hover {
+  background: var(--hl-related);
+}
+
+.difficulty-option:focus-visible {
+  outline-offset: -3px;
+}
+
+.difficulty-option.is-chosen {
+  background: var(--hl-selected);
+}
+
+.difficulty-option:disabled:not(.is-chosen) {
+  opacity: 0.45;
 }
 
 .difficulty-name {
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 900;
 }
 
 .difficulty-hint {
-  color: var(--text-muted);
-  font-size: 0.8rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
 }
 
-.is-generating .difficulty-option {
-  opacity: 0.4;
-  pointer-events: none;
+.legend {
+  margin: 0 0 16px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
 .dialog .btn-ghost {
@@ -608,14 +1075,25 @@ button:focus-visible,
   display: none;
 }
 
+.confirm-text {
+  margin: 0 0 20px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.dialog-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
 .generating {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   margin: 0 0 12px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
 }
 
 .generating[hidden] {
@@ -625,8 +1103,8 @@ button:focus-visible,
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid var(--line);
-  border-top-color: var(--accent);
+  border: 2px solid var(--rule);
+  border-top-color: var(--band);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -637,35 +1115,55 @@ button:focus-visible,
   }
 }
 
-.win-mark {
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 12px;
-  border-radius: 50%;
-  background: var(--accent-soft);
+/* ───────── 手機橫放：請玩家轉回直式 ───────── */
+
+.rotate-notice {
+  display: none;
 }
 
-.win-mark svg {
-  width: 28px;
-  height: 28px;
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  .rotate-notice {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    background: var(--ground);
+    text-align: center;
+  }
 
-.win-summary {
-  margin: -6px 0 20px;
-  color: var(--text-muted);
-}
+  .rotate-notice svg {
+    width: 56px;
+    height: 56px;
+    color: var(--band);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
-.dialog-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  .rotate-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .rotate-sub {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  /* 對話框在瀏覽器頂層，會蓋過提示；橫放時先藏起來，轉回直式再出現 */
+  .dialog[open],
+  .dialog::backdrop {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

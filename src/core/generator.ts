@@ -55,11 +55,11 @@ const MAX_ATTEMPTS = 300;
 
 /**
  * 產生指定難度的題目。反覆產生隨機題目並評分，直到符合難度為止；
- * 超過嘗試次數時退而求其次，回傳難度最接近的題目。
+ * 超過嘗試次數時退而求其次，回傳難度最接近的題目，並標示它實際的難度。
  */
 export function generatePuzzle(difficulty: Difficulty, rng: Rng = createRng()): Puzzle {
   const target = DIFFICULTIES.indexOf(difficulty);
-  let closest: { puzzle: Grid; solution: Grid; distance: number } | null = null;
+  let closest: { puzzle: Grid; solution: Grid; difficulty: Difficulty; distance: number } | null = null;
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const solution = solve(emptyGrid(), rng)!;
@@ -71,8 +71,9 @@ export function generatePuzzle(difficulty: Difficulty, rng: Rng = createRng()): 
     if (result.difficulty === difficulty && result.logicallySolved) return { puzzle, solution, difficulty };
 
     const distance = Math.abs(DIFFICULTIES.indexOf(result.difficulty) - target) + (result.logicallySolved ? 0 : 0.5);
-    if (!closest || distance < closest.distance) closest = { puzzle, solution, distance };
+    if (!closest || distance < closest.distance) closest = { puzzle, solution, difficulty: result.difficulty, distance };
   }
 
-  return { puzzle: closest!.puzzle, solution: closest!.solution, difficulty };
+  // 退而求其次時標示題目實際評到的難度，難度標籤必須誠實
+  return { puzzle: closest!.puzzle, solution: closest!.solution, difficulty: closest!.difficulty };
 }

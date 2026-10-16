@@ -3,36 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#111318" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#0e5e57" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a3f3a" media="(prefers-color-scheme: dark)" />
     <meta name="description" content="單機數獨遊戲，四種難度、筆記模式、自動存檔。" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f6fed'/%3E%3Ctext x='16' y='23' font-family='sans-serif' font-size='19' font-weight='700' text-anchor='middle' fill='white'%3E9%3C/text%3E%3C/svg%3E" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230e5e57'/%3E%3Ctext x='16' y='23.5' font-family='Arial,sans-serif' font-size='20' font-weight='800' text-anchor='middle' fill='%23f6f5f0'%3E9%3C/text%3E%3C/svg%3E" />
     <title>數獨</title>
   </head>
   <body>
-    <div class="app">
-      <header class="topbar">
-        <h1 class="brand">數獨</h1>
-        <div class="status">
+    <header class="masthead">
+      <div class="masthead-inner">
+        <div class="title-group">
+          <h1 class="brand">數獨</h1>
           <span class="difficulty-tag" id="difficulty-label"></span>
-          <span class="timer" id="timer" aria-label="經過時間">00:00</span>
+        </div>
+        <div class="status">
+          <span class="timer" id="timer" role="timer" aria-label="經過時間">00:00</span>
           <button class="icon-btn" id="pause-btn" type="button" aria-label="暫停">
             <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
             <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg>
           </button>
+          <button class="text-btn" id="new-game-btn" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+            <span>新遊戲</span>
+          </button>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <main class="layout">
-        <section class="board-wrap">
-          <div class="board" id="board" role="grid" aria-label="數獨盤面"></div>
-          <div class="board-overlay" id="pause-overlay" hidden>
-            <p>已暫停</p>
-            <button class="btn btn-primary" id="resume-btn" type="button">繼續遊戲</button>
-          </div>
-        </section>
+    <main class="layout">
+      <section class="board-wrap" aria-label="盤面">
+        <div class="board" id="board" role="grid" aria-label="數獨盤面"></div>
+        <div class="board-overlay" id="pause-overlay" hidden>
+          <p>已暫停</p>
+          <button class="btn btn-primary" id="resume-btn" type="button">繼續遊戲</button>
+        </div>
+        <div class="stamp" id="stamp" aria-hidden="true">
+          <span class="stamp-word">完成</span>
+        </div>
+      </section>
 
-        <section class="controls">
+      <section class="controls" id="controls">
+        <div class="hint" id="hint" role="note" hidden>
+          <p class="hint-text" id="hint-text"></p>
+          <button class="hint-close" id="hint-close" type="button">知道了</button>
+        </div>
+
+        <div class="play-controls">
           <div class="tools">
             <button class="tool" type="button" data-action="undo">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>
@@ -46,37 +62,61 @@
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 21-4.3-4.3a1 1 0 0 1 0-1.4l10-10a1 1 0 0 1 1.4 0l5.6 5.6a1 1 0 0 1 0 1.4L11 21" /><path d="M22 21H7" /><path d="m5 11 9 9" /></svg>
               <span>清除</span>
             </button>
-            <button class="tool" type="button" data-action="notes" aria-pressed="false">
+            <button class="tool tool-notes" type="button" data-action="notes" aria-pressed="false">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
-              <span>筆記</span>
-              <span class="tool-badge" id="notes-badge">關</span>
+              <span id="notes-label">筆記</span>
             </button>
           </div>
 
-          <div class="numpad" id="numpad"></div>
+          <div class="numpad" id="numpad" aria-label="數字鍵盤"></div>
+        </div>
 
-          <button class="btn btn-primary new-game-btn" id="new-game-btn" type="button">新遊戲</button>
-          <p class="shortcuts">鍵盤：數字鍵填入 · Shift+數字 筆記 · N 切換筆記 · 方向鍵移動 · Ctrl+Z 復原</p>
-        </section>
-      </main>
+        <div class="win-panel" id="win-panel" hidden>
+          <p class="win-title">這盤解完了</p>
+          <p class="win-summary" id="win-summary"></p>
+          <button class="btn btn-primary" id="win-new-game" type="button">再來一盤</button>
+        </div>
+
+        <dl class="shortcuts" aria-label="鍵盤快捷鍵">
+          <div><dt><kbd>1</kbd>–<kbd>9</kbd></dt><dd>填入數字</dd></div>
+          <div><dt><kbd>Shift</kbd>+數字</dt><dd>寫筆記</dd></div>
+          <div><dt><kbd>N</kbd></dt><dd>切換筆記</dd></div>
+          <div><dt>方向鍵</dt><dd>移動</dd></div>
+          <div><dt><kbd>Backspace</kbd></dt><dd>清除</dd></div>
+          <div><dt><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Y</kbd></dt><dd>復原／重做</dd></div>
+          <div><dt><kbd>P</kbd></dt><dd>暫停</dd></div>
+        </dl>
+      </section>
+    </main>
+
+    <p class="sr-only" id="announcer" aria-live="polite"></p>
+
+    <div class="rotate-notice" role="alert">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <rect x="15" y="6" width="18" height="32" rx="3" />
+        <path d="M22 33h4" />
+        <path d="M38 22a14 14 0 0 1-4 10" />
+        <path d="m38 32-4 0 0-4" />
+      </svg>
+      <p class="rotate-title">請把手機轉回直式</p>
+      <p class="rotate-sub">遊戲已暫停，轉回來就能繼續</p>
     </div>
 
     <dialog class="dialog" id="new-game-dialog" aria-labelledby="new-game-title">
-      <h2 id="new-game-title">選擇難度</h2>
-      <div class="difficulty-list" id="difficulty-list"></div>
-      <p class="generating" id="generating" hidden><span class="spinner" aria-hidden="true"></span>產生題目中…</p>
-      <button class="btn btn-ghost" id="cancel-new-game" type="button">取消</button>
-    </dialog>
-
-    <dialog class="dialog" id="win-dialog" aria-labelledby="win-title">
-      <div class="win-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7" /></svg>
+      <div class="dialog-step" id="choose-step">
+        <h2 id="new-game-title" tabindex="-1" autofocus>選擇難度</h2>
+        <div class="difficulty-list" id="difficulty-list"></div>
+        <p class="generating" id="generating" hidden><span class="spinner" aria-hidden="true"></span><span id="generating-text">出題中…</span></p>
+        <p class="legend">紅圈表示同一列、行或宮裡有重複的數字，不代表答錯。進度會自動儲存。</p>
+        <button class="btn btn-ghost" id="cancel-new-game" type="button">返回目前這盤</button>
       </div>
-      <h2 id="win-title">完成！</h2>
-      <p class="win-summary" id="win-summary"></p>
-      <div class="dialog-actions">
-        <button class="btn btn-ghost" id="win-close" type="button">查看盤面</button>
-        <button class="btn btn-primary" id="win-new-game" type="button">再來一局</button>
+      <div class="dialog-step" id="confirm-step" hidden>
+        <h2 id="confirm-title" tabindex="-1">放棄目前這盤？</h2>
+        <p class="confirm-text" id="confirm-text"></p>
+        <div class="dialog-actions">
+          <button class="btn btn-ghost" id="confirm-back" type="button">返回</button>
+          <button class="btn btn-danger" id="confirm-start" type="button">開始新的一盤</button>
+        </div>
       </div>
     </dialog>
 

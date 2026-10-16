@@ -3,6 +3,8 @@ import { DIFFICULTIES, DIFFICULTY_LABEL, generatePuzzle, type Difficulty, type P
 import {
   createGame,
   eraseCell,
+  getConflicts,
+  isGiven,
   placeDigit,
   redo,
   toggleNote,
@@ -10,10 +12,18 @@ import {
   type GameState,
 } from '../game/state';
 import { loadGame, saveGame } from '../game/storage';
+import { dismissHint, isHintDismissed, type HintId } from './hints';
 import { Timer, formatTime } from '../game/timer';
 import { buildBoard, buildNumpad, renderBoard, renderNumpad, type BoardView } from './board';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+const DIFFICULTY_HINT: Record<Difficulty, string> = {
+  easy: '適合暖身',
+  medium: '要多觀察幾處',
+  hard: '要用到區塊排除',
+  expert: '要找出數對、數組',
+};
 
 export class App {
   private game: GameState | null = null;
@@ -21,15 +31,24 @@ export class App {
   private notesMode = false;
   private paused = false;
   private generating = false;
+  /** 每次出題遞增；取消或重新出題後，舊的結果一律丟棄 */
+  private generation = 0;
+  private pendingDifficulty: Difficulty | null = null;
 
   private readonly boardEl = $<HTMLDivElement>('board');
   private readonly boardView: BoardView;
   private readonly numButtons: HTMLButtonElement[];
   private readonly timerEl = $('timer');
   private readonly newGameDialog = $<HTMLDialogElement>('new-game-dialog');
-  private readonly winDialog = $<HTMLDialogElement>('win-dialog');
   private readonly timer = new Timer(0, (ms) => (this.timerEl.textContent = formatTime(ms)));
   private worker: Worker | null = null;
+  private stampTimer = 0;
+  private activeHint: HintId | null = null;
+
+  private static readonly HINT_TEXT: Record<HintId, string> = {
+    conflict: '紅圈表示同一列、行或宮裡有重複的數字，紅底線是和它重複的題目數字。這只是提醒，不代表答錯。',
+    notes: '筆記模式：點數字會在格子裡寫下小小的鉛筆字，再點一次同一個數字可以擦掉。按「筆記中」回到一般填寫。',
+  };
 
   constructor() {
     this.boardView = buildBoard(this.boardEl);
@@ -40,7 +59,6 @@ export class App {
     const saved = loadGame();
     if (saved) {
       this.loadState(saved);
-      if (saved.completed) this.openNewGameDialog();
     } else {
       this.openNewGameDialog();
     }
@@ -50,29 +68,61 @@ export class App {
 
   private loadState(game: GameState): void {
     this.game = game;
-    this.selected = -1;
+    // 開局自動選第一個空格，避免一開始按數字沒有反應
+    this.selected = game.completed ? -1 : game.values.findIndex((v) => v === 0);
     this.paused = false;
     this.timer.reset(game.elapsedMs);
     $('difficulty-label').textContent = DIFFICULTY_LABEL[game.difficulty];
+    this.boardEl.classList.remove('celebrate');
+    this.showStamp(game.completed, false);
     this.render();
     this.resumeTimerIfPlaying();
   }
 
+  /** 進行中的盤面要先確認，避免一次誤觸就丟掉進度 */
+  private chooseDifficulty(difficulty: Difficulty): void {
+    if (this.generating) return;
+    if (this.game && !this.game.completed && this.hasProgress(this.game)) {
+      this.pendingDifficulty = difficulty;
+      $('confirm-text').textContent = `目前這盤（${DIFFICULTY_LABEL[this.game.difficulty]}，已用時 ${formatTime(
+        this.timer.elapsed,
+      )}）不會保留，改開一盤「${DIFFICULTY_LABEL[difficulty]}」。`;
+      this.showDialogStep('confirm');
+      return;
+    }
+    void this.startNewGame(difficulty);
+  }
+
+  private hasProgress(game: GameState): boolean {
+    return game.undoStack.length > 0 || game.values.some((v, i) => v !== 0 && !isGiven(game, i));
+  }
+
   private async startNewGame(difficulty: Difficulty): Promise<void> {
     if (this.generating) return;
-    this.generating = true;
-    this.newGameDialog.classList.add('is-generating');
-    $('generating').hidden = false;
+    const ticket = ++this.generation;
+    this.setGenerating(true, difficulty);
     try {
       const puzzle = await this.requestPuzzle(difficulty);
+      if (ticket !== this.generation) return; // 已取消
       this.newGameDialog.close();
       this.loadState(createGame(puzzle));
       saveGame(this.game!);
+      this.focusBoard();
     } finally {
-      this.generating = false;
-      this.newGameDialog.classList.remove('is-generating');
-      $('generating').hidden = true;
+      if (ticket === this.generation) this.setGenerating(false);
     }
+  }
+
+  private setGenerating(on: boolean, difficulty?: Difficulty): void {
+    this.generating = on;
+    this.newGameDialog.classList.toggle('is-generating', on);
+    $('generating').hidden = !on;
+    if (on && difficulty) $('generating-text').textContent = `正在出一盤「${DIFFICULTY_LABEL[difficulty]}」…`;
+    this.newGameDialog.querySelectorAll<HTMLButtonElement>('[data-difficulty]').forEach((btn) => {
+      btn.disabled = on;
+      btn.classList.toggle('is-chosen', on && btn.dataset.difficulty === difficulty);
+    });
+    this.updateCancelButton();
   }
 
   /** 優先使用 Web Worker 出題；無法建立 Worker 時改在主執行緒產生 */
@@ -92,6 +142,19 @@ export class App {
       };
       this.worker.postMessage({ difficulty });
     });
+  }
+
+  /** 取消出題：結果會因 generation 不符而被丟棄 */
+  private cancelNewGame(): void {
+    if (this.generating) {
+      this.generation++;
+      // 直接停掉 worker，避免被取消的題目在下一次出題時送回來
+      this.worker?.terminate();
+      this.worker = null;
+      this.setGenerating(false);
+      if (!this.game) return; // 沒有可以回去的盤面，留在選難度畫面
+    }
+    if (this.game) this.newGameDialog.close();
   }
 
   private get isPlaying(): boolean {
@@ -115,6 +178,8 @@ export class App {
     this.resumeTimerIfPlaying();
     this.persist();
     this.render();
+    if (paused) $('resume-btn').focus();
+    else this.focusBoard();
   }
 
   /** 每次操作後：存檔、重繪、檢查是否完成 */
@@ -127,20 +192,47 @@ export class App {
   }
 
   private celebrate(): void {
-    const game = this.game!;
     this.boardEl.classList.remove('celebrate');
     void this.boardEl.offsetWidth; // 重新觸發動畫
     this.boardEl.classList.add('celebrate');
-    $('win-summary').textContent = `${DIFFICULTY_LABEL[game.difficulty]} · 用時 ${formatTime(game.elapsedMs)}`;
-    setTimeout(() => this.winDialog.showModal(), 900);
+    this.showStamp(true, true);
+    // 焦點移到「再來一盤」，盤面上不留選取框，鍵盤玩家也能直接按 Enter 開新局
+    $('win-new-game').focus({ preventScroll: true });
+    const game = this.game!;
+    this.announce(`完成！${DIFFICULTY_LABEL[game.difficulty]}，用時 ${formatTime(game.elapsedMs)}。`);
+  }
+
+  /** 完成印章蓋在盤面上；animate 為 false 時直接顯示（例如重新整理後） */
+  private showStamp(show: boolean, animate: boolean): void {
+    const stamp = $('stamp');
+    clearTimeout(this.stampTimer);
+    stamp.classList.remove('is-visible', 'is-landing');
+    if (!show || !this.game) return;
+    if (!animate) {
+      stamp.classList.add('is-visible');
+      return;
+    }
+    // 等波浪掃過盤面再蓋章
+    this.stampTimer = window.setTimeout(() => stamp.classList.add('is-visible', 'is-landing'), 650);
+  }
+
+  private announce(text: string): void {
+    const el = $('announcer');
+    el.textContent = '';
+    window.setTimeout(() => (el.textContent = text), 50);
   }
 
   // ───────── 玩家操作 ─────────
 
   private inputDigit(digit: number, asNote = this.notesMode): void {
-    if (!this.game || this.selected < 0 || this.paused) return;
-    const changed = asNote ? toggleNote(this.game, this.selected, digit) : placeDigit(this.game, this.selected, digit);
+    if (!this.game || this.selected < 0 || this.paused || this.game.completed) return;
+    const i = this.selected;
+    const changed = asNote ? toggleNote(this.game, i, digit) : placeDigit(this.game, i, digit);
     this.afterMove(changed);
+    if (changed && !asNote && !this.game.completed && getConflicts(this.game).has(i)) {
+      this.announce(`${digit} 和同一列、行或宮的數字重複`);
+      this.showHint('conflict');
+    }
   }
 
   private erase(): void {
@@ -158,7 +250,22 @@ export class App {
 
   private toggleNotesMode(): void {
     this.notesMode = !this.notesMode;
+    if (this.notesMode) this.showHint('notes');
     this.render();
+  }
+
+  /** 第一次遇到時顯示一次性的說明；按「知道了」後不再出現 */
+  private showHint(id: HintId): void {
+    if (isHintDismissed(id) || this.activeHint === id) return;
+    this.activeHint = id;
+    $('hint-text').textContent = App.HINT_TEXT[id];
+    $('hint').hidden = false;
+  }
+
+  private closeHint(): void {
+    if (this.activeHint) dismissHint(this.activeHint);
+    this.activeHint = null;
+    $('hint').hidden = true;
   }
 
   private select(i: number): void {
@@ -168,29 +275,48 @@ export class App {
   }
 
   private moveSelection(dr: number, dc: number): void {
-    if (this.selected < 0) return this.select(0);
-    const r = (rowOf(this.selected) + dr + 9) % 9;
-    const c = (colOf(this.selected) + dc + 9) % 9;
-    this.select(r * 9 + c);
+    if (this.selected < 0) {
+      this.select(0);
+    } else {
+      const r = (rowOf(this.selected) + dr + 9) % 9;
+      const c = (colOf(this.selected) + dc + 9) % 9;
+      this.select(r * 9 + c);
+    }
+    this.focusBoard();
+  }
+
+  /** 焦點已在盤面內時，讓焦點跟著選取的格子移動，螢幕閱讀器才會讀出格子內容 */
+  private focusBoard(force = false): void {
+    if (!force && !this.boardEl.contains(document.activeElement)) return;
+    const target = this.boardView.cells[this.selected >= 0 ? this.selected : 0];
+    target.focus({ preventScroll: true });
   }
 
   private openNewGameDialog(): void {
-    const cancelable = !!this.game;
-    $('cancel-new-game').hidden = !cancelable;
+    this.showDialogStep('choose');
+    this.updateCancelButton();
     this.newGameDialog.showModal();
     this.resumeTimerIfPlaying();
+  }
+
+  private updateCancelButton(): void {
+    const btn = $<HTMLButtonElement>('cancel-new-game');
+    // 出題中一律可以取消；沒有盤面可回去時只在出題中顯示
+    btn.hidden = !this.game && !this.generating;
+    btn.textContent = this.generating ? '取消出題' : '返回目前這盤';
+  }
+
+  private showDialogStep(step: 'choose' | 'confirm'): void {
+    $('choose-step').hidden = step !== 'choose';
+    $('confirm-step').hidden = step !== 'confirm';
+    this.newGameDialog.setAttribute('aria-labelledby', step === 'choose' ? 'new-game-title' : 'confirm-title');
+    if (step === 'confirm') $('confirm-back').focus();
   }
 
   // ───────── 事件綁定 ─────────
 
   private buildDifficultyList(): void {
     const list = $('difficulty-list');
-    const hints: Record<Difficulty, string> = {
-      easy: '適合暖身',
-      medium: '需要仔細觀察',
-      hard: '需要區塊排除',
-      expert: '需要數對與數組',
-    };
     for (const d of DIFFICULTIES) {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -201,7 +327,7 @@ export class App {
       name.textContent = DIFFICULTY_LABEL[d];
       const hint = document.createElement('span');
       hint.className = 'difficulty-hint';
-      hint.textContent = hints[d];
+      hint.textContent = DIFFICULTY_HINT[d];
       btn.append(name, hint);
       list.append(btn);
     }
@@ -211,6 +337,10 @@ export class App {
     this.boardEl.addEventListener('pointerdown', (e) => {
       const cell = (e.target as HTMLElement).closest<HTMLElement>('.cell');
       if (cell) this.select(Number(cell.dataset.index));
+    });
+    this.boardEl.addEventListener('focusin', (e) => {
+      const cell = (e.target as HTMLElement).closest<HTMLElement>('.cell');
+      if (cell && Number(cell.dataset.index) !== this.selected) this.select(Number(cell.dataset.index));
     });
 
     $('numpad').addEventListener('click', (e) => {
@@ -229,35 +359,55 @@ export class App {
     $('pause-btn').addEventListener('click', () => this.setPaused(!this.paused));
     $('resume-btn').addEventListener('click', () => this.setPaused(false));
     $('new-game-btn').addEventListener('click', () => this.openNewGameDialog());
+    $('win-new-game').addEventListener('click', () => this.openNewGameDialog());
+    $('hint-close').addEventListener('click', () => this.closeHint());
 
     $('difficulty-list').addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-difficulty]');
-      if (btn) void this.startNewGame(btn.dataset.difficulty as Difficulty);
+      if (btn) this.chooseDifficulty(btn.dataset.difficulty as Difficulty);
     });
-    $('cancel-new-game').addEventListener('click', () => this.newGameDialog.close());
+    $('cancel-new-game').addEventListener('click', () => this.cancelNewGame());
+    $('confirm-back').addEventListener('click', () => this.showDialogStep('choose'));
+    $('confirm-start').addEventListener('click', () => {
+      const d = this.pendingDifficulty;
+      this.showDialogStep('choose');
+      if (d) void this.startNewGame(d);
+    });
     this.newGameDialog.addEventListener('cancel', (e) => {
-      // 沒有進行中的遊戲或正在出題時，不允許用 Esc 關閉
-      if (!this.game || this.generating) e.preventDefault();
+      // Esc：確認步驟先退回選難度；出題中改為取消出題；沒有盤面時不能關
+      e.preventDefault();
+      if (!$('confirm-step').hidden) return this.showDialogStep('choose');
+      this.cancelNewGame();
     });
-    this.newGameDialog.addEventListener('close', () => this.resumeTimerIfPlaying());
-
-    $('win-close').addEventListener('click', () => this.winDialog.close());
-    $('win-new-game').addEventListener('click', () => {
-      this.winDialog.close();
-      this.openNewGameDialog();
+    this.newGameDialog.addEventListener('close', () => {
+      this.showDialogStep('choose');
+      this.resumeTimerIfPlaying();
     });
 
     document.addEventListener('visibilitychange', () => {
+      // 離開時自動暫停，回來時看到暫停畫面，而不是默默停住的計時
+      if (document.hidden && this.isPlaying) {
+        this.paused = true;
+        this.render();
+      }
       this.resumeTimerIfPlaying();
       this.persist();
     });
     window.addEventListener('pagehide', () => this.persist());
 
+    // 手機橫放時畫面會蓋上「請轉回直式」，同時暫停計時
+    const landscape = window.matchMedia('(orientation: landscape) and (max-height: 500px) and (pointer: coarse)');
+    const onOrientation = () => {
+      if (landscape.matches && this.isPlaying) this.setPaused(true);
+    };
+    landscape.addEventListener('change', onOrientation);
+    onOrientation();
+
     document.addEventListener('keydown', (e) => this.onKeyDown(e));
   }
 
   private onKeyDown(e: KeyboardEvent): void {
-    if (this.newGameDialog.open || this.winDialog.open || !this.game) return;
+    if (this.newGameDialog.open || !this.game) return;
     const ctrl = e.ctrlKey || e.metaKey;
     const key = e.key.toLowerCase();
 
@@ -270,6 +420,8 @@ export class App {
       return this.redo();
     }
     if (ctrl || e.altKey) return;
+
+    if (key === 'p') return this.setPaused(!this.paused);
 
     // 使用 e.code 判斷數字，Shift+數字 在不同鍵盤配置下 e.key 會變成符號
     const digitMatch = /^(?:Digit|Numpad)([1-9])$/.exec(e.code);
@@ -309,24 +461,40 @@ export class App {
   private render(): void {
     const game = this.game;
     if (!game) return;
-    renderBoard(this.boardView, game, this.paused ? -1 : this.selected);
+    // 完成後清掉選取與螢光筆，讓印章蓋在乾淨的盤面上
+    renderBoard(this.boardView, game, this.paused || game.completed ? -1 : this.selected);
     renderNumpad(this.numButtons, game);
 
     this.boardEl.classList.toggle('is-paused', this.paused);
     this.boardEl.classList.toggle('is-complete', game.completed);
     $('pause-overlay').hidden = !this.paused;
+    document.body.classList.toggle('is-paused', this.paused);
 
-    const pauseBtn = $('pause-btn');
+    const pauseBtn = $<HTMLButtonElement>('pause-btn');
     pauseBtn.classList.toggle('is-paused', this.paused);
     pauseBtn.setAttribute('aria-label', this.paused ? '繼續' : '暫停');
-    (pauseBtn as HTMLButtonElement).disabled = game.completed;
+    pauseBtn.disabled = game.completed;
+    pauseBtn.hidden = game.completed;
+    document.body.classList.toggle('is-complete', game.completed);
+    if (game.completed && this.activeHint) $('hint').hidden = true;
 
+    const blocked = this.paused || game.completed;
+    const sel = this.selected;
+    const erasable = sel >= 0 && !isGiven(game, sel) && (game.values[sel] !== 0 || game.notes[sel] !== 0);
     const tool = (name: string) => document.querySelector<HTMLButtonElement>(`[data-action="${name}"]`)!;
-    tool('undo').disabled = !game.undoStack.length || game.completed;
-    tool('redo').disabled = !game.redoStack.length;
-    tool('erase').disabled = game.completed;
+    tool('undo').disabled = blocked || !game.undoStack.length;
+    tool('redo').disabled = blocked || !game.redoStack.length;
+    tool('erase').disabled = blocked || !erasable;
+    tool('notes').disabled = blocked;
     tool('notes').setAttribute('aria-pressed', String(this.notesMode));
-    $('notes-badge').textContent = this.notesMode ? '開' : '關';
+    $('notes-label').textContent = this.notesMode ? '筆記中' : '筆記';
+    this.numButtons.forEach((btn) => (btn.disabled = blocked || btn.classList.contains('done')));
     document.body.classList.toggle('notes-mode', this.notesMode);
+
+    $('controls').classList.toggle('is-complete', game.completed);
+    $('win-panel').hidden = !game.completed;
+    if (game.completed) {
+      $('win-summary').textContent = `${DIFFICULTY_LABEL[game.difficulty]} · 用時 ${formatTime(game.elapsedMs)}`;
+    }
   }
 }

@@ -11,11 +11,20 @@ export interface BoardView {
 export function buildBoard(container: HTMLElement): BoardView {
   const view: BoardView = { cells: [], values: [], notes: [] };
   container.replaceChildren();
+  let row: HTMLElement | null = null;
   for (let i = 0; i < CELLS; i++) {
+    // 每 9 格包一層 row，讓 role="grid" 的結構符合 ARIA 規範
+    if (colOf(i) === 0) {
+      row = document.createElement('div');
+      row.className = 'board-row';
+      row.setAttribute('role', 'row');
+      container.append(row);
+    }
     const cell = document.createElement('div');
     cell.className = 'cell';
     cell.dataset.index = String(i);
     cell.setAttribute('role', 'gridcell');
+    cell.tabIndex = -1;
     cell.style.setProperty('--r', String(rowOf(i)));
     cell.style.setProperty('--c', String(colOf(i)));
     if (colOf(i) % 3 === 2 && colOf(i) !== 8) cell.classList.add('box-right');
@@ -35,7 +44,7 @@ export function buildBoard(container: HTMLElement): BoardView {
     }
 
     cell.append(value, notesGrid);
-    container.append(cell);
+    row!.append(cell);
     view.cells.push(cell);
     view.values.push(value);
     view.notes.push(notes);
@@ -72,14 +81,16 @@ export function renderBoard(view: BoardView, game: GameState, selected: number):
       note.classList.toggle('match', (noteMask & bit & selBit) !== 0);
     });
 
-    cell.setAttribute('aria-label', cellLabel(i, value, noteMask));
+    cell.setAttribute('aria-label', cellLabel(i, value, noteMask, isGiven(game, i), conflicts.has(i)));
     cell.setAttribute('aria-selected', String(i === selected));
+    // roving tabindex：只有選取中的格子（沒有選取時為第一格）能用 Tab 進入
+    cell.tabIndex = i === (selected >= 0 ? selected : 0) ? 0 : -1;
   }
 }
 
-function cellLabel(i: number, value: number, notes: number): string {
+function cellLabel(i: number, value: number, notes: number, given: boolean, conflict: boolean): string {
   const pos = `第 ${rowOf(i) + 1} 列第 ${colOf(i) + 1} 行`;
-  if (value) return `${pos}，${value}`;
+  if (value) return `${pos}，${value}${given ? '，題目' : ''}${conflict ? '，與規則衝突' : ''}`;
   if (notes) {
     const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter((d) => notes & digitBit(d));
     return `${pos}，空格，筆記 ${digits.join('、')}`;
@@ -96,7 +107,7 @@ export function buildNumpad(container: HTMLElement): HTMLButtonElement[] {
     btn.type = 'button';
     btn.className = 'num';
     btn.dataset.digit = String(d);
-    btn.innerHTML = `<span class="num-digit">${d}</span><span class="num-left"></span>`;
+    btn.innerHTML = `<span class="num-digit">${d}</span><span class="num-left" aria-hidden="true"></span>`;
     container.append(btn);
     buttons.push(btn);
   }
@@ -108,7 +119,7 @@ export function renderNumpad(buttons: HTMLButtonElement[], game: GameState): voi
   buttons.forEach((btn, k) => {
     const left = Math.max(0, 9 - counts[k + 1]);
     btn.classList.toggle('done', left === 0);
-    btn.querySelector('.num-left')!.textContent = left ? String(left) : '';
+    btn.querySelector('.num-left')!.textContent = left ? `剩${left}` : '';
     btn.setAttribute('aria-label', left ? `${k + 1}，剩 ${left} 個` : `${k + 1}，已全部填入`);
   });
 }

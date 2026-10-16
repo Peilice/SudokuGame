@@ -47,7 +47,7 @@ export class App {
 
   private static readonly HINT_TEXT: Record<HintId, string> = {
     conflict: '紅圈表示同一列、行或宮裡有重複的數字，紅底線是和它重複的題目數字。這只是提醒，不代表答錯。',
-    notes: '筆記模式：點數字會在格子裡寫下小小的鉛筆字，再點一次同一個數字可以擦掉。按「筆記中」回到一般填寫。',
+    notes: '筆記模式：點數字會在格子裡寫下小小的候選數字，再點一次同一個數字可以擦掉。按「筆記中」回到一般填寫。',
   };
 
   constructor() {
@@ -461,7 +461,7 @@ export class App {
   private render(): void {
     const game = this.game;
     if (!game) return;
-    // 完成後清掉選取與螢光筆，讓印章蓋在乾淨的盤面上
+    // 完成後清掉選取與高亮，讓完成印蓋在乾淨的盤面上
     renderBoard(this.boardView, game, this.paused || game.completed ? -1 : this.selected);
     renderNumpad(this.numButtons, game);
 

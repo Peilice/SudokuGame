@@ -1,49 +1,58 @@
 ---
 name: 數獨
-description: 解謎雜誌頁：用不同書寫工具區分題目、作答、筆記、選取、衝突與完成的單機數獨。
+description: 洗舊的客家花布：褪色牡丹花布上縫著白棉布塊，盤面是一條收了紅色縫線的白方巾。
 colors:
-  ground: "#e9ebe6"
-  sheet: "#fbfbf8"
-  sheet-2: "#f1f2ee"
-  ink: "#17191e"
-  ink-soft: "#4a4f57"
-  rule: "#c9cdc6"
-  rule-strong: "#17191e"
-  pen: "#1d3a9e"
-  pencil: "#5a5f66"
-  red-pencil: "#c8331f"
+  fabric: "#8e3b3d"
+  cloth: "#f8f3ea"
+  cloth-2: "#efe7da"
+  cloth-3: "#e6dccd"
+  ink: "#231a17"
+  ink-soft: "#66544c"
+  thread: "#e2d4c5"
+  hem: "#b2343a"
+  box-line: "#7a2a2e"
+  leaf: "#2f6b45"
+  leaf-ink: "#f8f3ea"
+  gold: "#ecc56a"
+  hl-related: "#f5e3db"
+  hl-same: "#dbe7d2"
+  hl-same-ink: "#1f4a30"
+  seal: "#b2343a"
   danger-ink: "#ffffff"
-  hl-related: "#fbf4cc"
-  hl-selected: "#ffe35a"
-  hl-same: "#cdeeb6"
-  band: "#0e5e57"
-  band-ink: "#f6f5f0"
-  band-ink-soft: "rgb(246 245 240 / 78%)"
-  band-raised: "rgb(255 255 255 / 12%)"
-  ground-night: "#1d1d1b"
-  sheet-night: "#2a2a27"
-  sheet-2-night: "#353531"
-  ink-night: "#eeece4"
-  ink-soft-night: "#bdbbb3"
-  rule-night: "#46453f"
-  rule-strong-night: "#d3d0c6"
-  pen-night: "#a3bbff"
-  pencil-night: "#b0aea6"
-  red-pencil-night: "#ff7a5c"
-  danger-ink-night: "#1d1d1b"
-  hl-selected-edge-night: "#d9bb2a"
-  hl-related-night: "#36331f"
-  hl-selected-night: "#4f4512"
-  hl-same-night: "#2f5230"
-  band-night: "#0a3f3a"
-  band-raised-night: "rgb(255 255 255 / 9%)"
+  floral-petal: "#d9a7a3"
+  floral-leaf: "#4f7a58"
+  floral-dot: "#3f4c75"
+  fabric-night: "#2e1c1e"
+  cloth-night: "#2a2421"
+  cloth-2-night: "#342d29"
+  cloth-3-night: "#3f3631"
+  ink-night: "#efe5d8"
+  ink-soft-night: "#bfae9f"
+  thread-night: "#4a3f38"
+  hem-night: "#d0706a"
+  box-line-night: "#b5776e"
+  leaf-night: "#9fcda9"
+  leaf-ink-night: "#1c2a20"
+  gold-night: "#6a5224"
+  gold-edge-night: "#d8b35e"
+  hl-related-night: "#3a2c29"
+  hl-same-night: "#2f4434"
+  hl-same-ink-night: "#cfe8d3"
+  seal-night: "#e0786f"
+  danger-ink-night: "#2a1716"
 typography:
   display:
     fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
-    fontSize: "1.6rem"
+    fontSize: "1.4rem"
     fontWeight: 900
     lineHeight: 1
-    letterSpacing: "0.14em"
+    letterSpacing: "0.1em"
+  display-desktop:
+    fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "1.7rem"
+    fontWeight: 900
+    lineHeight: 1
+    letterSpacing: "0.12em"
   display-stamp:
     fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
     fontSize: "calc(var(--board-size) * 0.16)"
@@ -56,124 +65,131 @@ typography:
     fontWeight: 900
     letterSpacing: "0.04em"
   print-digit:
-    fontFamily: "'Libre Franklin', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
-    fontSize: "calc(var(--cell) * 0.58)"
+    fontFamily: "'Noto Serif', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "calc(var(--cell) * 0.6)"
+    fontWeight: 900
+    lineHeight: 1
+  round-digit:
+    fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
+    fontSize: "calc(var(--cell) * 0.6)"
     fontWeight: 700
     lineHeight: 1
-  hand-digit:
-    fontFamily: "'Shantell Sans', 'Comic Sans MS', cursive"
-    fontSize: "calc(var(--cell) * 0.62)"
-    fontWeight: 500
+  round-note:
+    fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
+    fontSize: "calc(var(--cell) * 0.27)"
+    fontWeight: 700
     lineHeight: 1
-  hand-note:
-    fontFamily: "'Shantell Sans', 'Comic Sans MS', cursive"
-    fontSize: "calc(var(--cell) * 0.32)"
-    fontWeight: 500
+  key-digit:
+    fontFamily: "'Noto Serif', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "1.6rem"
+    fontWeight: 900
     lineHeight: 1
-  print-numeral:
-    fontFamily: "'Libre Franklin', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
-    fontSize: "1.15rem"
+  timer:
+    fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
+    fontSize: "1.08rem"
     fontWeight: 700
     fontFeature: "tnum"
   body:
     fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "1rem"
+    fontSize: "0.9rem"
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.55
   label:
     fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
     fontSize: "0.85rem"
-    fontWeight: 600
+    fontWeight: 700
+  button:
+    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "0.95rem"
+    fontWeight: 700
+  caption:
+    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "0.7rem"
+    fontWeight: 700
 rounded:
-  hairline: "3px"
-  tag: "4px"
-  key: "6px"
-  control: "8px"
-  frame: "10px"
+  none: "0px"
+  round: "50%"
 spacing:
   xs: "4px"
   sm: "8px"
   md: "12px"
-  lg: "18px"
+  lg: "20px"
   xl: "36px"
+  hem: "10px"
+  hem-desktop: "12px"
 components:
-  masthead:
-    backgroundColor: "{colors.band}"
-    textColor: "{colors.band-ink}"
-    height: "60px"
-  masthead-text-button:
-    textColor: "{colors.band-ink}"
-    rounded: "{rounded.control}"
-    height: "44px"
-    padding: "0 10px 0 6px"
-  masthead-text-button-hover:
-    backgroundColor: "{colors.band-raised}"
-  difficulty-tag:
-    textColor: "{colors.band-ink}"
+  title-label:
+    backgroundColor: "{colors.cloth}"
+    textColor: "{colors.box-line}"
     typography: "{typography.display}"
-    rounded: "{rounded.tag}"
-    padding: "2px 8px"
+    rounded: "{rounded.none}"
+    padding: "8px 12px 9px"
+  header-patch:
+    backgroundColor: "{colors.cloth}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    height: "44px"
+  header-patch-hover:
+    backgroundColor: "{colors.cloth-2}"
   board:
-    backgroundColor: "{colors.sheet}"
-    rounded: "{rounded.hairline}"
+    backgroundColor: "{colors.cloth}"
+    rounded: "{rounded.none}"
   cell-related:
     backgroundColor: "{colors.hl-related}"
   cell-selected:
-    backgroundColor: "{colors.hl-selected}"
+    backgroundColor: "{colors.gold}"
   cell-same-digit:
     backgroundColor: "{colors.hl-same}"
   cell-given:
     textColor: "{colors.ink}"
     typography: "{typography.print-digit}"
   cell-user:
-    textColor: "{colors.pen}"
-    typography: "{typography.hand-digit}"
+    textColor: "{colors.leaf}"
+    typography: "{typography.round-digit}"
   cell-note:
-    textColor: "{colors.pencil}"
-    typography: "{typography.hand-note}"
-  tool:
     textColor: "{colors.ink-soft}"
+    typography: "{typography.round-note}"
+  tool:
+    backgroundColor: "{colors.cloth}"
+    textColor: "{colors.ink}"
     typography: "{typography.label}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.none}"
     padding: "6px 4px"
-  tool-hover:
-    backgroundColor: "{colors.sheet-2}"
-    textColor: "{colors.ink}"
   tool-notes-active:
-    backgroundColor: "{colors.hl-selected}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.leaf}"
+    textColor: "{colors.leaf-ink}"
   numpad-key:
-    backgroundColor: "{colors.sheet}"
+    backgroundColor: "{colors.cloth}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.key}"
-  numpad-key-desktop:
-    rounded: "{rounded.control}"
+    typography: "{typography.key-digit}"
+    rounded: "{rounded.none}"
   numpad-key-done:
-    textColor: "{colors.pencil}"
+    backgroundColor: "{colors.cloth-3}"
+    textColor: "{colors.ink-soft}"
   button-primary:
-    backgroundColor: "{colors.band}"
-    textColor: "{colors.band-ink}"
-    rounded: "{rounded.control}"
+    backgroundColor: "{colors.leaf}"
+    textColor: "{colors.leaf-ink}"
+    rounded: "{rounded.none}"
     padding: "11px 20px"
     height: "46px"
   button-danger:
-    backgroundColor: "{colors.red-pencil}"
+    backgroundColor: "{colors.seal}"
     textColor: "{colors.danger-ink}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.none}"
     padding: "11px 20px"
     height: "46px"
   button-ghost:
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.none}"
     padding: "11px 20px"
     height: "46px"
   button-ghost-hover:
-    backgroundColor: "{colors.sheet-2}"
+    backgroundColor: "{colors.cloth-2}"
   dialog:
-    backgroundColor: "{colors.sheet}"
+    backgroundColor: "{colors.cloth}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.key}"
-    padding: "30px 22px 20px"
+    rounded: "{rounded.none}"
+    padding: "52px 24px 22px"
     width: "min(380px, calc(100vw - 24px))"
   difficulty-option:
     textColor: "{colors.ink}"
@@ -182,167 +198,136 @@ components:
   difficulty-option-hover:
     backgroundColor: "{colors.hl-related}"
   difficulty-option-chosen:
-    backgroundColor: "{colors.hl-selected}"
+    backgroundColor: "{colors.gold}"
 ---
 
 # Design System: 數獨
 
 ## Overview
 
-**Creative North Star: "解謎雜誌頁"**
+**Creative North Star: "洗舊的客家花布"**
 
-整個介面是一頁印在偏冷灰白報紙上的數獨，玩家拿著一組書寫工具在上面作答。每一種資訊都對應一種工具：印刷鉛字是題目，藍色原子筆是玩家填的數字，鉛筆是筆記，螢光筆是選取與高亮，紅鉛筆圈是規則衝突，紅色印章是完成。顏色與字體的意義由「是哪一支筆寫的」決定，而不是由狀態語意（成功／錯誤）決定。
+整個頁面是一塊洗過很多次、顏色已經褪掉的客家大花布：胭脂紅底上散著灰粉牡丹、灰綠葉子和靛藍小點。所有可操作的東西都是縫在花布上的白棉布塊，用一圈紅色平針縫線收邊。盤面是其中最大的一條白方巾，四周留一圈布邊，縫線就縫在布邊上。
 
-頁首是一條飽和的雜誌色帶，放刊名、難度、計時與「新遊戲」；盤面是一張帶淡陰影的紙，其餘控制元件退到紙面之外的地色上。密度偏低、留白是為了讓盤面獨佔注意力。夜間版是中性的深炭灰紙（R≥B，不偏藍）配淺色墨水，色帶加深，彩色筆跡調亮。
+花布只當背景與殼層，推理發生在乾淨的白布上。盤面裡的語言是「字形＋顏色」：題目是黑色粗宋體，玩家填的是綠色圓體，筆記是淡墨小圓體。選取用金黃、同列行宮用淡粉、相同數字用淡綠。規則衝突用紅線平針縫的虛線圈，過關時蓋上一枚斑駁的紅印。
 
-按鈕、對話框都是標準元件，只換上這套世界的字體與配色；世界的辨識度集中在盤面上的筆跡、螢光筆與印章。
+使用者選定這個方向時明確要求「顏色不要太鮮豔」，所以花布一律走褪色、低彩度的版本，不是大紅大綠的原色花布。夜間版是深色花布配深色棉布，縫線與數字調亮成燈下的米色、淡綠與淡紅。
 
 **Key Characteristics:**
-- 三種數字字體各司其職：Libre Franklin 粗體（印刷）、Shantell Sans（手寫）、思源宋體 Black 子集（刊名與印章）。
-- 高亮一律用螢光筆色塊，選取格是最濃的螢光黃。
-- 衝突用手繪紅圈標示，玩家的數字永遠維持原子筆藍。
-- 完成時波浪掃過盤面、蓋上斑駁的紅色印章，盤面本身就是獎勵。
-- 頁首色帶與對話框頂端 6px 色帶是同一條雜誌色帶。
+- 花布是頁面的地，白棉布是唯一的工作面；兩者之間沒有第三種材質。
+- 全站方角、零圓角，布塊之間靠縫線與淡陰影分層。
+- 三種數字字形各有任務：Noto Serif 900（題目、數字鍵）、Zen Maru Gothic 700（玩家數字、筆記、計時）、思源宋體 Black 子集（刊名、難度、完成印）。
+- 縫線是簽名：布塊收邊的虛線、衝突的平針縫圈、宮線的深胭脂紅。
+- 對話框頂端露出一條 30px 的花布，和頁面的地是同一塊布。
 
 ## Colors
 
-一張偏冷的報紙灰白紙，加上一支藍原子筆、一支紅鉛筆、三種螢光筆與一條深青綠色帶。
+一塊褪色胭脂紅花布、一種白棉布、一條紅縫線、一支綠色筆跡、一片金黃選取。
 
 ### Primary
-- **雜誌色帶深青綠**（band）：頁首背景、主要按鈕、對話框頂端 6px 色帶、出題中轉圈的前景。夜間版改用更深的 band-night。瀏覽器 `theme-color` 也與它同步。
-- **色帶上的米白字**（band-ink）：色帶上所有文字與圖示；band-ink-soft 用於難度標籤的外框，band-raised 是色帶上按鈕的懸停底。
+- **褪色胭脂紅**（fabric）：頁面的地色，花布圖樣鋪在上面；瀏覽器 `theme-color` 與 favicon 底色同步。夜間版 fabric-night 是深咖啡紅。
+- **花布圖樣**（floral-petal／floral-leaf／floral-dot）：一張 240px 的 SVG 磚，四朵六瓣牡丹、灰綠葉、靛藍雙點與淡色小點，以 `--floral` 變數提供，日夜各一組配色。只用在頁面地色與對話框頂端的花布條。
 
 ### Secondary
-- **藍色原子筆**（pen）：玩家填入的數字，以及全站的鍵盤焦點外框（3px）。夜間版 pen-night 是明亮的淺藍。
-- **紅鉛筆**（red-pencil）：衝突圈、完成印章、破壞性按鈕（放棄目前這盤）。
+- **綠色筆跡**（leaf）：玩家填入的數字、筆記模式啟用的工具按鈕、主要按鈕（繼續遊戲、再來一盤）、鍵盤焦點外框、出題中轉圈的前景。
+- **縫線紅**（hem）：所有布塊內縮 4px 的 1.5px 虛線縫邊。
+- **宮線胭脂**（box-line）：盤面外框 3px 與宮線 2.5px、刊名字色、難度選單的頂線。
 
 ### Tertiary
-- **螢光筆淡塗**（hl-related）：選取格所在的列、行、宮；桌機數字鍵懸停；難度選項懸停。
-- **螢光筆重塗**（hl-selected）：選取格、筆記模式啟用中的工具按鈕、已選難度、文字反白、過關波浪的峰值。
-- **綠色螢光筆**（hl-same）：與選取格相同的數字，以及符合的筆記小字。
+- **金黃**（gold）：選取格、已選難度、文字反白、過關波浪的峰值。夜間版另加一圈 gold-edge 亮金邊。
+- **淡粉**（hl-related）：選取格所在的列、行、宮；桌機數字鍵懸停；難度選項懸停。
+- **淡綠**（hl-same）：與選取格相同的數字，以及符合的筆記（筆記字改成 hl-same-ink）。
+- **紅印**（seal）：衝突虛線圈、題目衝突的虛線底線、完成印章、破壞性按鈕。
 
 ### Neutral
-- **報紙地色**（ground）：頁面背景，紙張以外的區域。
-- **紙張**（sheet）：盤面、數字鍵、對話框內容區、`kbd`。
-- **次紙色**（sheet-2）：工具按鈕與幽靈按鈕的懸停底。
-- **印刷黑**（ink）：題目數字、標題、內文；同時是宮線（rule-strong）。
-- **淡墨**（ink-soft）：工具文字、說明文字、暫停提示。
-- **鉛筆石墨**（pencil）：筆記小字、剩餘數量、已填滿的數字鍵、筆記模式下的數字鍵與虛線外框。
-- **細格線**（rule）：格線、幽靈按鈕描邊、清單分隔線。
+- **白棉布**（cloth）：盤面、所有按鈕布塊、對話框、說明布條、桌機右欄。盤面另加 3px 間距的經緯細紋。
+- **次布色**（cloth-2）：布塊懸停、桌機右欄內的工具與數字鍵、停用的工具。
+- **舊布色**（cloth-3）：已經用完的數字鍵。
+- **墨黑**（ink）：題目數字、標題、內文。
+- **淡墨**（ink-soft）：筆記、剩餘數量、說明文字、快捷鍵說明。
+- **棉線**（thread）：格線、幽靈按鈕描邊、虛線分隔線。
 
 ### Named Rules
-**The 哪支筆寫的 Rule.** 顏色代表書寫工具，不代表對錯。玩家填的數字永遠是 pen；衝突只加紅鉛筆圈，不把數字改成紅色。
+**The 一墨一事 Rule.** 綠色只屬於玩家寫下的東西（數字、筆記模式、前進的主要動作），紅色只屬於縫線與警示。玩家的數字永遠是綠色，衝突只加紅色虛線圈，不把數字改成紅色。
 
-**The 螢光筆 Rule.** 任何「被選中、被強調」的狀態都用螢光筆色塊（hl-related／hl-selected／hl-same）塗底，不用描邊、陰影或品牌色表示選取。
-
-**The 夜間不偏藍 Rule.** 夜間紙色維持中性暖灰（R≥B）；不要把夜間背景換成藍黑。
+**The 褪色 Rule.** 花布的任何顏色都不能比盤面上的狀態色更搶眼。新增花布配色時，先確認選取的金黃仍是畫面上最亮的色塊。
 
 ## Typography
 
-**Display Font:** Sudoku Display（思源宋體 Black 子集，僅含「數獨完成簡單中等困難專家」12 字；後援 Noto Serif TC、PMingLiU）
-**Print Font:** Libre Franklin 700／800（後援 Noto Sans TC、Microsoft JhengHei）
-**Hand Font:** Shantell Sans 400／500（後援 Comic Sans MS）
-**UI Font:** Noto Sans TC 堆疊（PingFang TC、Microsoft JhengHei、system-ui）
+**Display Font:** Sudoku Display（思源宋體 Black 子集，只含「數獨完成簡單中等困難專家」）
+**Digit Fonts:** Noto Serif 900（題目、數字鍵）、Zen Maru Gothic 700（玩家數字、筆記、計時）
+**Body Font:** Noto Sans TC → PingFang TC → Microsoft JhengHei 系統字堆疊
 
-**Character:** 宋體 Black 的刊名帶出雜誌報頭的份量；Libre Franklin 是乾脆的印刷數字；Shantell Sans 像隨手寫下的原子筆字，4 是封閉的，長輩不易誤讀。
+數字字形依「誰寫的」分工：印出來的題目用有襯線的粗宋體，玩家寫的用圓體。Zen Maru Gothic 的 4 是封閉的，延續上一版為長輩辨識度做的選擇。字型都自架（`@fontsource` 與專案內的 woff），不呼叫外部字型服務。
 
 ### Hierarchy
-- **Display**（900，1.6rem，行高 1，字距 0.14em）：頁首刊名「數獨」。同字體 900 也用於難度標籤（0.9rem）與難度選單名稱（1.15rem）。
-- **Display Stamp**（900，盤面寬 × 0.16，字距 0.18em）：完成印章上的「完成」。
-- **Headline**（900，1.35rem，字距 0.04–0.06em）：對話框標題與過關標題，用 UI 字體。
-- **Print Digit**（700，格寬 × 0.58）：題目數字。數字鍵用同字體 700（手機 1.7rem、高螢幕 1.9rem、桌機 2.3rem）；計時器 1.15rem 700 等寬數字；印章附註 800。
-- **Hand Digit**（500，格寬 × 0.62，旋轉 -3deg）：玩家填的數字。
-- **Hand Note**（500，格寬 × 0.32）：筆記小字；筆記模式下數字鍵也換成手寫體 400。
-- **Body**（400，1rem，行高 1.6）：確認文字、圖例說明（0.85rem）。
-- **Label**（600，0.85rem）：工具按鈕文字；剩餘數量 0.68–0.75rem 600。
+- **Display**（900，1.4rem／桌機 1.7rem，字距 0.1–0.12em）：布標上的「數獨」。難度標籤同字體 0.88rem／1rem、綠色。
+- **Stamp**（900，盤面寬度的 16%）：完成印章裡的「完成」。
+- **Headline**（900，1.35rem）：對話框標題、過關標題。
+- **Board digits**（盤面格寬的 60%）：題目 Noto Serif 900 墨黑；玩家 Zen Maru 700 綠色。
+- **Notes**（Zen Maru 700，格寬的 27%）：淡墨。
+- **Key digits**（Noto Serif 900，1.6rem；手機 3×3 時 1.8rem；桌機 2.2rem）。
+- **Body**（400，0.9rem，行高 1.55）：說明布條、圖例。
+- **Label／Button**（700，0.85rem／0.95rem）：工具按鈕、頁首按鈕。
+- **Caption**（700，0.7rem）：數字鍵上的「剩 N」。
 
 ### Named Rules
-**The 三種筆跡 Rule.** 數字只有三種寫法：題目用 Libre Franklin 印刷體、玩家答案用 Shantell Sans 手寫體、筆記用更小的 Shantell Sans 鉛筆色。不要在盤面上引入第四種數字字體。
-
-**The 子集展示字 Rule.** Sudoku Display 只收錄 12 個字。新增要用展示字的文字時，必須先把字加入子集，否則會掉回後援字體。
+**The 印與寫 Rule.** 題目用印刷感的宋體，玩家的數字用手感的圓體。兩者不可以共用同一種字形，只靠顏色區分。
 
 ## Layout
 
-盤面是唯一的視覺中心，尺寸由 `--board-size` 決定，`--cell` 是它的九分之一，盤面上的字級與印章尺寸都按這兩個值等比換算。
+手機直式：頁首 64px（左邊布標、右邊計時／暫停／新遊戲三塊布）；盤面是以寬度為主的白方巾，外圍留 10px 布邊；工具列與數字鍵用 `margin-top: auto` 貼到底部的拇指區，中間露出花布。螢幕高度 ≥760px 時數字鍵排成 3×3、數字與剩餘量橫排；矮螢幕排成 1×9。
 
-- **手機（<860px）**：單欄。色帶高 60px，盤面寬 `min(100vw - 24px, 100dvh - 色帶 - 200px, 560px)`，緊接在色帶下方；工具列與數字鍵以 `margin-top: auto` 推到底部拇指區。數字鍵預設 1×9；螢幕高度 ≥760px 時改為 3×3。
-- **桌機（≥860px 且高度 ≥600px）**：色帶 64px；盤面在左、填滿可用高度（上限 720px）；右欄固定 300px，放工具列、3×3 正方形數字鍵與快捷鍵說明；兩欄間距 36px。
-- **節奏**：間距以 4／8／12px 為基本步，區塊間 18px（手機）與 36px（桌機）。觸控目標至少 44px，數字鍵 54–76px 高。
-- 頁首與底部都處理 `safe-area-inset`。
+桌機（≥860px 寬且 ≥600px 高）：頁首 76px；盤面在左，放到可用高度（最多 700px），布邊 12px；右邊是一整塊 320px 寬的縫邊白布，裝工具（4 欄）、3×3 正方形數字鍵與快捷鍵清單。間距節奏是 4／8／12／20／36px。
 
 ## Elevation & Depth
 
-以紙張疊放的方式表現層次：地色上的紙（盤面）帶一層柔和的落地陰影，數字鍵是略微浮起的紙片，其餘控制元件是平的。對話框是唯一明顯浮起的層。
+布塊是平的，靠兩層陰影表達「縫在花布上、略微浮起」：一層 1–2px 的柔和貼地陰影加一層往下拉長的大範圍柔影。盤面與桌機右欄用較深的 sheet-shadow，小布塊用 patch-shadow。布塊之間不疊加陰影；桌機右欄內的按鈕改成無陰影的次布色。
 
 ### Shadow Vocabulary
-- **紙張陰影**（`--shadow-sheet`）：只用於盤面。
-- **按鍵陰影**（`--shadow-key`）：只用於數字鍵；鍵填滿九個後陰影與底色一起移除。
-- **對話框陰影**（`0 2px 4px rgb(0 0 0 / 10%), 0 24px 60px -12px rgb(0 0 0 / 40%)`）：新遊戲／確認對話框，背景遮罩 `rgb(14 20 22 / 55%)`。
-- **幽靈描邊**（`inset 0 0 0 1.5px` rule 色）：幽靈按鈕用內陰影畫線，不佔版面。
+- **patch-shadow**：`0 1px 2px rgb(40 8 10 / 18%), 0 8px 18px -10px rgb(40 8 10 / 60%)`，頁首布塊、工具、數字鍵、說明布條、按鈕。
+- **sheet-shadow**：`0 2px 3px rgb(40 8 10 / 20%), 0 20px 36px -16px rgb(40 8 10 / 75%)`，盤面方巾、桌機右欄、手機過關區塊。
+- 夜間版兩者改用黑色、透明度較高的同形陰影。
 
 ### Named Rules
-**The 只有紙會浮起 Rule.** 陰影只屬於紙類物件（盤面、數字鍵、對話框）。工具按鈕、色帶按鈕、文字一律平貼，以底色變化表示懸停。
+**The 縫線 Rule.** 每一塊白布都有一圈內縮 4px（盤面在布邊上、數字鍵 3px）的紅色虛線縫邊。縫線是布塊的邊界語言，取代圓角與描邊；已用完的數字鍵拆掉縫線。
 
 ## Shapes
 
-形狀語言是印刷品：小圓角、實線格。盤面外框 2.5px 印刷黑，宮線 2px，細格線 1px。圓角刻度很小且依物件分級：盤面與筆記高亮 3px、標籤與 `kbd` 4px、手機數字鍵與對話框 6px、按鈕與工具 8px、數字鍵外框 10px。唯一的不規則形狀是手繪的紅鉛筆衝突圈（未閉合的手繪橢圓遮罩）與蓋歪 -9deg、帶雜訊斑駁的完成印章（雙框：實線框加內縮細框）。
+全站方角，布塊沒有圓角。唯一的圓形是衝突的虛線圈、符合的筆記底色與出題中的轉圈；完成印章保留一點點圓角（盤面寬度的 2%），像真的印章。
 
 ## Components
 
 ### Buttons
-標準按鈕，只換字體與配色。
-- **Shape:** 小圓角（8px），最小高度 46px，內距 11px 20px，字重 700。
-- **Primary:** 色帶深青綠底、米白字；用於「繼續遊戲」「再來一盤」。
-- **Danger:** 紅鉛筆底、白字；只用於「開始新的一盤」這類會丟棄進度的確認。
-- **Ghost:** 透明底、1.5px rule 色內描邊；懸停改成 sheet-2 底。
-- **Hover / Focus:** 實心按鈕懸停時 `brightness(1.08)`；焦點是 3px 原子筆藍外框、外推 2px。
+- **Header patch**：44px 高的白布塊，懸停換次布色；計時用 Zen Maru 等寬數字。
+- **Primary**：綠底米白字、方角、46px 高，用於繼續遊戲與再來一盤。
+- **Danger**：紅印底、白字，只用於「開始新的一盤」（放棄目前進度）。
+- **Ghost**：透明底、1.5px 棉線內描邊，懸停換次布色。
 
-### 色帶按鈕
-- 透明底、米白字、8px 圓角、44px 高。暫停鍵為 44×44 方形圖示鍵；「新遊戲」是帶加號圖示的文字鍵。懸停底為 band-raised；焦點外框改用米白並內縮 3px。停用時透明度 0.4。
+### Board
+白方巾：盤面本體 3px 宮線胭脂外框、2.5px 宮線、1px 棉線格線；外圍 10–12px 布邊帶經緯細紋與紅色縫線。暫停時遮掉所有數字與記號，只留空白布面。完成時金黃波浪沿對角線掃過，題目淡出到 45%，紅印落下。
 
-### 難度標籤（Chip）
-- 色帶上的宋體 Black 小字，1.5px band-ink-soft 外框、4px 圓角、內距 2px 8px；沒有難度時隱藏。
+### Tools & Numpad
+- **Tool**：白布塊、圖示加 0.85rem 標籤；筆記模式啟用時整塊換成綠布、米白字。停用時換次布色、圖示與文字降到 55%。
+- **Numpad key**：白布塊加 1px 淡縫線；數字 Noto Serif 900、下方或右側是「剩 N」小字。筆記模式時數字換成綠色圓體，數字鍵外圍出現 2px 虛線框。用完的數字換舊布色、拆縫線、數字劃掉。
 
-### 盤面（Signature）
-- 紙色底、2.5px 印刷黑外框、3px 圓角、紙張陰影。
-- 選取格塗 hl-selected，同列／行／宮塗 hl-related，相同數字塗 hl-same；底色轉場 0.12s。
-- 衝突格疊一個紅鉛筆手繪圈（內縮 7%），選取時仍保留。
-- 筆記為 3×3 小格的鉛筆字；與選取數字相符的筆記塗 hl-same。
-- 暫停時隱藏所有數字、筆記與衝突圈，只留空白紙與「已暫停」提示與主要按鈕。
+### Dialog
+白棉布，頂端露出 30px 的花布條，縫線從花布條下方開始。難度選單是一列列 54px 的選項，頂部 2.5px 胭脂線、選項之間棉線虛線，選中為金黃。
 
-### 完成印章（Signature）
-- 過關時先跑波浪：每格依 (列+行)×28ms 延遲，0.55s 內閃過 hl-selected；接著約 650ms 後印章以 0.42s 從 1.7 倍、-14deg 蓋下，停在 -9deg、透明度 0.92。
-- 盤面數字淡到 0.55，讓印章成為焦點；控制區換成過關面板（標題、難度與用時、再來一盤）。
-
-### 工具列
-- 四格等寬（復原、重做、清除、筆記），圖示在上、文字在下，淡墨色、透明底；懸停 sheet-2 底與 ink 字。
-- 筆記模式啟用時，筆記鍵被 hl-selected 塗滿。
-
-### 數字鍵
-- 紙色按鍵加按鍵陰影，印刷體數字，右上角鉛筆色「剩 N」。按下時 `translateY(1px) scale(0.96)`。桌機懸停塗 hl-related。
-- 填滿九個後變成無底、無陰影，數字鉛筆色、半透明並加刪除線。
-- 筆記模式時整組數字鍵外框變成 2px 鉛筆色虛線、數字換成手寫體，和平常一眼就能分辨。
-
-### 對話框
-- 寬 `min(380px, 100vw - 24px)`，6px 圓角，頂端 6px 色帶接紙色內容，0.22s 由下浮入。
-- 難度清單：2px 印刷黑上框、每列 1px 細格線分隔，宋體難度名配淡墨說明；懸停 hl-related，已選 hl-selected。
-
-### 快捷鍵說明
-- 只在桌機右欄顯示；每列 1px 細格線分隔。`kbd` 為紙色小鍵帽、4px 圓角、印刷體 700。
+### Hint
+一次性說明是一塊縫邊白布條，夾在盤面與工具列之間；桌機在右欄內改成無陰影的次布色。
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** 用書寫工具決定顏色：題目 ink、答案 pen、筆記 pencil、衝突 red-pencil、選取用螢光筆色塊。
-- **Do** 讓盤面上的字級跟著 `--cell` 與 `--board-size` 等比縮放。
-- **Do** 在新的強調面（例如對話框）上沿用色帶，頂端 6px band 色帶是既有做法。
-- **Do** 保持觸控目標至少 44px，焦點一律為 3px pen 色外框。
-- **Do** 新增色彩時同時定義夜間值，並放在 `prefers-color-scheme: dark` 與 `[data-theme='dark']` 兩處。
-- **Do** 遵守 `prefers-reduced-motion`：波浪、印章、對話框動畫都會被壓到近乎瞬間。
+- **Do** 讓所有新元件都是「白布塊＋紅縫線」，放在花布上。
+- **Do** 保持玩家的數字是綠色圓體、題目是黑色粗宋體。
+- **Do** 用金黃當畫面上唯一最亮的色塊（選取）。
+- **Do** 夜間版從深色花布重新推導顏色，不是把日間版調暗。
 
 ### Don't:
-- **Don't** 把玩家填錯的數字改成紅色；衝突只畫紅鉛筆圈。
-- **Don't** 用打勾對話框或彩帶慶祝過關；完成的表現是印章蓋在盤面上。
-- **Don't** 把介面做成藍白 SaaS 卡片或滿版 CTA。
-- **Don't** 在工具按鈕、色帶按鈕上加陰影；只有紙類物件會浮起。
-- **Don't** 把夜間紙色調成偏藍的藍黑。
+- **Don't** 用大紅大綠的原色花布；使用者明確說過顏色不要太鮮豔。
+- **Don't** 加圓角或描邊卡片，布塊的邊界語言是縫線。
+- **Don't** 把衝突的數字改成紅色；只加紅色虛線圈。
+- **Don't** 讓花布出現在盤面內或白布塊上（對話框頂端的花布條除外）。
+- **Don't** 用零模糊的硬位移陰影假裝布的厚度。

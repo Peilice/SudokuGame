@@ -1,5 +1,5 @@
 /*
- * 刊名與印章用的展示字：思源宋體 Black（Noto Serif TC，SIL OFL 1.1），
+ * 刊名、難度與印章用的展示字：思源宋體 Black（Noto Serif TC，SIL OFL 1.1），
  * 只子集化「數獨完成簡單中等困難專家」12 個字，約 7 KB。
  * 來源：github.com/notofonts/noto-cjk Serif/SubsetOTF/TC/NotoSerifTC-Black.otf，以 fontTools subset 產生。
  */
@@ -11,99 +11,109 @@
 }
 
 /*
- * 解謎雜誌頁：每種資訊對應一種書寫工具
- * 印刷鉛字＝題目、原子筆＝玩家填的數字、鉛筆＝筆記、螢光筆＝選取、紅鉛筆圈＝衝突、紅印章＝完成
+ * 洗舊的客家花布：頁面是一整片褪色的牡丹花布，盤面與按鈕是縫在上面的白棉布。
+ * 題目＝黑色粗宋體、玩家的數字＝綠色圓體、筆記＝淡墨小圓體、
+ * 選取＝金黃、衝突＝紅線平針縫的虛線圈、完成＝紅印。
  */
 :root {
   color-scheme: light;
 
-  /* 紙與印刷 */
-  --ground: #e9ebe6; /* 偏冷的報紙灰白 */
-  --sheet: #fbfbf8;
-  --sheet-2: #f1f2ee;
-  --ink: #17191e; /* 印刷黑 */
-  --ink-soft: #4a4f57;
-  --rule: #c9cdc6; /* 細格線 */
-  --rule-strong: #17191e; /* 宮線 */
+  /* 花布 */
+  --fabric: #8e3b3d; /* 褪色胭脂紅 */
+  --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%234f7a58'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%233d6147'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%234f7a58'/%3E%3Cg fill='%23d9a7a3'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%23efd9d2'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%23b8606a'/%3E%3Ccircle r='4' fill='%23d8b35e'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%233f4c75'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%23e9d6cc'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
 
-  /* 書寫工具 */
-  --pen: #1d3a9e; /* 藍色原子筆 */
-  --pencil: #5a5f66; /* 鉛筆石墨 */
-  --red-pencil: #c8331f;
+  /* 白棉布 */
+  --cloth: #f8f3ea;
+  --cloth-2: #efe7da;
+  --cloth-3: #e6dccd;
+  --ink: #231a17;
+  --ink-soft: #66544c;
+  --thread: #e2d4c5; /* 格線 */
+  --hem: #b2343a; /* 縫線紅 */
+  --box-line: #7a2a2e; /* 宮線 */
+
+  /* 筆跡與高亮 */
+  --leaf: #2f6b45; /* 玩家的數字 */
+  --leaf-ink: #f8f3ea;
+  --gold: #ecc56a; /* 選取 */
+  --gold-edge: transparent;
+  --hl-related: #f5e3db;
+  --hl-same: #dbe7d2;
+  --hl-same-ink: #1f4a30;
+  --seal: #b2343a; /* 完成印與衝突圈 */
   --danger-ink: #ffffff;
-  --hl-selected-edge: transparent;
-  --hl-related: #fbf4cc; /* 螢光筆淡塗 */
-  --hl-selected: #ffe35a; /* 螢光筆重塗 */
-  --hl-same: #cdeeb6; /* 綠色螢光筆 */
 
-  /* 雜誌色帶 */
-  --band: #0e5e57;
-  --band-ink: #f6f5f0;
-  --band-ink-soft: rgb(246 245 240 / 78%);
-  --band-raised: rgb(255 255 255 / 12%);
-
-  --shadow-sheet: 0 1px 1px rgb(23 25 30 / 8%), 0 6px 18px -6px rgb(23 25 30 / 18%);
-  --shadow-key: 0 1px 0 rgb(23 25 30 / 10%), 0 2px 6px -2px rgb(23 25 30 / 14%);
+  --patch-shadow: 0 1px 2px rgb(40 8 10 / 18%), 0 8px 18px -10px rgb(40 8 10 / 60%);
+  --sheet-shadow: 0 2px 3px rgb(40 8 10 / 20%), 0 20px 36px -16px rgb(40 8 10 / 75%);
 
   --font-ui: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
-  --font-print: 'Libre Franklin', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-  --font-hand: 'Shantell Sans', 'Comic Sans MS', cursive;
+  --font-print: 'Noto Serif', 'Noto Serif TC', 'PMingLiU', serif;
+  --font-round: 'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   --font-display: 'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif;
 
-  --masthead-h: 60px;
+  --masthead-h: 64px;
+  --hem-gap: 10px; /* 白方巾超出盤面的布邊 */
 
   /* 盤面尺寸：手機以寬度為主，同時保留下方控制區的空間 */
-  --board-size: min(calc(100vw - 24px), calc(100dvh - var(--masthead-h) - 200px), 560px);
+  --board-size: min(
+    calc(100vw - 24px - 2 * var(--hem-gap)),
+    calc(100dvh - var(--masthead-h) - 220px),
+    560px
+  );
   --cell: calc(var(--board-size) / 9);
 }
 
-/* 夜間版：深炭灰紙、淺色墨水、亮一點的彩色鉛筆 */
+/* 夜間版：深色花布、燈下的米色線，盤面是深色棉布 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --ground: #1d1d1b;
-    --sheet: #2a2a27;
-    --sheet-2: #353531;
-    --ink: #eeece4;
-    --ink-soft: #bdbbb3;
-    --rule: #46453f;
-    --rule-strong: #d3d0c6;
-    --pen: #a3bbff;
-    --pencil: #b0aea6;
-    --red-pencil: #ff7a5c;
-    --hl-related: #36331f;
-    --hl-selected: #4f4512;
-    --hl-selected-edge: #d9bb2a;
-    --danger-ink: #1d1d1b;
-    --hl-same: #2f5230;
-    --band: #0a3f3a;
-    --band-raised: rgb(255 255 255 / 9%);
-    --shadow-sheet: 0 1px 1px rgb(0 0 0 / 40%), 0 8px 22px -8px rgb(0 0 0 / 60%);
-    --shadow-key: 0 1px 0 rgb(0 0 0 / 40%), 0 2px 6px -2px rgb(0 0 0 / 50%);
+    --fabric: #2e1c1e;
+    --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%2334503c'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%232b4232'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%2334503c'/%3E%3Cg fill='%237a4f52'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%238f6a66'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%235e3238'/%3E%3Ccircle r='4' fill='%238a7340'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%232c3552'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%235a4644'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    --cloth: #2a2421;
+    --cloth-2: #342d29;
+    --cloth-3: #3f3631;
+    --ink: #efe5d8;
+    --ink-soft: #bfae9f;
+    --thread: #4a3f38;
+    --hem: #d0706a;
+    --box-line: #b5776e;
+    --leaf: #9fcda9;
+    --leaf-ink: #1c2a20;
+    --gold: #6a5224;
+    --gold-edge: #d8b35e;
+    --hl-related: #3a2c29;
+    --hl-same: #2f4434;
+    --hl-same-ink: #cfe8d3;
+    --seal: #e0786f;
+    --danger-ink: #2a1716;
+    --patch-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 18px -10px rgb(0 0 0 / 80%);
+    --sheet-shadow: 0 2px 3px rgb(0 0 0 / 45%), 0 20px 36px -16px rgb(0 0 0 / 85%);
   }
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --ground: #1d1d1b;
-  --sheet: #2a2a27;
-  --sheet-2: #353531;
-  --ink: #eeece4;
-  --ink-soft: #bdbbb3;
-  --rule: #46453f;
-  --rule-strong: #d3d0c6;
-  --pen: #a3bbff;
-  --pencil: #b0aea6;
-  --red-pencil: #ff7a5c;
-  --hl-related: #36331f;
-  --hl-selected: #4f4512;
-  --hl-selected-edge: #d9bb2a;
-  --danger-ink: #1d1d1b;
-  --hl-same: #2f5230;
-  --band: #0a3f3a;
-  --band-raised: rgb(255 255 255 / 9%);
-  --shadow-sheet: 0 1px 1px rgb(0 0 0 / 40%), 0 8px 22px -8px rgb(0 0 0 / 60%);
-  --shadow-key: 0 1px 0 rgb(0 0 0 / 40%), 0 2px 6px -2px rgb(0 0 0 / 50%);
+  --fabric: #2e1c1e;
+  --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%2334503c'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%232b4232'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%2334503c'/%3E%3Cg fill='%237a4f52'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%238f6a66'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%235e3238'/%3E%3Ccircle r='4' fill='%238a7340'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%232c3552'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%235a4644'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+  --cloth: #2a2421;
+  --cloth-2: #342d29;
+  --cloth-3: #3f3631;
+  --ink: #efe5d8;
+  --ink-soft: #bfae9f;
+  --thread: #4a3f38;
+  --hem: #d0706a;
+  --box-line: #b5776e;
+  --leaf: #9fcda9;
+  --leaf-ink: #1c2a20;
+  --gold: #6a5224;
+  --gold-edge: #d8b35e;
+  --hl-related: #3a2c29;
+  --hl-same: #2f4434;
+  --hl-same-ink: #cfe8d3;
+  --seal: #e0786f;
+  --danger-ink: #2a1716;
+  --patch-shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 18px -10px rgb(0 0 0 / 80%);
+  --sheet-shadow: 0 2px 3px rgb(0 0 0 / 45%), 0 20px 36px -16px rgb(0 0 0 / 85%);
 }
 
 * {
@@ -122,7 +132,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: var(--ground);
+  background-color: var(--fabric);
+  background-image: var(--floral);
+  background-size: 240px 240px;
   color: var(--ink);
   font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
@@ -134,7 +146,7 @@ body {
 }
 
 ::selection {
-  background: var(--hl-selected);
+  background: var(--gold);
   color: var(--ink);
 }
 
@@ -149,7 +161,7 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 3px solid var(--pen);
+  outline: 3px solid var(--leaf);
   outline-offset: 2px;
 }
 
@@ -173,11 +185,16 @@ button:disabled {
   stroke-linejoin: round;
 }
 
-/* ───────── 雜誌色帶 ───────── */
+/* 縫在花布上的白布：布面＋內縮的紅色平針縫線 */
+.patch {
+  position: relative;
+  background: var(--cloth);
+  box-shadow: var(--patch-shadow);
+}
+
+/* ───────── 頁首：花布上縫一塊布標 ───────── */
 
 .masthead {
-  background: var(--band);
-  color: var(--band-ink);
   padding-top: env(safe-area-inset-top);
 }
 
@@ -186,35 +203,52 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  width: min(100%, var(--board-size) + 24px);
+  width: min(100%, var(--board-size) + 2 * var(--hem-gap) + 24px);
   height: var(--masthead-h);
   margin: 0 auto;
   padding: 0 12px;
 }
 
 .title-group {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 8px;
   min-width: 0;
+  padding: 8px 12px 9px;
+  background: var(--cloth);
+  box-shadow: var(--patch-shadow);
+}
+
+.title-group::after,
+.board-wrap::before,
+.num::after,
+.dialog::after,
+.hint::after,
+.win-panel::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1.5px dashed var(--hem);
+  pointer-events: none;
 }
 
 .brand {
   margin: 0;
+  color: var(--box-line);
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 900;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   line-height: 1;
 }
 
 .difficulty-tag {
+  color: var(--leaf);
   font-family: var(--font-display);
+  font-size: 0.88rem;
   font-weight: 900;
-  padding: 2px 8px;
-  border: 1.5px solid var(--band-ink-soft);
-  border-radius: 4px;
-  font-size: 0.9rem;
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
@@ -225,30 +259,35 @@ button:disabled {
 .status {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
-.timer {
-  min-width: 3.4em;
-  margin-right: 2px;
-  font-family: var(--font-print);
-  font-size: 1.15rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
+.timer,
 .icon-btn,
 .text-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
   height: 44px;
+  background: var(--cloth);
+  color: var(--ink);
+  box-shadow: var(--patch-shadow);
+}
+
+.timer {
+  min-width: 4.4em;
+  padding: 0 10px;
+  font-family: var(--font-round);
+  font-size: 1.08rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.icon-btn,
+.text-btn {
+  gap: 4px;
   border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--band-ink);
+  border-radius: 0;
   transition: background-color 0.15s ease;
 }
 
@@ -257,7 +296,7 @@ button:disabled {
 }
 
 .text-btn {
-  padding: 0 10px 0 6px;
+  padding: 0 12px 0 8px;
   font-size: 0.95rem;
   font-weight: 700;
   white-space: nowrap;
@@ -265,12 +304,7 @@ button:disabled {
 
 .icon-btn:not(:disabled):hover,
 .text-btn:hover {
-  background: var(--band-raised);
-}
-
-.masthead :focus-visible {
-  outline-color: var(--band-ink);
-  outline-offset: -3px;
+  background: var(--cloth-2);
 }
 
 .text-btn .icon {
@@ -300,7 +334,7 @@ button:disabled {
 }
 
 .icon-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 /* ───────── 版面 ───────── */
@@ -310,30 +344,49 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  padding: 14px 12px max(14px, env(safe-area-inset-bottom));
+  gap: calc(14px + var(--hem-gap));
+  padding: calc(8px + var(--hem-gap)) 12px max(14px, env(safe-area-inset-bottom));
 }
 
-/* ───────── 盤面 ───────── */
+/* ───────── 盤面：攤開在花布上的白方巾 ───────── */
 
 .board-wrap {
   position: relative;
+  isolation: isolate;
   flex: none;
   width: var(--board-size);
   height: var(--board-size);
 }
 
+/* 方巾本體比盤面大一圈布邊，縫線在布邊上 */
+.board-wrap::before {
+  inset: calc(-1 * var(--hem-gap) + 4px);
+  z-index: 0;
+}
+
+.board-wrap::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--hem-gap));
+  z-index: -1;
+  background-color: var(--cloth);
+  /* 棉布的經緯紋 */
+  background-image:
+    repeating-linear-gradient(0deg, rgb(120 80 60 / 4%) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgb(120 80 60 / 4%) 0 1px, transparent 1px 3px);
+  box-shadow: var(--sheet-shadow);
+}
+
 .board {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border: 2.5px solid var(--rule-strong);
-  border-radius: 3px;
-  background: var(--sheet);
-  box-shadow: var(--shadow-sheet);
+  border: 3px solid var(--box-line);
+  background: var(--cloth);
 }
 
 .board-row {
@@ -344,15 +397,15 @@ button:disabled {
   position: relative;
   display: grid;
   place-items: center;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--thread);
+  border-bottom: 1px solid var(--thread);
   line-height: 1;
   cursor: pointer;
   transition: background-color 0.12s ease;
 }
 
 .cell:focus-visible {
-  outline: 3px solid var(--pen);
+  outline: 3px solid var(--leaf);
   outline-offset: -3px;
 }
 
@@ -365,14 +418,13 @@ button:disabled {
 }
 
 .cell.box-right {
-  border-right: 2px solid var(--rule-strong);
+  border-right: 2.5px solid var(--box-line);
 }
 
 .cell.box-bottom {
-  border-bottom: 2px solid var(--rule-strong);
+  border-bottom: 2.5px solid var(--box-line);
 }
 
-/* 螢光筆：淡塗同列／行／宮，重塗選取格，綠色標相同數字 */
 .cell.related {
   background: var(--hl-related);
 }
@@ -382,77 +434,70 @@ button:disabled {
 }
 
 .cell.selected {
-  background: var(--hl-selected);
-  /* 夜間版選取格底色較暗，加一圈螢光筆邊讓它和同列淡塗分得開 */
-  box-shadow: inset 0 0 0 2px var(--hl-selected-edge);
+  background: var(--gold);
+  /* 夜間版金黃較暗，加一圈亮金邊讓它和同列底色分得開 */
+  box-shadow: inset 0 0 0 2px var(--gold-edge);
 }
 
 .cell-value {
   grid-area: 1 / 1;
 }
 
-/* 印刷鉛字：題目 */
+/* 題目：黑色粗宋體 */
 .cell.given .cell-value {
   font-family: var(--font-print);
-  font-size: calc(var(--cell) * 0.58);
-  font-weight: 700;
+  font-size: calc(var(--cell) * 0.6);
+  font-weight: 900;
   color: var(--ink);
 }
 
-/* 原子筆：玩家填的數字 */
+/* 玩家的數字：綠色圓體，和題目在字形與顏色上都分得開 */
 .cell.user .cell-value {
-  font-family: var(--font-hand);
-  font-size: calc(var(--cell) * 0.62);
-  font-weight: 500;
-  color: var(--pen);
-  transform: rotate(-3deg);
+  font-family: var(--font-round);
+  font-size: calc(var(--cell) * 0.6);
+  font-weight: 700;
+  color: var(--leaf);
 }
 
-/* 紅鉛筆圈：不只靠顏色，選取時也保留 */
+/* 衝突：紅線平針縫的虛線圈，不把數字改成紅色；選取時也保留 */
 .cell.conflict:not(.given)::after {
   content: '';
   position: absolute;
-  inset: 7%;
-  background: var(--red-pencil);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M56 9C80 9 94 27 92 52C90 77 71 93 47 92C23 91 7 73 8 49C9 26 26 11 50 10C62 9 70 12 77 17' fill='none' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E")
-    center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M56 9C80 9 94 27 92 52C90 77 71 93 47 92C23 91 7 73 8 49C9 26 26 11 50 10C62 9 70 12 77 17' fill='none' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E")
-    center / 100% 100% no-repeat;
+  inset: 9%;
+  border: max(2px, calc(var(--cell) * 0.045)) dashed var(--seal);
+  border-radius: 50%;
   pointer-events: none;
 }
 
-/* 和玩家數字重複的題目：紅鉛筆底線，不圈起來，避免看起來像題目印錯 */
+/* 和玩家數字重複的題目：一道縫線底線，不圈起來，避免看起來像題目印錯 */
 .cell.given.conflict::after {
   content: '';
   position: absolute;
-  left: 26%;
-  right: 26%;
-  bottom: 13%;
-  height: max(2px, calc(var(--cell) * 0.05));
-  border-radius: 2px;
-  background: var(--red-pencil);
-  transform: rotate(-2deg);
+  left: 24%;
+  right: 24%;
+  bottom: 12%;
+  border-bottom: max(2px, calc(var(--cell) * 0.045)) dashed var(--seal);
   pointer-events: none;
 }
 
-/* 鉛筆：筆記 */
+/* 筆記：淡墨小圓體 */
 .cell-notes {
   grid-area: 1 / 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   height: 100%;
-  padding: 4%;
+  padding: 5%;
 }
 
 .cell-notes span {
   display: grid;
   place-items: center;
-  border-radius: 3px;
-  color: var(--pencil);
-  font-family: var(--font-hand);
-  font-size: calc(var(--cell) * 0.32);
-  font-weight: 500;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  font-family: var(--font-round);
+  font-size: calc(var(--cell) * 0.27);
+  font-weight: 700;
   line-height: 1;
   visibility: hidden;
 }
@@ -463,7 +508,7 @@ button:disabled {
 
 .cell-notes span.match {
   background: var(--hl-same);
-  color: var(--ink);
+  color: var(--hl-same-ink);
 }
 
 .cell:not(.has-notes) .cell-notes {
@@ -481,7 +526,7 @@ button:disabled {
 }
 
 .board.is-paused .cell {
-  background: var(--sheet);
+  background: var(--cloth);
 }
 
 .board-overlay {
@@ -505,7 +550,7 @@ button:disabled {
   font-weight: 700;
 }
 
-/* 過關：波浪掃過盤面，接著蓋上完成印章 */
+/* 過關：金黃色波浪掃過盤面，接著蓋上紅色的完成印 */
 .board.celebrate .cell {
   animation: wave 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc((var(--r, 0) + var(--c, 0)) * 28ms);
@@ -513,7 +558,7 @@ button:disabled {
 
 @keyframes wave {
   35% {
-    background: var(--hl-selected);
+    background: var(--gold);
   }
 }
 
@@ -526,11 +571,11 @@ button:disabled {
   align-items: center;
   gap: 2px;
   padding: calc(var(--board-size) * 0.03) calc(var(--board-size) * 0.07);
-  border: calc(var(--board-size) * 0.012) solid var(--red-pencil);
-  border-radius: calc(var(--board-size) * 0.03);
-  outline: calc(var(--board-size) * 0.004) solid var(--red-pencil);
+  border: calc(var(--board-size) * 0.012) solid var(--seal);
+  border-radius: calc(var(--board-size) * 0.02);
+  outline: calc(var(--board-size) * 0.004) solid var(--seal);
   outline-offset: calc(var(--board-size) * -0.028);
-  color: var(--red-pencil);
+  color: var(--seal);
   text-align: center;
   pointer-events: none;
   opacity: 0;
@@ -568,7 +613,7 @@ button:disabled {
   line-height: 1.1;
 }
 
-/* 完成後題目的鉛字退後，玩家的手寫字保持全墨色，印章蓋在玩家的作品上 */
+/* 完成後題目退後，玩家的數字保持全墨色，印蓋在玩家的作品上 */
 .board.is-complete .cell.given .cell-value {
   opacity: 0.45;
   transition: opacity 0.6s ease 0.4s;
@@ -579,8 +624,8 @@ button:disabled {
 .controls {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: var(--board-size);
+  gap: 10px;
+  width: calc(var(--board-size) + 2 * var(--hem-gap));
   /* 手機：工具列與數字鍵貼近底部的拇指區 */
   margin-top: auto;
 }
@@ -611,56 +656,65 @@ button:disabled {
   align-items: center;
   justify-content: center;
   gap: 3px;
-  min-height: clamp(56px, 7.5dvh, 68px);
+  min-height: clamp(54px, 7dvh, 64px);
   padding: 6px 4px;
   border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--ink-soft);
+  background: var(--cloth);
+  color: var(--ink);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: var(--patch-shadow);
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .tool:not(:disabled):hover {
-  background: var(--sheet-2);
-  color: var(--ink);
+  background: var(--cloth-2);
 }
 
 .tool:disabled {
-  opacity: 0.4;
+  color: var(--ink-soft);
+  background: var(--cloth-2);
 }
 
-/* 筆記模式：像拿起鉛筆，按鈕被螢光筆塗上 */
-.tool-notes[aria-pressed='true'] {
-  background: var(--hl-selected);
-  color: var(--ink);
+.tool:disabled .icon,
+.tool:disabled span {
+  opacity: 0.55;
 }
 
+/* 筆記模式：按鈕換成綠布 */
+.tool-notes[aria-pressed='true'],
 .tool-notes[aria-pressed='true']:hover {
-  background: var(--hl-selected);
+  background: var(--leaf);
+  color: var(--leaf-ink);
 }
 
 .numpad {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 4px;
-  padding: 3px;
+  gap: 6px;
+  padding: 4px;
   border: 2px dashed transparent;
-  border-radius: 10px;
   transition: border-color 0.15s ease;
 }
 
 .num {
   position: relative;
-  display: grid;
-  place-items: center;
-  min-height: clamp(58px, 8.5dvh, 76px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: clamp(58px, 8dvh, 72px);
   border: 0;
-  border-radius: 6px;
-  background: var(--sheet);
-  box-shadow: var(--shadow-key);
+  background: var(--cloth);
+  box-shadow: var(--patch-shadow);
   transition: transform 0.08s ease, background-color 0.15s ease;
+}
+
+.num::after {
+  inset: 3px;
+  border-width: 1px;
+  opacity: 0.55;
 }
 
 .num:not(:disabled):active {
@@ -670,53 +724,54 @@ button:disabled {
 .num-digit {
   color: var(--ink);
   font-family: var(--font-print);
-  font-size: 1.7rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 900;
   line-height: 1;
 }
 
 .num-left {
-  position: absolute;
-  top: 3px;
-  right: 4px;
-  color: var(--pencil);
-  font-size: 0.75rem;
-  font-weight: 600;
+  min-height: 0.7rem;
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  font-weight: 700;
   line-height: 1;
 }
 
+/* 用完的數字：布面退成淺色、拆掉縫線、數字劃掉 */
 .num.done {
-  background: transparent;
+  background: var(--cloth-3);
   box-shadow: none;
 }
 
+.num.done::after {
+  display: none;
+}
+
 .num.done .num-digit {
-  color: var(--pencil);
-  opacity: 0.5;
+  color: var(--ink-soft);
+  opacity: 0.6;
   text-decoration: line-through 2px;
 }
 
 .num:disabled:not(.done) {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
-/* 筆記模式：數字鍵換成鉛筆字、外框改成虛線，和平常的樣子明顯不同 */
+/* 筆記模式：數字鍵換成筆記用的綠色圓體，外圍出現虛線框 */
 .notes-mode .numpad {
-  border-color: var(--pencil);
+  border-color: var(--cloth);
 }
 
 .notes-mode .num-digit {
-  color: var(--pencil);
-  font-family: var(--font-hand);
-  font-size: 1.6rem;
-  font-weight: 400;
+  color: var(--leaf);
+  font-family: var(--font-round);
+  font-weight: 700;
 }
 
 .btn {
   min-height: 46px;
   padding: 11px 20px;
   border: 0;
-  border-radius: 8px;
   font-weight: 700;
   transition: filter 0.15s ease, background-color 0.15s ease;
 }
@@ -726,31 +781,36 @@ button:disabled {
 }
 
 .btn-primary {
-  background: var(--band);
-  color: var(--band-ink);
+  background: var(--leaf);
+  color: var(--leaf-ink);
+  box-shadow: var(--patch-shadow);
 }
 
 .btn-danger {
-  background: var(--red-pencil);
+  background: var(--seal);
   color: var(--danger-ink);
+  box-shadow: var(--patch-shadow);
 }
 
 .btn-ghost {
   background: transparent;
-  box-shadow: inset 0 0 0 1.5px var(--rule);
+  box-shadow: inset 0 0 0 1.5px var(--thread);
 }
 
 .btn-ghost:hover {
   filter: none;
-  background: var(--sheet-2);
+  background: var(--cloth-2);
 }
 
 /* 完成後取代數字鍵盤的區塊 */
 .win-panel {
+  position: relative;
   display: grid;
   gap: 6px;
   justify-items: center;
-  padding: 8px 0 4px;
+  padding: 22px 18px 20px;
+  background: var(--cloth);
+  box-shadow: var(--sheet-shadow);
   text-align: center;
 }
 
@@ -768,11 +828,13 @@ button:disabled {
 .win-summary {
   margin: 0 0 10px;
   color: var(--ink-soft);
-  font-family: var(--font-print);
+  font-family: var(--font-round);
   font-weight: 700;
 }
 
 .win-panel .btn {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 320px;
 }
@@ -786,15 +848,15 @@ button:disabled {
   display: none !important;
 }
 
-/* 一次性說明：一張夾在盤面與工具列之間的便條 */
+/* 一次性說明：縫在盤面下方的一塊小布條 */
 .hint {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 10px 10px 14px;
-  border: 1.5px dashed var(--pencil);
-  border-radius: 6px;
-  background: var(--sheet);
+  padding: 12px 12px 12px 16px;
+  background: var(--cloth);
+  box-shadow: var(--patch-shadow);
   animation: hint-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -817,19 +879,20 @@ button:disabled {
 }
 
 .hint-close {
+  position: relative;
+  z-index: 1;
   flex: none;
   min-height: 44px;
   padding: 0 12px;
   border: 0;
-  border-radius: 6px;
-  background: var(--sheet-2);
+  background: var(--cloth-2);
   font-size: 0.9rem;
   font-weight: 700;
   white-space: nowrap;
 }
 
 .hint-close:hover {
-  background: var(--hl-related);
+  background: var(--cloth-3);
 }
 
 .shortcuts {
@@ -844,7 +907,7 @@ button:disabled {
   justify-content: space-between;
   gap: 12px;
   padding: 5px 0;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px dashed var(--thread);
 }
 
 .shortcuts div:last-child {
@@ -864,52 +927,61 @@ kbd {
   display: inline-block;
   min-width: 1.6em;
   padding: 1px 5px;
-  border-radius: 4px;
-  background: var(--sheet);
-  box-shadow: inset 0 -1px 0 var(--rule), 0 0 0 1px var(--rule);
+  background: var(--cloth-2);
+  box-shadow: inset 0 -1px 0 var(--thread), 0 0 0 1px var(--thread);
   color: var(--ink);
-  font-family: var(--font-print);
+  font-family: var(--font-round);
   font-size: 0.78rem;
   font-weight: 700;
   text-align: center;
 }
 
-/* 手機高螢幕：空間足夠時數字鍵改成九宮 3×3，按鍵寬度足夠，也吃掉多餘空白 */
+/* 手機高螢幕：空間足夠時數字鍵改成九宮 3×3 */
 @media (max-width: 859px) and (min-height: 760px) {
   .numpad {
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    gap: 8px;
   }
 
   .num {
-    min-height: clamp(54px, 7dvh, 64px);
+    flex-direction: row;
+    gap: 8px;
+    min-height: clamp(52px, 6.6dvh, 62px);
   }
 
   .num-digit {
-    font-size: 1.9rem;
-  }
-
-  .notes-mode .num-digit {
     font-size: 1.8rem;
   }
 
   .num-left {
-    top: 6px;
-    right: 8px;
     font-size: 0.75rem;
   }
 }
 
-/* ───────── 桌機：盤面在左，控制區在右 ───────── */
+/* ───────── 桌機：盤面在左，控制區是右邊一塊布 ───────── */
 
 @media (min-width: 860px) and (min-height: 600px) {
   :root {
-    --masthead-h: 64px;
-    --board-size: min(calc(100dvh - var(--masthead-h) - 64px), 720px, calc(100vw - 420px));
+    --masthead-h: 76px;
+    --hem-gap: 12px;
+    --board-size: min(calc(100dvh - var(--masthead-h) - 72px), 700px, calc(100vw - 460px));
   }
 
   .masthead-inner {
-    width: calc(var(--board-size) + 36px + 300px + 24px);
+    width: calc(var(--board-size) + 2 * var(--hem-gap) + 36px + 320px + 24px);
+  }
+
+  .title-group {
+    padding: 10px 16px 11px;
+  }
+
+  .brand {
+    font-size: 1.7rem;
+    letter-spacing: 0.12em;
+  }
+
+  .difficulty-tag {
+    font-size: 1rem;
   }
 
   .layout {
@@ -918,21 +990,47 @@ kbd {
     justify-content: center;
     flex: none;
     gap: 36px;
-    padding-top: 28px;
+    padding-top: calc(12px + var(--hem-gap));
   }
 
   .controls {
-    width: 300px;
-    gap: 20px;
-    margin-top: 0;
+    position: relative;
+    width: 320px;
+    gap: 18px;
+    margin-top: calc(-1 * var(--hem-gap));
+    padding: 20px;
+    background: var(--cloth);
+    box-shadow: var(--sheet-shadow);
+  }
+
+  .controls::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1.5px dashed var(--hem);
+    pointer-events: none;
+  }
+
+  .controls.is-complete {
+    margin-top: calc(-1 * var(--hem-gap));
   }
 
   .play-controls {
     gap: 14px;
   }
 
+  .tool,
+  .num {
+    background: var(--cloth-2);
+    box-shadow: none;
+  }
+
+  .tool:not(:disabled):hover {
+    background: var(--cloth-3);
+  }
+
   .tool {
-    min-height: 56px;
+    min-height: 58px;
   }
 
   .numpad {
@@ -941,28 +1039,40 @@ kbd {
     padding: 6px;
   }
 
+  .notes-mode .numpad {
+    border-color: var(--leaf);
+  }
+
   .num {
     min-height: 0;
     aspect-ratio: 1;
-    border-radius: 8px;
+  }
+
+  .num.done {
+    background: transparent;
   }
 
   .num-digit {
-    font-size: 2.3rem;
-  }
-
-  .notes-mode .num-digit {
-    font-size: 2.1rem;
-  }
-
-  .num-left {
-    top: 7px;
-    right: 9px;
-    font-size: 0.75rem;
+    font-size: 2.2rem;
   }
 
   .num:not(:disabled):hover {
     background: var(--hl-related);
+  }
+
+  .win-panel {
+    padding: 4px 0 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .win-panel::after {
+    display: none;
+  }
+
+  .hint {
+    background: var(--cloth-2);
+    box-shadow: none;
   }
 
   .shortcuts {
@@ -970,21 +1080,27 @@ kbd {
   }
 }
 
-/* ───────── 對話框 ───────── */
+/* ───────── 對話框：頂端縫一條花布 ───────── */
 
 .dialog {
   width: min(380px, calc(100vw - 24px));
-  padding: 30px 22px 20px;
+  padding: 52px 24px 22px;
   border: 0;
-  border-radius: 6px;
-  /* 頂端一條和頁首同色的雜誌色帶 */
-  background: linear-gradient(var(--band) 0 6px, var(--sheet) 0);
+  /* 頂端露出 30px 的花布條，其餘是白棉布 */
+  background:
+    linear-gradient(transparent 0 30px, var(--cloth) 30px),
+    var(--floral) -20px -6px / 104px 104px repeat-x,
+    var(--fabric);
   color: var(--ink);
-  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 24px 60px -12px rgb(0 0 0 / 40%);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 12%), 0 24px 60px -12px rgb(0 0 0 / 50%);
+}
+
+.dialog::after {
+  inset: 36px 6px 6px;
 }
 
 .dialog::backdrop {
-  background: rgb(14 20 22 / 55%);
+  background: rgb(30 10 12 / 60%);
 }
 
 .dialog[open] {
@@ -996,6 +1112,11 @@ kbd {
     opacity: 0;
     transform: translateY(8px);
   }
+}
+
+.dialog-step {
+  position: relative;
+  z-index: 1;
 }
 
 .dialog-step[hidden] {
@@ -1016,7 +1137,7 @@ kbd {
 .difficulty-list {
   display: grid;
   margin-bottom: 14px;
-  border-top: 2px solid var(--ink);
+  border-top: 2.5px solid var(--box-line);
 }
 
 .difficulty-option {
@@ -1027,7 +1148,7 @@ kbd {
   min-height: 54px;
   padding: 14px 10px;
   border: 0;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px dashed var(--thread);
   background: transparent;
   text-align: left;
   transition: background-color 0.15s ease;
@@ -1042,7 +1163,7 @@ kbd {
 }
 
 .difficulty-option.is-chosen {
-  background: var(--hl-selected);
+  background: var(--gold);
 }
 
 .difficulty-option:disabled:not(.is-chosen) {
@@ -1103,8 +1224,8 @@ kbd {
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid var(--rule);
-  border-top-color: var(--band);
+  border: 2px solid var(--thread);
+  border-top-color: var(--leaf);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -1132,14 +1253,14 @@ kbd {
     justify-content: center;
     gap: 10px;
     padding: 24px;
-    background: var(--ground);
+    background: var(--cloth);
     text-align: center;
   }
 
   .rotate-notice svg {
     width: 56px;
     height: 56px;
-    color: var(--band);
+    color: var(--box-line);
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;

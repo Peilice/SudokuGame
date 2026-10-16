@@ -11,7 +11,7 @@ import {
   undo,
   type GameState,
 } from '../game/state';
-import { loadGame, saveGame } from '../game/storage';
+import { clearCurrent, loadCurrentGame, loadGame, saveGame } from '../game/storage';
 import { dismissHint, isHintDismissed, type HintId } from './hints';
 import { Timer, formatTime } from '../game/timer';
 import { buildBoard, buildNumpad, renderBoard, renderNumpad, type BoardView } from './board';
@@ -34,6 +34,8 @@ export class App {
   /** 每次出題遞增；取消或重新出題後，舊的結果一律丟棄 */
   private generation = 0;
   private pendingDifficulty: Difficulty | null = null;
+  /** 確認對話框是從主畫面直接打開的，返回時要關掉對話框而不是回到選難度 */
+  private confirmFromHome = false;
 
   private readonly boardEl = $<HTMLDivElement>('board');
   private readonly boardView: BoardView;
@@ -53,14 +55,15 @@ export class App {
   constructor() {
     this.boardView = buildBoard(this.boardEl);
     this.numButtons = buildNumpad($('numpad'));
-    this.buildDifficultyList();
+    this.buildDifficultyList($('difficulty-list'));
+    this.buildDifficultyList($('home-list'), true);
     this.bindEvents();
 
-    const saved = loadGame();
+    const saved = loadCurrentGame();
     if (saved) {
       this.loadState(saved);
     } else {
-      this.openNewGameDialog();
+      this.showHome();
     }
   }
 
@@ -68,6 +71,7 @@ export class App {
 
   private loadState(game: GameState): void {
     this.game = game;
+    this.setView('game');
     // 開局自動選第一個空格，避免一開始按數字沒有反應
     this.selected = game.completed ? -1 : game.values.findIndex((v) => v === 0);
     this.paused = false;
@@ -79,22 +83,91 @@ export class App {
     this.resumeTimerIfPlaying();
   }
 
-  /** 進行中的盤面要先確認，避免一次誤觸就丟掉進度 */
-  private chooseDifficulty(difficulty: Difficulty): void {
+  /** 同難度已有進行中的盤面時要先確認，避免一次誤觸就丟掉進度 */
+  private chooseDifficulty(difficulty: Difficulty, fromHome = false): void {
     if (this.generating) return;
-    if (this.game && !this.game.completed && this.hasProgress(this.game)) {
+    const saved = this.savedGame(difficulty);
+    if (saved && !saved.completed && this.hasProgress(saved)) {
       this.pendingDifficulty = difficulty;
-      $('confirm-text').textContent = `目前這盤（${DIFFICULTY_LABEL[this.game.difficulty]}，已用時 ${formatTime(
-        this.timer.elapsed,
-      )}）不會保留，改開一盤「${DIFFICULTY_LABEL[difficulty]}」。`;
+      this.confirmFromHome = fromHome;
+      const elapsed = saved === this.game ? this.timer.elapsed : saved.elapsedMs;
+      $('confirm-text').textContent = `「${DIFFICULTY_LABEL[difficulty]}」還有一盤進行中（已用時 ${formatTime(
+        elapsed,
+      )}），開新的一盤會取代它。其他難度的進度不受影響。`;
       this.showDialogStep('confirm');
+      if (fromHome) {
+        this.newGameDialog.showModal();
+        $('confirm-back').focus();
+      }
       return;
     }
     void this.startNewGame(difficulty);
   }
 
+  /** 目前這盤以記憶體中的為準，其他難度讀存檔 */
+  private savedGame(difficulty: Difficulty): GameState | null {
+    return this.game?.difficulty === difficulty ? this.game : loadGame(difficulty);
+  }
+
   private hasProgress(game: GameState): boolean {
     return game.undoStack.length > 0 || game.values.some((v, i) => v !== 0 && !isGiven(game, i));
+  }
+
+  /** 主畫面點難度：有進行中的就接著玩，沒有就出新題 */
+  private openDifficulty(difficulty: Difficulty): void {
+    if (this.generating) return;
+    const saved = loadGame(difficulty);
+    if (!saved || saved.completed) return void this.startNewGame(difficulty);
+    this.loadState(saved);
+    saveGame(saved);
+    this.focusBoard(true);
+  }
+
+  /** 回主畫面：先存檔，盤面留在該難度的存檔裡 */
+  private goHome(): void {
+    if (!this.game) return;
+    this.persist();
+    clearCurrent();
+    this.game = null;
+    this.paused = false;
+    this.timer.stop();
+    this.showStamp(false, false);
+    this.boardEl.classList.remove('celebrate');
+    if (this.activeHint) {
+      this.activeHint = null;
+      $('hint').hidden = true;
+    }
+    document.body.classList.remove('is-paused', 'is-complete', 'notes-mode');
+    this.showHome();
+  }
+
+  private showHome(): void {
+    this.setView('home');
+    this.renderHome();
+    $('difficulty-label').textContent = '';
+    $('home-title').focus({ preventScroll: true });
+  }
+
+  private setView(view: 'home' | 'game'): void {
+    $('home').hidden = view !== 'home';
+    document.querySelector<HTMLElement>('.layout')!.hidden = view !== 'game';
+    document.body.classList.toggle('is-home', view === 'home');
+  }
+
+  private renderHome(): void {
+    for (const d of DIFFICULTIES) {
+      const saved = loadGame(d);
+      const inProgress = !!saved && !saved.completed;
+      const option = document.querySelector<HTMLElement>(`#home-list [data-difficulty="${d}"]`)!;
+      const time = saved ? formatTime(saved.elapsedMs) : '';
+      option.querySelector('.difficulty-hint')!.textContent = inProgress ? `繼續 · ${time}` : DIFFICULTY_HINT[d];
+      option.classList.toggle('is-saved', inProgress);
+      option.setAttribute(
+        'aria-label',
+        inProgress ? `${DIFFICULTY_LABEL[d]}，繼續進行中的一盤，已用時 ${time}` : `${DIFFICULTY_LABEL[d]}，開新的一盤`,
+      );
+      document.querySelector<HTMLElement>(`#home-list [data-restart="${d}"]`)!.hidden = !inProgress;
+    }
   }
 
   private async startNewGame(difficulty: Difficulty): Promise<void> {
@@ -105,6 +178,7 @@ export class App {
       const puzzle = await this.requestPuzzle(difficulty);
       if (ticket !== this.generation) return; // 已取消
       this.newGameDialog.close();
+      this.persist(); // 換到別的難度時，原本那盤留在自己的存檔裡
       this.loadState(createGame(puzzle));
       saveGame(this.game!);
       this.focusBoard();
@@ -116,12 +190,17 @@ export class App {
   private setGenerating(on: boolean, difficulty?: Difficulty): void {
     this.generating = on;
     this.newGameDialog.classList.toggle('is-generating', on);
-    $('generating').hidden = !on;
-    if (on && difficulty) $('generating-text').textContent = `正在出一盤「${DIFFICULTY_LABEL[difficulty]}」…`;
-    this.newGameDialog.querySelectorAll<HTMLButtonElement>('[data-difficulty]').forEach((btn) => {
+    // 對話框與主畫面各有一份出題中提示與難度清單
+    document.querySelectorAll<HTMLElement>('.generating').forEach((el) => (el.hidden = !on));
+    if (on && difficulty) {
+      const text = `正在出一盤「${DIFFICULTY_LABEL[difficulty]}」…`;
+      document.querySelectorAll('.generating-text').forEach((el) => (el.textContent = text));
+    }
+    document.querySelectorAll<HTMLButtonElement>('[data-difficulty], [data-restart]').forEach((btn) => {
       btn.disabled = on;
       btn.classList.toggle('is-chosen', on && btn.dataset.difficulty === difficulty);
     });
+    $('home-cancel').hidden = !on;
     this.updateCancelButton();
   }
 
@@ -306,6 +385,11 @@ export class App {
     btn.textContent = this.generating ? '取消出題' : '返回目前這盤';
   }
 
+  private leaveConfirm(): void {
+    if (this.confirmFromHome) this.newGameDialog.close();
+    else this.showDialogStep('choose');
+  }
+
   private showDialogStep(step: 'choose' | 'confirm'): void {
     $('choose-step').hidden = step !== 'choose';
     $('confirm-step').hidden = step !== 'confirm';
@@ -315,8 +399,7 @@ export class App {
 
   // ───────── 事件綁定 ─────────
 
-  private buildDifficultyList(): void {
-    const list = $('difficulty-list');
+  private buildDifficultyList(list: HTMLElement, withRestart = false): void {
     for (const d of DIFFICULTIES) {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -329,7 +412,22 @@ export class App {
       hint.className = 'difficulty-hint';
       hint.textContent = DIFFICULTY_HINT[d];
       btn.append(name, hint);
-      list.append(btn);
+      if (!withRestart) {
+        list.append(btn);
+        continue;
+      }
+      // 主畫面：有進行中的盤面時，旁邊多一個「開新局」
+      const restart = document.createElement('button');
+      restart.type = 'button';
+      restart.className = 'home-restart';
+      restart.dataset.restart = d;
+      restart.textContent = '開新局';
+      restart.setAttribute('aria-label', `${DIFFICULTY_LABEL[d]}開新局`);
+      restart.hidden = true;
+      const row = document.createElement('div');
+      row.className = 'home-row';
+      row.append(btn, restart);
+      list.append(row);
     }
   }
 
@@ -359,6 +457,15 @@ export class App {
     $('pause-btn').addEventListener('click', () => this.setPaused(!this.paused));
     $('resume-btn').addEventListener('click', () => this.setPaused(false));
     $('new-game-btn').addEventListener('click', () => this.openNewGameDialog());
+    $('home-btn').addEventListener('click', () => this.goHome());
+    $('home-list').addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const restart = target.closest<HTMLElement>('[data-restart]')?.dataset.restart;
+      if (restart) return this.chooseDifficulty(restart as Difficulty, true);
+      const d = target.closest<HTMLElement>('[data-difficulty]')?.dataset.difficulty;
+      if (d) this.openDifficulty(d as Difficulty);
+    });
+    $('home-cancel').addEventListener('click', () => this.cancelNewGame());
     $('win-new-game').addEventListener('click', () => this.openNewGameDialog());
     $('hint-close').addEventListener('click', () => this.closeHint());
 
@@ -367,20 +474,26 @@ export class App {
       if (btn) this.chooseDifficulty(btn.dataset.difficulty as Difficulty);
     });
     $('cancel-new-game').addEventListener('click', () => this.cancelNewGame());
-    $('confirm-back').addEventListener('click', () => this.showDialogStep('choose'));
+    $('confirm-back').addEventListener('click', () => this.leaveConfirm());
     $('confirm-start').addEventListener('click', () => {
       const d = this.pendingDifficulty;
-      this.showDialogStep('choose');
+      // 從主畫面來的就回主畫面顯示出題進度，否則回到選難度
+      if (this.confirmFromHome) this.newGameDialog.close();
+      else this.showDialogStep('choose');
       if (d) void this.startNewGame(d);
     });
     this.newGameDialog.addEventListener('cancel', (e) => {
       // Esc：確認步驟先退回選難度；出題中改為取消出題；沒有盤面時不能關
       e.preventDefault();
-      if (!$('confirm-step').hidden) return this.showDialogStep('choose');
+      if (!$('confirm-step').hidden) return this.leaveConfirm();
       this.cancelNewGame();
     });
     this.newGameDialog.addEventListener('close', () => {
       this.showDialogStep('choose');
+      if (this.confirmFromHome) {
+        this.confirmFromHome = false;
+        if (!this.game && !this.generating) $('home-title').focus({ preventScroll: true });
+      }
       this.resumeTimerIfPlaying();
     });
 

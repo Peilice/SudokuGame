@@ -320,6 +320,46 @@ button:disabled {
   stroke: none;
 }
 
+/* 窄手機：頁首多了主畫面鈕，收緊間距、「新遊戲」拿掉加號，避免刊名被擠成直排 */
+@media (max-width: 400px) {
+  .masthead-inner {
+    gap: 6px;
+    padding: 0 8px;
+  }
+
+  .title-group {
+    padding: 8px 10px 9px;
+  }
+
+  .brand {
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .status {
+    gap: 4px;
+  }
+
+  .timer {
+    min-width: 0;
+    padding: 0 8px;
+  }
+
+  .text-btn {
+    padding: 0 10px;
+  }
+
+  .text-btn .icon {
+    display: none;
+  }
+}
+
+.icon-btn .icon-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
+
 .icon-btn[hidden] {
   display: none;
 }
@@ -1095,8 +1135,129 @@ kbd {
   box-shadow: 0 2px 4px rgb(0 0 0 / 12%), 0 24px 60px -12px rgb(0 0 0 / 50%);
 }
 
-.dialog::after {
+.dialog::after,
+.home-sheet::after {
   inset: 36px 6px 6px;
+}
+
+/* ───────── 主畫面：花布上縫一塊選難度的白布 ───────── */
+
+.is-home .status {
+  display: none;
+}
+
+.layout[hidden],
+.home[hidden] {
+  display: none;
+}
+
+.home {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px 12px calc(24px + env(safe-area-inset-bottom));
+}
+
+.home-sheet {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 52px 24px 22px;
+  background:
+    linear-gradient(transparent 0 30px, var(--cloth) 30px),
+    var(--floral) -20px -6px / 104px 104px repeat-x,
+    var(--fabric);
+  box-shadow: var(--sheet-shadow);
+}
+
+.home-sheet::after {
+  content: '';
+  position: absolute;
+  border: 1.5px dashed var(--hem);
+  pointer-events: none;
+}
+
+.home-sheet > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-sheet h2 {
+  margin: 0 0 14px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.home-sheet h2:focus {
+  outline: none;
+}
+
+.home-sheet .btn-ghost {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.home-sheet .btn-ghost[hidden] {
+  display: none;
+}
+
+.home-sheet .legend {
+  margin: 0;
+}
+
+.home-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px dashed var(--thread);
+}
+
+.home-row .difficulty-option {
+  flex: 1;
+  min-height: 60px;
+  border-bottom: 0;
+}
+
+.difficulty-option.is-saved .difficulty-hint {
+  color: var(--leaf);
+  font-family: var(--font-round);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-restart {
+  flex: none;
+  align-self: center;
+  min-height: 40px;
+  margin-left: 6px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--thread);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background-color 0.15s ease;
+}
+
+.home-restart:not(:disabled):hover {
+  background: var(--cloth-2);
+  color: var(--ink);
+}
+
+.home-restart:disabled {
+  opacity: 0.45;
+}
+
+.home-restart[hidden] {
+  display: none;
+}
+
+@media (min-width: 860px) and (min-height: 600px) {
+  .home {
+    align-items: center;
+    padding-bottom: calc(var(--masthead-h) + 24px);
+  }
 }
 
 .dialog::backdrop {

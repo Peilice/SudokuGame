@@ -17,6 +17,9 @@
           <span class="difficulty-tag" id="difficulty-label"></span>
         </div>
         <div class="status">
+          <button class="icon-btn" id="home-btn" type="button" aria-label="回主畫面（進度會保留）" title="回主畫面">
+            <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9v11h5v-6h4v6h5V9" /></svg>
+          </button>
           <span class="timer" id="timer" role="timer" aria-label="經過時間">00:00</span>
           <button class="icon-btn" id="pause-btn" type="button" aria-label="暫停">
             <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
@@ -89,6 +92,16 @@
       </section>
     </main>
 
+    <main class="home" id="home" hidden>
+      <section class="home-sheet" aria-labelledby="home-title">
+        <h2 id="home-title" tabindex="-1">選擇難度</h2>
+        <div class="difficulty-list" id="home-list"></div>
+        <p class="generating" hidden><span class="spinner" aria-hidden="true"></span><span class="generating-text">出題中…</span></p>
+        <button class="btn btn-ghost" id="home-cancel" type="button" hidden>取消出題</button>
+        <p class="legend">每個難度各自保存一盤，回到主畫面不會遺失；只有在同一個難度開新局，才會取代那一盤。</p>
+      </section>
+    </main>
+
     <p class="sr-only" id="announcer" aria-live="polite"></p>
 
     <div class="rotate-notice" role="alert">
@@ -106,12 +119,12 @@
       <div class="dialog-step" id="choose-step">
         <h2 id="new-game-title" tabindex="-1" autofocus>選擇難度</h2>
         <div class="difficulty-list" id="difficulty-list"></div>
-        <p class="generating" id="generating" hidden><span class="spinner" aria-hidden="true"></span><span id="generating-text">出題中…</span></p>
-        <p class="legend">紅圈表示同一列、行或宮裡有重複的數字，不代表答錯。進度會自動儲存。</p>
+        <p class="generating" hidden><span class="spinner" aria-hidden="true"></span><span class="generating-text">出題中…</span></p>
+        <p class="legend">紅圈表示同一列、行或宮裡有重複的數字，不代表答錯。每個難度各自保存一盤進度。</p>
         <button class="btn btn-ghost" id="cancel-new-game" type="button">返回目前這盤</button>
       </div>
       <div class="dialog-step" id="confirm-step" hidden>
-        <h2 id="confirm-title" tabindex="-1">放棄目前這盤？</h2>
+        <h2 id="confirm-title" tabindex="-1">取代進行中的那盤？</h2>
         <p class="confirm-text" id="confirm-text"></p>
         <div class="dialog-actions">
           <button class="btn btn-ghost" id="confirm-back" type="button">返回</button>

@@ -48,6 +48,8 @@
 
 * {
   box-sizing: border-box;
+  /* 停用手機連點兩下放大（仍保留雙指縮放，方便需要放大閱讀的玩家） */
+  touch-action: manipulation;
 }
 
 html,
@@ -62,6 +64,10 @@ body {
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+  /* 避免快速連點時選取到文字（iOS Safari 需要加前綴） */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 button {
@@ -196,8 +202,6 @@ button:focus-visible,
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: var(--shadow);
-  touch-action: manipulation;
-  user-select: none;
 }
 
 .cell {

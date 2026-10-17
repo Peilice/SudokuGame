@@ -13,7 +13,7 @@ import {
   undo,
   type GameState,
 } from '../game/state';
-import { clearCurrent, loadCurrentGame, loadGame, saveGame } from '../game/storage';
+import { clearCurrent, loadBest, loadCurrentGame, loadGame, recordBest, saveGame } from '../game/storage';
 import { dismissHint, isHintDismissed, type HintId } from './hints';
 import { Timer, formatTime } from '../game/timer';
 import { buildBoard, buildNumpad, renderBoard, renderNumpad, type BoardView } from './board';
@@ -34,7 +34,7 @@ const DIFFICULTY_HINT: Record<Difficulty, string> = {
   easy: '適合暖身',
   medium: '要多觀察幾處',
   hard: '要用到區塊排除',
-  expert: '要找出數對、數組',
+  expert: '要靠筆記找出成對的數字',
 };
 
 export class App {
@@ -62,6 +62,8 @@ export class App {
   /** 上一步時已經填滿的單位與已經用完的數字，用來找出這一步新完成的 */
   private filled = new Set<number>();
   private doneDigits = new Set<number>();
+  /** 這一盤剛解完時和最佳紀錄比較的結果；重新整理後為 null，改顯示目前的最佳紀錄 */
+  private lastRecord: { previous: number | null; isNew: boolean } | null = null;
 
   private static readonly HINT_TEXT: Record<Exclude<HintId, 'conflict'>, string> = {
     notes: '筆記模式：點數字會在格子裡寫下小小的候選數字，再點一次同一個數字可以擦掉。按「筆記中」回到一般填寫。',
@@ -98,6 +100,7 @@ export class App {
     this.clearProgressMarks();
     this.filled = filledUnits(game);
     this.doneDigits = doneDigits(game);
+    this.lastRecord = null;
     this.render();
     this.resumeTimerIfPlaying();
   }
@@ -340,10 +343,26 @@ export class App {
     void this.boardEl.offsetWidth; // 重新觸發動畫
     this.boardEl.classList.add('celebrate');
     this.showStamp(true, true);
-    // 焦點移到「再來一盤」，盤面上不留選取框，鍵盤玩家也能直接按 Enter 開新局
-    $('win-new-game').focus({ preventScroll: true });
     const game = this.game!;
-    this.announce(`完成！${DIFFICULTY_LABEL[game.difficulty]}，用時 ${formatTime(game.elapsedMs)}。`);
+    this.lastRecord = recordBest(game.difficulty, game.elapsedMs);
+    this.render();
+    // 焦點移到「再來一盤」，盤面上不留選取框，鍵盤玩家也能直接按 Enter 開新局
+    $('win-again').focus({ preventScroll: true });
+    this.announce(`完成！${DIFFICULTY_LABEL[game.difficulty]}，用時 ${formatTime(game.elapsedMs)}。${$('win-record').textContent}`);
+  }
+
+  /** 過關畫面的紀錄行：只和自己這台裝置上的紀錄比 */
+  private recordText(game: GameState): { text: string; isNew: boolean } {
+    const ms = game.elapsedMs;
+    const rec = this.lastRecord;
+    if (rec?.isNew) {
+      if (rec.previous === null) return { text: '這個難度的第一筆紀錄', isNew: true };
+      return { text: `新紀錄，比之前最快的 ${formatTime(rec.previous)} 快了 ${formatTime(rec.previous - ms)}`, isNew: true };
+    }
+    const best = rec?.previous ?? loadBest(game.difficulty);
+    if (best === null) return { text: '', isNew: false };
+    if (best === ms) return { text: '這個難度最快的就是這一盤', isNew: false };
+    return { text: `這個難度最快 ${formatTime(best)}`, isNew: false };
   }
 
   /** 完成印章蓋在盤面上；animate 為 false 時直接顯示（例如重新整理後） */
@@ -518,7 +537,18 @@ export class App {
       option.append(input, chip, name);
       list.append(option);
     }
-    list.addEventListener('change', (e) => applyPageStyle((e.target as HTMLInputElement).value as PageStyle));
+    this.describeStyle(current);
+    list.addEventListener('change', (e) => {
+      const style = (e.target as HTMLInputElement).value as PageStyle;
+      applyPageStyle(style);
+      this.describeStyle(style);
+    });
+  }
+
+  /** 收起來的風格選單旁顯示目前的風格；玩法說明裡的衝突標記要跟著風格描述 */
+  private describeStyle(style: PageStyle): void {
+    $('style-current').textContent = PAGE_STYLE_LABEL[style];
+    $('help-conflict').textContent = CONFLICT_HINT[style];
   }
 
   private bindEvents(): void {
@@ -557,6 +587,9 @@ export class App {
     });
     $('home-cancel').addEventListener('click', () => this.cancelNewGame());
     $('win-new-game').addEventListener('click', () => this.openNewGameDialog());
+    $('win-again').addEventListener('click', () => {
+      if (this.game) this.chooseDifficulty(this.game.difficulty);
+    });
     $('hint-close').addEventListener('click', () => this.closeHint());
 
     $('difficulty-list').addEventListener('click', (e) => {
@@ -598,19 +631,12 @@ export class App {
     });
     window.addEventListener('pagehide', () => this.persist());
 
-    // 手機橫放時畫面會蓋上「請轉回直式」，同時暫停計時
-    const landscape = window.matchMedia('(orientation: landscape) and (max-height: 500px) and (pointer: coarse)');
-    const onOrientation = () => {
-      if (landscape.matches && this.isPlaying) this.setPaused(true);
-    };
-    landscape.addEventListener('change', onOrientation);
-    onOrientation();
-
     document.addEventListener('keydown', (e) => this.onKeyDown(e));
   }
 
   private onKeyDown(e: KeyboardEvent): void {
-    if (this.newGameDialog.open || !this.game) return;
+    if (this.newGameDialog.open) return;
+    if (!this.game) return this.onHomeKeyDown(e);
     const ctrl = e.ctrlKey || e.metaKey;
     const key = e.key.toLowerCase();
 
@@ -654,8 +680,37 @@ export class App {
       case 'n':
       case 'N':
         return this.toggleNotesMode();
+      case ' ':
+        // 焦點在按鈕上時，空白鍵保留給按鈕本身
+        if ((e.target as HTMLElement).closest('button, input, summary')) return;
+        e.preventDefault();
+        return this.selectNextEmpty();
       case 'Escape':
         return this.select(-1);
+    }
+  }
+
+  /** 主畫面：1–4 直接選難度（簡單 → 專家） */
+  private onHomeKeyDown(e: KeyboardEvent): void {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+    const m = /^(?:Digit|Numpad)([1-4])$/.exec(e.code);
+    if (!m) return;
+    e.preventDefault();
+    this.openDifficulty(DIFFICULTIES[Number(m[1]) - 1]);
+  }
+
+  /** 從目前的格子往後找下一個空格，到底就從頭繞回來 */
+  private selectNextEmpty(): void {
+    const game = this.game!;
+    if (this.paused || game.completed) return;
+    const start = this.selected;
+    for (let k = 1; k <= 81; k++) {
+      const i = (start + k + 81) % 81;
+      if (game.values[i] === 0) {
+        this.select(i);
+        this.focusBoard();
+        return;
+      }
     }
   }
 
@@ -698,6 +753,11 @@ export class App {
     $('win-panel').hidden = !game.completed;
     if (game.completed) {
       $('win-summary').textContent = `${DIFFICULTY_LABEL[game.difficulty]} · 用時 ${formatTime(game.elapsedMs)}`;
+      const record = this.recordText(game);
+      const recordEl = $('win-record');
+      recordEl.textContent = record.text;
+      recordEl.hidden = !record.text;
+      recordEl.classList.toggle('is-new', record.isNew);
     }
   }
 }

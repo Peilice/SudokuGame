@@ -26,6 +26,7 @@
   --cloth: #f8f3ea;
   --cloth-2: #efe7da;
   --cloth-3: #e6dccd;
+  --sunk: #ebe2d4; /* 用完、停用：比布面再退一階 */
   --ink: #231a17;
   --ink-soft: #66544c;
   --thread: #e2d4c5; /* 格線 */
@@ -68,10 +69,11 @@
   :root:not([data-theme='light']) {
     color-scheme: dark;
     --fabric: #2e1c1e;
-    --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%2334503c'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%232b4232'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%2334503c'/%3E%3Cg fill='%237a4f52'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%238f6a66'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%235e3238'/%3E%3Ccircle r='4' fill='%238a7340'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%232c3552'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%235a4644'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%2334503c'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%232b4232'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%2334503c'/%3E%3Cg fill='%23634346'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%2375585a'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%235e3238'/%3E%3Ccircle r='4' fill='%238a7340'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%232c3552'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%235a4644'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
     --cloth: #2a2421;
     --cloth-2: #342d29;
     --cloth-3: #3f3631;
+    --sunk: #221d1a;
     --ink: #efe5d8;
     --ink-soft: #bfae9f;
     --thread: #4a3f38;
@@ -81,8 +83,8 @@
     --leaf-ink: #1c2a20;
     --gold: #6a5224;
     --gold-edge: #d8b35e;
-    --hl-related: #3a2c29;
-    --hl-same: #2f4434;
+    --hl-related: #503a35;
+    --hl-same: #34503b;
     --hl-same-ink: #cfe8d3;
     --seal: #e0786f;
     --danger-ink: #2a1716;
@@ -94,10 +96,11 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
   --fabric: #2e1c1e;
-  --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%2334503c'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%232b4232'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%2334503c'/%3E%3Cg fill='%237a4f52'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%238f6a66'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%235e3238'/%3E%3Ccircle r='4' fill='%238a7340'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%232c3552'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%235a4644'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+  --floral: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='p'%3E%3Cpath d='M-36 6c-15-23 6-42 27-31-31-6-46 23-27 31z' fill='%2334503c'/%3E%3Cpath d='M32 10c23-6 31 21 12 31 10-15 0-31-12-31z' fill='%232b4232'/%3E%3Cpath d='M4 32c-2 23 23 31 31 15-15 8-29 2-31-15z' fill='%2334503c'/%3E%3Cg fill='%23634346'%3E%3Cellipse rx='13' ry='24' transform='rotate(0) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(60) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(120) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(180) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(240) translate(0 -14)'/%3E%3Cellipse rx='13' ry='24' transform='rotate(300) translate(0 -14)'/%3E%3C/g%3E%3Cg fill='%2375585a'%3E%3Cellipse rx='9' ry='16' transform='rotate(30) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(150) translate(0 -10)'/%3E%3Cellipse rx='9' ry='16' transform='rotate(270) translate(0 -10)'/%3E%3C/g%3E%3Ccircle r='9' fill='%235e3238'/%3E%3Ccircle r='4' fill='%238a7340'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23p' x='60' y='64'/%3E%3Cuse href='%23p' x='180' y='184' transform='rotate(25 180 184)'/%3E%3Cuse href='%23p' x='180' y='-56' transform='rotate(25 180 -56)'/%3E%3Cuse href='%23p' x='-60' y='184' transform='rotate(25 -60 184)'/%3E%3Cg fill='%232c3552'%3E%3Ccircle cx='160' cy='74' r='5'/%3E%3Ccircle cx='171' cy='87' r='3.5'/%3E%3Ccircle cx='48' cy='186' r='5'/%3E%3Ccircle cx='62' cy='198' r='3.5'/%3E%3C/g%3E%3Cg fill='%235a4644'%3E%3Ccircle cx='118' cy='122' r='3'/%3E%3Ccircle cx='127' cy='114' r='2'/%3E%3Ccircle cx='224' cy='120' r='3'/%3E%3Ccircle cx='108' cy='224' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
   --cloth: #2a2421;
   --cloth-2: #342d29;
   --cloth-3: #3f3631;
+  --sunk: #221d1a;
   --ink: #efe5d8;
   --ink-soft: #bfae9f;
   --thread: #4a3f38;
@@ -107,8 +110,8 @@
   --leaf-ink: #1c2a20;
   --gold: #6a5224;
   --gold-edge: #d8b35e;
-  --hl-related: #3a2c29;
-  --hl-same: #2f4434;
+  --hl-related: #503a35;
+  --hl-same: #34503b;
   --hl-same-ink: #cfe8d3;
   --seal: #e0786f;
   --danger-ink: #2a1716;
@@ -449,6 +452,11 @@ button:disabled {
   outline-offset: -3px;
 }
 
+/* 焦點永遠跟著選取走，選取本身已經是最醒目的格子，不再疊一圈綠色焦點框 */
+.cell.selected:focus-visible {
+  outline: none;
+}
+
 .cell:nth-child(9) {
   border-right: 0;
 }
@@ -536,7 +544,7 @@ button:disabled {
   border-radius: 50%;
   color: var(--ink-soft);
   font-family: var(--font-round);
-  font-size: calc(var(--cell) * 0.27);
+  font-size: max(10.5px, calc(var(--cell) * 0.3));
   font-weight: 700;
   line-height: 1;
   visibility: hidden;
@@ -627,6 +635,17 @@ button:disabled {
 
 .stamp.is-visible {
   opacity: 0.92;
+}
+
+/* 夜間的深色棉布吃掉印泥，印要蓋得實一點 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .stamp.is-visible {
+    opacity: 1;
+  }
+}
+
+:root[data-theme='dark'] .stamp.is-visible {
+  opacity: 1;
 }
 
 .stamp.is-landing {
@@ -781,7 +800,8 @@ button:disabled {
 
 .tool:disabled {
   color: var(--ink-soft);
-  background: var(--cloth-2);
+  background: var(--sunk);
+  box-shadow: none;
 }
 
 .tool:disabled .icon,
@@ -845,9 +865,9 @@ button:disabled {
   line-height: 1;
 }
 
-/* 用完的數字：布面退成淺色、拆掉縫線、數字劃掉 */
+/* 用完的數字：布塊拆下，只剩凹下去的底布、數字劃掉；夜間版同樣比布面暗，不會比可用的鍵搶眼 */
 .num.done {
-  background: var(--cloth-3);
+  background: var(--sunk);
   box-shadow: none;
 }
 
@@ -857,12 +877,13 @@ button:disabled {
 
 .num.done .num-digit {
   color: var(--ink-soft);
-  opacity: 0.6;
+  opacity: 0.8;
   text-decoration: line-through 2px;
 }
 
-.num:disabled:not(.done) {
-  opacity: 0.6;
+/* 暫停時鍵盤只淡掉字，布塊本身不透明，不會透出花布像是壞掉 */
+.num:disabled:not(.done) > * {
+  opacity: 0.45;
 }
 
 /* 剛用完的數字：數字鍵往下一沉，花布版的縫線從左往右被抽掉 */
@@ -957,17 +978,40 @@ button:disabled {
 }
 
 .win-summary {
-  margin: 0 0 10px;
+  margin: 0;
   color: var(--ink-soft);
   font-family: var(--font-round);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
-.win-panel .btn {
+/* 和自己的最佳紀錄比：只在本機計算，不排名、不分享 */
+.win-record {
+  margin: 0;
+  color: var(--leaf);
+  font-family: var(--font-round);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.win-record[hidden] {
+  display: none;
+}
+
+.win-record.is-new {
+  color: var(--seal);
+}
+
+.win-actions {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 8px;
   width: 100%;
-  max-width: 320px;
+  max-width: 340px;
+  margin-top: 10px;
 }
 
 /* 暫停時不顯示剩餘數量，完成後收起快捷鍵 */
@@ -1098,8 +1142,13 @@ kbd {
     --board-size: min(calc(100dvh - var(--masthead-h) - 72px), 700px, calc(100vw - 460px));
   }
 
+  /* 方巾的布邊算進版面，頁首左右兩端才會和布邊、右欄對齊 */
   .masthead-inner {
-    width: calc(var(--board-size) + 2 * var(--hem-gap) + 36px + 320px + 24px);
+    width: calc(var(--board-size) + var(--hem-gap) + 36px + 320px + 24px);
+  }
+
+  .board-wrap {
+    margin-left: var(--hem-gap);
   }
 
   .title-group {
@@ -1180,7 +1229,7 @@ kbd {
   }
 
   .num.done {
-    background: transparent;
+    background: var(--sunk);
   }
 
   .num-digit {
@@ -1201,6 +1250,10 @@ kbd {
     display: none;
   }
 
+  .win-actions {
+    grid-template-columns: 1fr;
+  }
+
   .hint {
     background: var(--cloth-2);
     box-shadow: none;
@@ -1208,6 +1261,17 @@ kbd {
 
   .shortcuts {
     display: block;
+  }
+}
+
+/* 桌機但螢幕不高：數字鍵壓扁一點，快捷鍵清單才放得下 */
+@media (min-width: 860px) and (min-height: 600px) and (max-height: 900px) {
+  .num {
+    aspect-ratio: 4 / 3;
+  }
+
+  .shortcuts div {
+    padding: 4px 0;
   }
 }
 
@@ -1294,7 +1358,82 @@ kbd {
 }
 
 .home-sheet .legend {
-  margin: 0;
+  margin: 0 0 14px;
+}
+
+/* 主畫面下方收起來的兩塊：玩法說明、頁面風格。不常用，預設收起，不和難度搶位置 */
+.home-more {
+  border-top: 1px dashed var(--thread);
+}
+
+.home-more:last-child {
+  border-bottom: 1px dashed var(--thread);
+}
+
+.home-more summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 4px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  list-style: none;
+  cursor: pointer;
+}
+
+.home-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-more summary::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-more[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.home-more summary:hover {
+  color: var(--ink);
+}
+
+.home-more summary:focus-visible {
+  outline-offset: -3px;
+}
+
+.style-current {
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.style-current::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--ink-soft);
+}
+
+.help-list {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0 4px 0 22px;
+  color: var(--ink);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.help-list li::marker {
+  color: var(--hem);
 }
 
 .home-row {
@@ -1488,55 +1627,95 @@ kbd {
   }
 }
 
-/* ───────── 手機橫放：請玩家轉回直式 ───────── */
+/* ───────── 矮而寬的螢幕（手機橫放）：盤面在左，控制區在右 ───────── */
 
-.rotate-notice {
-  display: none;
-}
+@media (orientation: landscape) and (max-height: 599px) {
+  :root {
+    --masthead-h: 52px;
+    --hem-gap: 8px;
+    --panel-w: 300px;
+    --board-size: min(
+      calc(100dvh - var(--masthead-h) - 2 * var(--hem-gap) - 16px - env(safe-area-inset-bottom)),
+      calc(100vw - var(--panel-w) - 3 * var(--hem-gap) - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)),
+      520px
+    );
+  }
 
-@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
-  .rotate-notice {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
+  .masthead-inner {
+    width: calc(var(--board-size) + var(--hem-gap) + 20px + var(--panel-w) + 24px);
+    max-width: 100%;
+  }
+
+  .layout {
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 24px;
-    background: var(--cloth);
-    text-align: center;
+    gap: 20px;
+    padding: var(--hem-gap) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
   }
 
-  .rotate-notice svg {
-    width: 56px;
-    height: 56px;
-    color: var(--box-line);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .board-wrap {
+    margin-left: var(--hem-gap);
   }
 
-  .rotate-title {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 900;
+  .controls {
+    width: var(--panel-w);
+    margin-top: 0;
+    gap: 8px;
   }
 
-  .rotate-sub {
-    margin: 0;
-    color: var(--ink-soft);
-    font-size: 0.95rem;
+  .play-controls {
+    gap: 8px;
   }
 
-  /* 對話框在瀏覽器頂層，會蓋過提示；橫放時先藏起來，轉回直式再出現 */
-  .dialog[open],
-  .dialog::backdrop {
-    display: none;
+  .tool {
+    min-height: 48px;
+    padding: 4px;
   }
+
+  .numpad {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .num {
+    flex-direction: row;
+    gap: 8px;
+    min-height: 0;
+    height: max(40px, calc((var(--board-size) - 48px - 8px - 12px - 12px) / 3));
+  }
+}
+
+/*
+ * 手機與矮螢幕：一次性說明浮起來，不把工具列和數字鍵往下推，也不擋頁首的按鈕。
+ * 直式時浮在盤面與工具列之間的空白；橫放時暫時蓋在工具列上，數字鍵仍然可以按。
+ */
+@media (max-width: 859px), (max-height: 599px) {
+  .controls {
+    position: relative;
+  }
+
+  .hint {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    bottom: calc(100% + 8px);
+    left: 0;
+    box-shadow: var(--sheet-shadow);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 599px) {
+  .hint {
+    top: 0;
+    bottom: auto;
+  }
+}
+
+/* 暫停時說明先收起來 */
+.is-paused .hint {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

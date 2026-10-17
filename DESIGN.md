@@ -6,6 +6,7 @@ colors:
   cloth: "#f8f3ea"
   cloth-2: "#efe7da"
   cloth-3: "#e6dccd"
+  sunk: "#ebe2d4"
   ink: "#231a17"
   ink-soft: "#66544c"
   thread: "#e2d4c5"
@@ -26,6 +27,7 @@ colors:
   cloth-night: "#2a2421"
   cloth-2-night: "#342d29"
   cloth-3-night: "#3f3631"
+  sunk-night: "#221d1a"
   ink-night: "#efe5d8"
   ink-soft-night: "#bfae9f"
   thread-night: "#4a3f38"
@@ -35,11 +37,125 @@ colors:
   leaf-ink-night: "#1c2a20"
   gold-night: "#6a5224"
   gold-edge-night: "#d8b35e"
-  hl-related-night: "#3a2c29"
-  hl-same-night: "#2f4434"
+  hl-related-night: "#503a35"
+  hl-same-night: "#34503b"
   hl-same-ink-night: "#cfe8d3"
   seal-night: "#e0786f"
   danger-ink-night: "#2a1716"
+  floral-petal-night: "#634346"
+  floral-petal-inner-night: "#75585a"
+  backdrop: "rgb(30 10 12 / 60%)"
+  # 霓虹（neon）
+  neon-fabric: "#e9e6ef"
+  neon-cloth: "#ffffff"
+  neon-cloth-2: "#f3f0f8"
+  neon-cloth-3: "#e4dfec"
+  neon-ink: "#1b1530"
+  neon-ink-soft: "#5e5578"
+  neon-thread: "#d6cfe3"
+  neon-hem: "#00a7c4"
+  neon-leaf: "#0a7ea4"
+  neon-gold: "#ffd84d"
+  neon-hl-related: "#f1ecf8"
+  neon-hl-same: "#d4f4fa"
+  neon-hl-same-ink: "#00525f"
+  neon-seal: "#e3122d"
+  neon-accent: "#00869e"
+  neon-sign: "#d6177a"
+  neon-note: "#6b5f86"
+  neon-fabric-night: "#120a1f"
+  neon-cloth-night: "#0b0713"
+  neon-cloth-2-night: "#171026"
+  neon-cloth-3-night: "#1f1630"
+  neon-sunk-night: "#07040d"
+  neon-ink-night: "#f3eaff"
+  neon-ink-soft-night: "#b3a6cf"
+  neon-thread-night: "#1d3542"
+  neon-tube: "#4de8ff"
+  neon-box-line-night: "#3fd8f2"
+  neon-leaf-ink-night: "#04161c"
+  neon-gold-night: "#5a1f4c"
+  neon-pink: "#ff5aa8"
+  neon-hl-related-night: "#1c2e42"
+  neon-hl-same-night: "#3a3216"
+  neon-yellow: "#ffd84d"
+  neon-seal-night: "#ff4a5c"
+  neon-note-night: "#c4b5ec"
+  neon-title-night: "#ffe9f4"
+  neon-amber: "#ffb02e"
+  # 極簡（scandi）
+  scandi-fabric: "#f3efe8"
+  scandi-cloth: "#fbf9f5"
+  scandi-cloth-2: "#ebe5db"
+  scandi-cloth-3: "#e3ddd2"
+  scandi-ink: "#2b2a28"
+  scandi-ink-soft: "#6f695f"
+  scandi-thread: "#e6e0d5"
+  scandi-leaf: "#557358"
+  scandi-clay: "#c8714b"
+  scandi-hl-related: "#ece3d4"
+  scandi-hl-same: "#e2eadc"
+  scandi-hl-same-ink: "#3d5a41"
+  scandi-seal: "#b23f2b"
+  scandi-fabric-night: "#1c1b19"
+  scandi-cloth-night: "#262522"
+  scandi-cloth-2-night: "#2f2d2a"
+  scandi-cloth-3-night: "#36332f"
+  scandi-ink-night: "#ece7df"
+  scandi-ink-soft-night: "#a39c91"
+  scandi-thread-night: "#34322e"
+  scandi-leaf-night: "#a6c3a8"
+  scandi-clay-night: "#d9825b"
+  scandi-hl-related-night: "#423f3a"
+  scandi-hl-same-night: "#3a4a37"
+  scandi-hl-same-ink-night: "#cfe3d0"
+  scandi-seal-night: "#f08a72"
+  # 木製（wood）
+  wood-table: "#4c301f"
+  wood-panel: "#efd6a9"
+  wood-panel-2: "#e4c48f"
+  wood-panel-3: "#d6b27a"
+  wood-ink: "#3e2412"
+  wood-ink-soft: "#6b4629"
+  wood-grain-line: "#b48a58"
+  wood-edge: "#8e5e33"
+  wood-box-line: "#6b4226"
+  wood-leaf: "#2f5a3a"
+  wood-gold: "#f5dc9a"
+  wood-gold-edge: "#e0a93c"
+  wood-seal: "#b8321f"
+  wood-maple: "#ead0a2"
+  wood-maple-2: "#dcb984"
+  wood-chip: "#f4ddb2"
+  wood-chip-2: "#d8ae76"
+  wood-chip-bad: "#f6c2ae"
+  wood-chip-bad-2: "#dd8a6e"
+  wood-chip-bad-ink: "#6e160b"
+  wood-block-1: "#f2d9aa"
+  wood-block-2: "#ddb57d"
+  wood-frame-1: "#8a5632"
+  wood-frame-2: "#5e3820"
+  wood-title-ink: "#f6e3c2"
+  wood-tag-ink: "#e8c48a"
+  wood-table-night: "#1d130c"
+  wood-panel-night: "#5e3f27"
+  wood-panel-2-night: "#6d4a2f"
+  wood-panel-3-night: "#4a301c"
+  wood-ink-night: "#f3dfbf"
+  wood-ink-soft-night: "#dcbd94"
+  wood-edge-night: "#2a190d"
+  wood-leaf-night: "#8fc59b"
+  wood-gold-night: "#8a6a2c"
+  wood-gold-edge-night: "#f7c35a"
+  wood-seal-night: "#ff7a5c"
+  wood-maple-night: "#7a5233"
+  wood-maple-2-night: "#6a452a"
+  wood-chip-night: "#c99a63"
+  wood-chip-2-night: "#9c6e3f"
+  wood-frame-1-night: "#3e2614"
+  wood-frame-2-night: "#26170c"
+  wood-chip-label: "#4a2a14"
+  wood-leaf-highlight: "#3d7049"
 typography:
   display:
     fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
@@ -76,7 +192,7 @@ typography:
     lineHeight: 1
   round-note:
     fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
-    fontSize: "calc(var(--cell) * 0.27)"
+    fontSize: "max(10.5px, calc(var(--cell) * 0.3))"
     fontWeight: 700
     lineHeight: 1
   key-digit:
@@ -84,6 +200,43 @@ typography:
     fontSize: "1.6rem"
     fontWeight: 900
     lineHeight: 1
+  key-digit-grid:
+    fontFamily: "'Noto Serif', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "1.8rem"
+    fontWeight: 900
+    lineHeight: 1
+  key-digit-desktop:
+    fontFamily: "'Noto Serif', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "2.2rem"
+    fontWeight: 900
+    lineHeight: 1
+  difficulty-name:
+    fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "1.15rem"
+    fontWeight: 900
+  difficulty-tag-desktop:
+    fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
+    fontSize: "1rem"
+    fontWeight: 900
+  overlay:
+    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "1.15rem"
+    fontWeight: 700
+  kbd:
+    fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
+    fontSize: "0.78rem"
+    fontWeight: 700
+  neon-digit:
+    fontFamily: "'Tilt Neon', 'Noto Sans TC', sans-serif"
+    fontSize: "1.2rem"
+    fontWeight: 400
+  scandi-digit:
+    fontFamily: "'Outfit', 'Noto Sans TC', sans-serif"
+    fontSize: "1.3rem"
+    fontWeight: 300
+  wood-digit:
+    fontFamily: "'Roboto Slab', 'Noto Serif', serif"
+    fontWeight: 800
   timer:
     fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
     fontSize: "1.08rem"
@@ -106,9 +259,25 @@ typography:
     fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
     fontSize: "0.7rem"
     fontWeight: 700
+  caption-grid:
+    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 700
 rounded:
   none: "0px"
   round: "50%"
+  # 以下只屬於其他頁面風格；花布全站方角
+  xs: "2px"
+  sm: "4px"
+  md: "6px"
+  wood: "8px"
+  lg: "10px"
+  xl: "12px"
+  scandi-key: "14px"
+  scandi-panel: "16px"
+  scandi-numpad: "18px"
+  scandi-sheet: "20px"
+  pill: "999px"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -164,7 +333,7 @@ components:
     typography: "{typography.key-digit}"
     rounded: "{rounded.none}"
   numpad-key-done:
-    backgroundColor: "{colors.cloth-3}"
+    backgroundColor: "{colors.sunk}"
     textColor: "{colors.ink-soft}"
   button-primary:
     backgroundColor: "{colors.leaf}"
@@ -220,10 +389,10 @@ components:
 - 縫線是簽名：布塊收邊的虛線、衝突的平針縫圈、宮線的深胭脂紅。
 - 對話框頂端露出一條 30px 的花布，和頁面的地是同一塊布。
 
-**其他頁面風格：** 花布是預設風格，本文件以它為準。玩家可以在主畫面底部的「頁面風格」切換另外三種，選擇存在 `localStorage` 的 `sudoku.style`，由 `<html data-style>` 套用，規則都在 `src/themes.css`：
-- **霓虹**（`neon`）：夜間是黑色壓克力盤面配青色燈管格線，玩家的數字是青色霓虹（日間是深青藍），筆記是淡紫；日間是白底粗黑框，配青色與桃紅的錯位陰影。數字用 Tilt Neon。衝突時數字轉紅，並亮起一條紅色底線。玩家的數字不可以用粉紅或桃紅，以免和衝突的紅色混淆；粉紅只留給刊名、選取框與完成招牌。
-- **極簡**（`scandi`）：燕麥白底，3×3 宮之間用 6px 空隙隔開、不畫粗線，每宮四角是圓的。選取是陶土色的實心圓角塊，玩家的數字是鼠尾草綠。數字用 Outfit。衝突時數字轉磚紅，並加一道短底線。
-- **木製**（`wood`）：胡桃木桌面上放楓木棋盤，題目是燒烙的深色字，玩家的數字是立體的圓木片。按鈕是有厚度的木塊；數字鍵像拼字遊戲的字母牌，剩餘數量寫在右下角。數字用 Roboto Slab。衝突時木片泛紅並加紅框，重複的題目數字則用紅圈圈起來。
+**其他頁面風格：** 花布是預設風格，本文件以它為準。玩家可以在主畫面底部收起來的「頁面風格」切換另外三種，選擇存在 `localStorage` 的 `sudoku.style`，由 `<html data-style>` 套用，規則都在 `src/themes.css`：
+- **霓虹**（`neon`）：夜間是黑色壓克力盤面配青色燈管格線，玩家的數字是青色霓虹（日間是深青藍），筆記是淡紫；日間是白底粗黑框，配青色與桃紅的錯位陰影。數字用 Tilt Neon。衝突時數字保留原色：玩家的數字外圍亮一圈紅色燈管，重複的題目下方亮一條紅色燈管底線。玩家的數字不可以用粉紅或桃紅，以免和衝突的紅色混淆；粉紅只留給刊名、選取框與完成招牌。
+- **極簡**（`scandi`）：燕麥白底，3×3 宮之間用 6px 空隙隔開、不畫粗線，每宮四角是圓的。選取是陶土色的實心圓角塊，玩家的數字是鼠尾草綠。數字用 Outfit。衝突時數字保留原色：玩家的數字外圍一圈磚紅圓角細框，重複的題目下方一道短底線；在陶土色選取塊上改用選取塊的字色。
+- **木製**（`wood`）：胡桃木桌面上放楓木棋盤，題目是燒烙的深色字，玩家的數字是立體的圓木片。按鈕是有厚度的木塊；數字鍵像拼字遊戲的字母牌，剩餘數量寫在右下角。數字用 Roboto Slab。衝突時木片泛紅並加紅框，重複的題目數字保留燒烙墨色，下方烙一道紅線。
 
 ## Colors
 
@@ -246,8 +415,9 @@ components:
 
 ### Neutral
 - **白棉布**（cloth）：盤面、所有按鈕布塊、對話框、說明布條、桌機右欄。盤面另加 3px 間距的經緯細紋。
-- **次布色**（cloth-2）：布塊懸停、桌機右欄內的工具與數字鍵、停用的工具。
-- **舊布色**（cloth-3）：已經用完的數字鍵。
+- **次布色**（cloth-2）：布塊懸停、桌機右欄內的工具與數字鍵。
+- **舊布色**（cloth-3）：桌機右欄內布塊的懸停。
+- **凹陷**（sunk）：已經用完的數字鍵、停用的工具。日間比布面暗一階，夜間比布面更暗。
 - **墨黑**（ink）：題目數字、標題、內文。
 - **淡墨**（ink-soft）：筆記、剩餘數量、說明文字、快捷鍵說明。
 - **棉線**（thread）：格線、幽靈按鈕描邊、虛線分隔線。
@@ -255,7 +425,14 @@ components:
 ### Named Rules
 **The 一墨一事 Rule.** 綠色只屬於玩家寫下的東西（數字、筆記模式、前進的主要動作），紅色只屬於縫線與警示。玩家的數字永遠是綠色，衝突只加紅色虛線圈，不把數字改成紅色。
 
-**The 褪色 Rule.** 花布的任何顏色都不能比盤面上的狀態色更搶眼。新增花布配色時，先確認選取的金黃仍是畫面上最亮的色塊。
+**The 褪色 Rule.** 花布的任何顏色都不能比盤面上的狀態色更搶眼。新增花布配色時，先確認選取的金黃仍是畫面上最亮的色塊。夜間花布的牡丹因此壓到 #634346。
+
+**The 退後 Rule.** 用完的數字鍵與停用的工具一律用 sunk（凹陷）色：日間比布面暗一階，夜間比布面更暗，絕對不能比可用的鍵亮。
+
+**The 狀態語意 Rule（四種風格共用）.** 各風格可以用自己的材質畫狀態，但語意固定：
+- 選取是盤面上最亮的格子；同列行宮高亮對布面至少約 1.4:1，相同數字再亮一階。
+- 衝突不改數字顏色。玩家的數字「被圈起來」（圈、框或泛紅的木片），重複的題目「劃底線」，一眼就分得出哪個是自己能改的。
+- 選取格不再疊鍵盤焦點框，因為焦點永遠跟著選取走。
 
 ## Typography
 
@@ -270,7 +447,7 @@ components:
 - **Stamp**（900，盤面寬度的 16%）：完成印章裡的「完成」。
 - **Headline**（900，1.35rem）：對話框標題、過關標題。
 - **Board digits**（盤面格寬的 60%）：題目 Noto Serif 900 墨黑；玩家 Zen Maru 700 綠色。
-- **Notes**（Zen Maru 700，格寬的 27%）：淡墨。
+- **Notes**（Zen Maru 700，格寬的 30%，最小 10.5px）：淡墨。
 - **Key digits**（Noto Serif 900，1.6rem；手機 3×3 時 1.8rem；桌機 2.2rem）。
 - **Body**（400，0.9rem，行高 1.55）：說明布條、圖例。
 - **Label／Button**（700，0.85rem／0.95rem）：工具按鈕、頁首按鈕。
@@ -283,7 +460,11 @@ components:
 
 手機直式：頁首 64px（左邊布標、右邊計時／暫停／新遊戲三塊布）；盤面是以寬度為主的白方巾，外圍留 10px 布邊；工具列與數字鍵用 `margin-top: auto` 貼到底部的拇指區，中間露出花布。螢幕高度 ≥760px 時數字鍵排成 3×3、數字與剩餘量橫排；矮螢幕排成 1×9。
 
-桌機（≥860px 寬且 ≥600px 高）：頁首 76px；盤面在左，放到可用高度（最多 700px），布邊 12px；右邊是一整塊 320px 寬的縫邊白布，裝工具（4 欄）、3×3 正方形數字鍵與快捷鍵清單。間距節奏是 4／8／12／20／36px。
+桌機（≥860px 寬且 ≥600px 高）：頁首 76px；盤面在左，放到可用高度（最多 700px），布邊 12px；右邊是一整塊 320px 寬的縫邊白布，裝工具（4 欄）、3×3 正方形數字鍵與快捷鍵清單。方巾的布邊算進版面，頁首左右兩端和布邊、右欄對齊。螢幕高度 ≤900px 時數字鍵改成 4:3，快捷鍵清單才放得下。間距節奏是 4／8／12／20／36px。
+
+矮而寬的螢幕（橫放且高度 <600px，例如手機橫放）：頁首 52px，盤面在左、300px 寬的控制區在右，數字鍵 3×3 的總高對齊盤面；左右讓出瀏海的安全區。不再要求玩家把手機轉回直式。
+
+主畫面：難度清單是主角；下面一行存檔說明，再下面是兩個預設收起的區塊「玩法與標記」與「頁面風格（目前風格名）」。桌機與手機都可以按 1–4 直接選難度。
 
 ## Elevation & Depth
 
@@ -317,14 +498,17 @@ components:
 完成時金黃波浪沿對角線掃過，題目淡出到 45%，紅印落下。
 
 ### Tools & Numpad
-- **Tool**：白布塊、圖示加 0.85rem 標籤；筆記模式啟用時整塊換成綠布、米白字。停用時換次布色、圖示與文字降到 55%。
-- **Numpad key**：白布塊加 1px 淡縫線；數字 Noto Serif 900、下方或右側是「剩 N」小字。筆記模式時數字換成綠色圓體，數字鍵外圍出現 2px 虛線框。用完的數字換舊布色、拆縫線、數字劃掉。
+- **Tool**：白布塊、圖示加 0.85rem 標籤；筆記模式啟用時整塊換成綠布、米白字。停用時換凹陷色、拿掉陰影，圖示與文字降到 55%。
+- **Numpad key**：白布塊加 1px 淡縫線；數字 Noto Serif 900、下方或右側是「剩 N」小字。筆記模式時數字換成綠色圓體，數字鍵外圍出現 2px 虛線框。用完的數字換凹陷色、拆縫線、數字劃掉（80%）。暫停時布塊保持不透明，只淡掉字。
 
 ### Dialog
 白棉布，頂端露出 30px 的花布條，縫線從花布條下方開始。難度選單是一列列 54px 的選項，頂部 2.5px 胭脂線、選項之間棉線虛線，選中為金黃。
 
 ### Hint
-一次性說明是一塊縫邊白布條，夾在盤面與工具列之間；桌機在右欄內改成無陰影的次布色。
+一次性說明是一塊縫邊白布條。手機與矮螢幕上浮在頁首上方（固定定位、sheet-shadow），不推動工具列和數字鍵；桌機在右欄內改成無陰影的次布色。暫停時收起。關掉之後，同樣的內容可以在主畫面的「玩法與標記」裡找到。
+
+### Win panel
+過關後取代工具列和數字鍵：標題「這盤解完了」、難度與用時，下一行和自己的最佳紀錄比（綠字；刷新紀錄時改紅印色）。最佳紀錄只存在本機的 `sudoku.best.v1`，不排名、不分享。主要按鈕「再來一盤」直接開同難度的新局，幽靈按鈕「換難度」打開選難度對話框；手機兩顆並排（3:2），桌機上下排。
 
 ## Do's and Don'ts
 
@@ -332,11 +516,12 @@ components:
 - **Do** 讓所有新元件都是「白布塊＋紅縫線」，放在花布上。
 - **Do** 保持玩家的數字是綠色圓體、題目是黑色粗宋體。
 - **Do** 用金黃當畫面上唯一最亮的色塊（選取）。
+- **Do** 新增風格時照著「狀態語意 Rule」畫衝突、選取與用完的狀態。
 - **Do** 夜間版從深色花布重新推導顏色，不是把日間版調暗。
 
 ### Don't:
 - **Don't** 用大紅大綠的原色花布；使用者明確說過顏色不要太鮮豔。
 - **Don't** 加圓角或描邊卡片，布塊的邊界語言是縫線。
-- **Don't** 把衝突的數字改成紅色；只加紅色虛線圈。
+- **Don't** 把衝突的數字改成紅色；只加紅色虛線圈。這一條適用於所有風格。
 - **Don't** 讓花布出現在盤面內或白布塊上（對話框頂端的花布條除外）。
 - **Don't** 用零模糊的硬位移陰影假裝布的厚度。

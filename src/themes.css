@@ -6,22 +6,11 @@
 
 /* ───────── 主畫面的風格選擇：色票用固定配色，不跟著目前風格變 ───────── */
 
-.style-picker {
-  margin-top: 20px;
-}
-
-.style-picker-title {
-  margin: 0 0 10px;
-  color: var(--ink-soft);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
 .style-options {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
+  padding: 4px 0 6px;
 }
 
 .style-option {
@@ -177,6 +166,7 @@
   --cloth: #ffffff;
   --cloth-2: #f3f0f8;
   --cloth-3: #e4dfec;
+  --sunk: #e4dfec;
   --ink: #1b1530;
   --ink-soft: #5e5578;
   --thread: #d6cfe3;
@@ -210,7 +200,6 @@
   --glow-given: none;
   --glow-key: none;
   --glow-timer: none;
-  --glow-bad: none;
   --glow-bad-box: none;
   --glow-sel: inset 0 0 0 0 transparent;
   --glow-seam: none;
@@ -226,6 +215,7 @@
     --cloth: #0b0713;
     --cloth-2: #171026;
     --cloth-3: #1f1630;
+    --sunk: #07040d;
     --ink: #f3eaff;
     --ink-soft: #b3a6cf;
     --thread: #1d3542;
@@ -233,10 +223,10 @@
     --box-line: #3fd8f2;
     --leaf: #4de8ff;
     --leaf-ink: #04161c;
-    --gold: #3d1534;
+    --gold: #5a1f4c;
     --gold-edge: #ff5aa8;
-    --hl-related: #0f1a26;
-    --hl-same: #2a2412;
+    --hl-related: #1c2e42;
+    --hl-same: #3a3216;
     --hl-same-ink: #ffd84d;
     --seal: #ff4a5c;
     --danger-ink: #1a0508;
@@ -260,7 +250,6 @@
     --glow-given: 0 0 5px rgb(255 220 180 / 45%);
     --glow-key: 0 0 8px rgb(77 232 255 / 65%);
     --glow-timer: 0 0 8px #ffb02e;
-    --glow-bad: 0 0 6px #ff4a5c, 0 0 16px #ff4a5c;
     --glow-bad-box: 0 0 8px #ff4a5c;
     --glow-sel: inset 0 0 14px rgb(255 90 168 / 60%);
     --glow-seam: 0 0 10px rgb(77 232 255 / 70%), inset 0 0 10px rgb(77 232 255 / 35%);
@@ -274,6 +263,7 @@
   --cloth: #0b0713;
   --cloth-2: #171026;
   --cloth-3: #1f1630;
+  --sunk: #07040d;
   --ink: #f3eaff;
   --ink-soft: #b3a6cf;
   --thread: #1d3542;
@@ -281,10 +271,10 @@
   --box-line: #3fd8f2;
   --leaf: #4de8ff;
   --leaf-ink: #04161c;
-  --gold: #3d1534;
+  --gold: #5a1f4c;
   --gold-edge: #ff5aa8;
-  --hl-related: #0f1a26;
-  --hl-same: #2a2412;
+  --hl-related: #1c2e42;
+  --hl-same: #3a3216;
   --hl-same-ink: #ffd84d;
   --seal: #ff4a5c;
   --danger-ink: #1a0508;
@@ -308,7 +298,6 @@
   --glow-given: 0 0 5px rgb(255 220 180 / 45%);
   --glow-key: 0 0 8px rgb(77 232 255 / 65%);
   --glow-timer: 0 0 8px #ffb02e;
-  --glow-bad: 0 0 6px #ff4a5c, 0 0 16px #ff4a5c;
   --glow-bad-box: 0 0 8px #ff4a5c;
   --glow-sel: inset 0 0 14px rgb(255 90 168 / 60%);
   --glow-seam: 0 0 10px rgb(77 232 255 / 70%), inset 0 0 10px rgb(77 232 255 / 35%);
@@ -379,7 +368,7 @@
 
 :root[data-style='neon'] .num.done {
   border-color: var(--thread);
-  background: var(--cloth-3);
+  background: var(--sunk);
   box-shadow: none;
 }
 
@@ -440,22 +429,24 @@
   color: var(--hl-same-ink);
 }
 
-/* 衝突：數字轉紅並亮起一條紅色燈管底線 */
-:root[data-style='neon'] .cell.conflict .cell-value {
-  color: var(--seal);
-  text-shadow: var(--glow-bad);
+/*
+ * 衝突：數字保留原本的顏色，題目和玩家的數字才分得開。
+ * 玩家的數字外圍亮起一圈紅色燈管；和它重複的題目下方亮一條紅色燈管底線。
+ */
+:root[data-style='neon'] .cell.conflict:not(.given)::after {
+  inset: 12%;
+  border: max(2px, calc(var(--cell) * 0.04)) solid var(--seal);
+  border-radius: 50%;
+  box-shadow: var(--glow-bad-box);
 }
 
-:root[data-style='neon'] .cell.conflict::after {
-  content: '';
-  position: absolute;
+:root[data-style='neon'] .cell.given.conflict::after {
   inset: auto 24% 11%;
   height: max(2.5px, calc(var(--cell) * 0.05));
   border: 0;
   border-radius: 2px;
   background: var(--seal);
   box-shadow: var(--glow-bad-box);
-  pointer-events: none;
 }
 
 /* 填滿一段：那一段亮起一圈青色燈管，先閃兩下才穩住 */
@@ -581,7 +572,7 @@
   --leaf-ink: #ffffff;
   --gold: #c8714b;
   --gold-edge: transparent;
-  --hl-related: #f1ebe1;
+  --hl-related: #ece3d4;
   --hl-same: #e2eadc;
   --hl-same-ink: #3d5a41;
   --seal: #b23f2b;
@@ -609,8 +600,8 @@
     --leaf-ink: #1c241d;
     --gold: #d9825b;
     --gold-edge: transparent;
-    --hl-related: #2d2b27;
-    --hl-same: #2c3529;
+    --hl-related: #423f3a;
+    --hl-same: #3a4a37;
     --hl-same-ink: #cfe3d0;
     --seal: #f08a72;
     --danger-ink: #2a1510;
@@ -636,8 +627,8 @@
   --leaf-ink: #1c241d;
   --gold: #d9825b;
   --gold-edge: transparent;
-  --hl-related: #2d2b27;
-  --hl-same: #2c3529;
+  --hl-related: #423f3a;
+  --hl-same: #3a4a37;
   --hl-same-ink: #cfe3d0;
   --seal: #f08a72;
   --danger-ink: #2a1510;
@@ -818,24 +809,34 @@
   font-weight: 400;
 }
 
-/* 衝突：數字轉磚紅，下方一道短底線 */
-:root[data-style='scandi'] .cell.conflict .cell-value {
-  color: var(--seal);
+/*
+ * 衝突：數字保留原本的顏色。玩家的數字外圍一圈磚紅細框（和宮一樣的圓角），
+ * 和它重複的題目下方一道短底線。
+ */
+:root[data-style='scandi'] .cell.conflict::after {
+  z-index: 2;
 }
 
-:root[data-style='scandi'] .cell.conflict::after {
-  content: '';
-  position: absolute;
+:root[data-style='scandi'] .cell.conflict:not(.given)::after {
+  inset: 12%;
+  border: max(1.5px, calc(var(--cell) * 0.035)) solid var(--seal);
+  border-radius: 10px;
+}
+
+:root[data-style='scandi'] .cell.given.conflict::after {
   inset: auto 34% 14%;
-  z-index: 2;
   height: max(2px, calc(var(--cell) * 0.045));
   border: 0;
   border-radius: 2px;
   background: var(--seal);
-  pointer-events: none;
 }
 
-:root[data-style='scandi'] .cell.selected.conflict::after {
+/* 選取塊本身是陶土色，衝突標記改用選取塊上的字色 */
+:root[data-style='scandi'] .cell.selected.conflict:not(.given)::after {
+  border-color: var(--scandi-sel-ink);
+}
+
+:root[data-style='scandi'] .cell.selected.given.conflict::after {
   background: var(--scandi-sel-ink);
 }
 
@@ -998,7 +999,7 @@
     --leaf-ink: #1c2a20;
     --gold: #8a6a2c;
     --gold-edge: #f7c35a;
-    --hl-related: rgb(255 220 170 / 10%);
+    --hl-related: rgb(255 220 170 / 18%);
     --hl-same: rgb(140 190 110 / 25%);
     --hl-same-ink: #d6f0d8;
     --seal: #ff7a5c;
@@ -1041,7 +1042,7 @@
   --leaf-ink: #1c2a20;
   --gold: #8a6a2c;
   --gold-edge: #f7c35a;
-  --hl-related: rgb(255 220 170 / 10%);
+  --hl-related: rgb(255 220 170 / 18%);
   --hl-same: rgb(140 190 110 / 25%);
   --hl-same-ink: #d6f0d8;
   --seal: #ff7a5c;
@@ -1139,6 +1140,7 @@
 
 :root[data-style='wood'] .num.done .num-digit {
   color: var(--tag-ink);
+  opacity: 0.6;
 }
 
 :root[data-style='wood'] .notes-mode .numpad {
@@ -1233,7 +1235,7 @@
   visibility: hidden;
 }
 
-/* 衝突：玩家的木片泛紅並加一圈紅框；題目數字轉紅並圈起來 */
+/* 衝突：玩家的木片泛紅並加一圈紅框；題目數字保留燒烙的墨色，下方烙一道紅線 */
 :root[data-style='wood'] .cell.user.conflict::before {
   background: radial-gradient(circle at 35% 30%, var(--chip-bad), var(--chip-bad-2));
   box-shadow: 0 0 0 max(2px, calc(var(--cell) * 0.04)) var(--seal), 0 3px 5px rgb(0 0 0 / 30%);
@@ -1247,14 +1249,9 @@
   display: none;
 }
 
-:root[data-style='wood'] .cell.given.conflict .cell-value {
-  color: var(--seal);
-}
-
 :root[data-style='wood'] .cell.given.conflict::after {
-  inset: 13%;
-  border: max(2px, calc(var(--cell) * 0.04)) solid var(--seal);
-  border-radius: 50%;
+  border-bottom-style: solid;
+  border-radius: 2px;
 }
 
 /* 填滿一段：那一段的木面被打亮，一道光澤從頭掃到尾 */

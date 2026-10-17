@@ -45,6 +45,37 @@ export function clearCurrent(): void {
   }
 }
 
+/** 每個難度最快的完成時間（毫秒），只存在本機 */
+const BEST_KEY = 'sudoku.best.v1';
+
+function readBest(): Partial<Record<Difficulty, number>> {
+  try {
+    const data = JSON.parse(localStorage.getItem(BEST_KEY) ?? '{}');
+    return data && typeof data === 'object' ? data : {};
+  } catch {
+    return {};
+  }
+}
+
+export function loadBest(difficulty: Difficulty): number | null {
+  const ms = Number(readBest()[difficulty]);
+  return ms > 0 ? ms : null;
+}
+
+/** 記下這次的完成時間；回傳之前的最佳紀錄，以及這次是否刷新 */
+export function recordBest(difficulty: Difficulty, ms: number): { previous: number | null; isNew: boolean } {
+  const previous = loadBest(difficulty);
+  const isNew = previous === null || ms < previous;
+  if (isNew) {
+    try {
+      localStorage.setItem(BEST_KEY, JSON.stringify({ ...readBest(), [difficulty]: ms }));
+    } catch {
+      // 寫不進去就只顯示這一次
+    }
+  }
+  return { previous, isNew };
+}
+
 /** 舊版只有一個存檔：搬到對應難度，並視為目前正在玩的那盤 */
 function migrateLegacySave(): void {
   const game = parseGame(localStorage.getItem(LEGACY_KEY));

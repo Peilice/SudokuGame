@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<defs>
+ <clipPath id="tr"><rect x="512" width="512" height="512"/></clipPath>
+ <clipPath id="br"><rect x="512" y="512" width="512" height="512"/></clipPath>
+ <radialGradient id="pink"><stop offset="0" stop-color="#ff5aa8" stop-opacity=".45"/><stop offset="1" stop-color="#ff5aa8" stop-opacity="0"/></radialGradient>
+ <filter id="sh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000" flood-opacity=".35"/></filter>
+</defs>
+<rect width="512" height="512" fill="#8e3b3d"/>
+<rect x="512" width="512" height="512" fill="#120a1f"/>
+<rect y="512" width="512" height="512" fill="#f3efe8"/>
+<rect x="512" y="512" width="512" height="512" fill="#4c301f"/>
+<rect x="162.0" y="162.0" width="700" height="700" rx="84" fill="#fbf8f2" />
+<path transform="translate(313.01 765.62) scale(0.70941 -0.70941)" fill="#231a17" d="M233 -9Q170 -9 130.5 8.0Q91 25 73.0 53.0Q55 81 55 115Q55 139 71.0 163.0Q87 187 126 193Q138 153 151.5 123.0Q165 93 186.5 76.5Q208 60 243 60Q299 60 327.0 124.5Q355 189 360 331Q345 315 326.5 302.0Q308 289 284.0 282.0Q260 275 226 275Q169 275 124.5 299.5Q80 324 54.5 371.0Q29 418 29 485Q29 557 58.0 611.0Q87 665 140.5 694.5Q194 724 269 724Q345 724 404.5 688.5Q464 653 498.0 578.0Q532 503 532 382Q532 296 515.0 224.0Q498 152 462.0 100.0Q426 48 369.5 19.5Q313 -9 233 -9ZM282 357Q305 357 323.5 368.0Q342 379 359 407Q359 497 350.5 549.5Q342 602 324.5 625.0Q307 648 279 648Q254 648 236.0 632.0Q218 616 209.0 581.0Q200 546 200 488Q200 429 221.0 393.0Q242 357 282 357Z"/>
+</svg>

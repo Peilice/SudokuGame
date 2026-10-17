@@ -1,4 +1,4 @@
-import { CELLS, PEERS, digitBit, findConflicts, type Grid } from '../core/board';
+import { CELLS, PEERS, UNITS, digitBit, findConflicts, type Grid } from '../core/board';
 import type { Difficulty, Puzzle } from '../core/generator';
 
 /** 單格變化，同時記錄變化前後，用於復原與重做 */
@@ -139,6 +139,18 @@ export function redo(game: GameState): boolean {
 
 export function getConflicts(game: GameState): Set<number> {
   return findConflicts(game.values);
+}
+
+/**
+ * 已經填滿 9 格、而且沒有任何衝突的單位（UNITS 的索引：0–8 列、9–17 行、18–26 宮）。
+ * 只依規則判斷，不比對答案，所以不會洩漏對錯。
+ */
+export function filledUnits(game: GameState, conflicts = getConflicts(game)): Set<number> {
+  const filled = new Set<number>();
+  UNITS.forEach((unit, u) => {
+    if (unit.every((i) => game.values[i] !== 0 && !conflicts.has(i))) filled.add(u);
+  });
+  return filled;
 }
 
 /** 每個數字已出現的次數（索引 1–9） */

@@ -2,7 +2,9 @@ import { colOf, rowOf } from '../core/board';
 import { DIFFICULTIES, DIFFICULTY_LABEL, generatePuzzle, type Difficulty, type Puzzle } from '../core/generator';
 import {
   createGame,
+  digitCounts,
   eraseCell,
+  filledUnits,
   getConflicts,
   isGiven,
   placeDigit,
@@ -18,6 +20,15 @@ import { buildBoard, buildNumpad, renderBoard, renderNumpad, type BoardView } fr
 import { CONFLICT_HINT, PAGE_STYLES, PAGE_STYLE_LABEL, applyPageStyle, loadPageStyle, type PageStyle } from './theme';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+/** UNITS 的索引：0–8 列、9–17 行、18–26 宮 */
+const unitName = (u: number): string =>
+  u < 9 ? `第 ${u + 1} 列` : u < 18 ? `第 ${u - 8} 行` : `第 ${u - 17} 宮`;
+
+const doneDigits = (game: GameState): Set<number> => {
+  const counts = digitCounts(game);
+  return new Set([1, 2, 3, 4, 5, 6, 7, 8, 9].filter((d) => counts[d] >= 9));
+};
 
 const DIFFICULTY_HINT: Record<Difficulty, string> = {
   easy: '適合暖身',
@@ -47,6 +58,10 @@ export class App {
   private worker: Worker | null = null;
   private stampTimer = 0;
   private activeHint: HintId | null = null;
+  private readonly seamsEl = $('seams');
+  /** 上一步時已經填滿的單位與已經用完的數字，用來找出這一步新完成的 */
+  private filled = new Set<number>();
+  private doneDigits = new Set<number>();
 
   private static readonly HINT_TEXT: Record<Exclude<HintId, 'conflict'>, string> = {
     notes: '筆記模式：點數字會在格子裡寫下小小的候選數字，再點一次同一個數字可以擦掉。按「筆記中」回到一般填寫。',
@@ -80,6 +95,9 @@ export class App {
     $('difficulty-label').textContent = DIFFICULTY_LABEL[game.difficulty];
     this.boardEl.classList.remove('celebrate');
     this.showStamp(game.completed, false);
+    this.clearProgressMarks();
+    this.filled = filledUnits(game);
+    this.doneDigits = doneDigits(game);
     this.render();
     this.resumeTimerIfPlaying();
   }
@@ -134,6 +152,7 @@ export class App {
     this.timer.stop();
     this.showStamp(false, false);
     this.boardEl.classList.remove('celebrate');
+    this.clearProgressMarks();
     if (this.activeHint) {
       this.activeHint = null;
       $('hint').hidden = true;
@@ -268,7 +287,52 @@ export class App {
     if (this.game.completed) this.timer.stop();
     this.persist();
     this.render();
+    this.markProgress();
     if (this.game.completed) this.celebrate();
+  }
+
+  /** 填滿一列／行／宮時沿著它縫一道線；某個數字 9 個都填完時，數字鍵往下一沉、縫線被抽掉 */
+  private markProgress(): void {
+    const game = this.game!;
+    const filled = filledUnits(game);
+    const done = doneDigits(game);
+    const newUnits = [...filled].filter((u) => !this.filled.has(u));
+    const newDigits = [...done].filter((d) => !this.doneDigits.has(d));
+    this.filled = filled;
+    this.doneDigits = done;
+    if (game.completed) return; // 過關有自己的波浪與完成印
+
+    // 一步同時填滿好幾段時依序縫，列 → 行 → 宮
+    newUnits.forEach((u, k) => this.stitchUnit(u, k));
+    newDigits.forEach((d) => this.settleKey(d));
+    if (newUnits.length) this.announce(`${newUnits.map(unitName).join('、')}填滿了`);
+  }
+
+  private stitchUnit(u: number, order: number): void {
+    const n = u % 9;
+    const kind = u < 9 ? 'row' : u < 18 ? 'col' : 'box';
+    const [r0, c0, rs, cs] =
+      kind === 'row' ? [n, 0, 1, 9] : kind === 'col' ? [0, n, 9, 1] : [Math.floor(n / 3) * 3, (n % 3) * 3, 3, 3];
+    const seam = document.createElement('div');
+    seam.className = `seam seam-${kind}`;
+    seam.style.cssText = `--r0:${r0};--c0:${c0};--rs:${rs};--cs:${cs};--order:${order}`;
+    const remove = () => seam.remove();
+    seam.addEventListener('animationend', remove);
+    window.setTimeout(remove, 3000); // 動畫被中斷時也要清掉
+    this.seamsEl.append(seam);
+  }
+
+  private settleKey(digit: number): void {
+    const btn = this.numButtons[digit - 1];
+    btn.classList.remove('just-done');
+    void btn.offsetWidth; // 重新觸發動畫
+    btn.classList.add('just-done');
+    window.setTimeout(() => btn.classList.remove('just-done'), 900);
+  }
+
+  private clearProgressMarks(): void {
+    this.seamsEl.replaceChildren();
+    this.numButtons.forEach((btn) => btn.classList.remove('just-done'));
   }
 
   private celebrate(): void {

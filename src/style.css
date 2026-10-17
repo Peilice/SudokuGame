@@ -659,6 +659,74 @@ button:disabled {
   transition: opacity 0.6s ease 0.4s;
 }
 
+/*
+ * 進度：一整列／行／宮填滿、而且沒有衝突時，沿著那一段縫一道紅線，停一下再收起。
+ * 列從左縫到右、行從上縫到下、宮從左上角往外縫開；一步填滿好幾段時依序縫。
+ */
+.seams {
+  position: absolute;
+  inset: 3px; /* 盤面外框以內 */
+  z-index: 1;
+  pointer-events: none;
+}
+
+.board.is-paused ~ .seams {
+  display: none;
+}
+
+.seam {
+  --seam-from: inset(0 100% 0 0);
+  --seam-pad: 3px;
+  position: absolute;
+  top: calc(var(--r0) * 100% / 9 + var(--seam-pad));
+  left: calc(var(--c0) * 100% / 9 + var(--seam-pad));
+  width: calc(var(--cs) * 100% / 9 - 2 * var(--seam-pad));
+  height: calc(var(--rs) * 100% / 9 - 2 * var(--seam-pad));
+  border: max(2px, calc(var(--cell) * 0.04)) dashed var(--hem);
+  animation: seam-sew 1.5s both;
+  animation-delay: calc(var(--order) * 220ms);
+}
+
+.seam-col {
+  --seam-from: inset(0 0 100% 0);
+}
+
+.seam-box {
+  --seam-from: inset(0 100% 100% 0);
+  --seam-pad: 8px; /* 縫在列、行那道線的內側，同時填滿時不會疊在一起 */
+}
+
+@keyframes seam-sew {
+  0% {
+    clip-path: var(--seam-from);
+    background-color: transparent;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  42% {
+    clip-path: inset(0);
+    background-color: color-mix(in srgb, var(--leaf) 8%, transparent);
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0);
+    background-color: transparent;
+    opacity: 0;
+  }
+}
+
+@keyframes seam-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15%,
+  75% {
+    opacity: 1;
+  }
+}
+
 /* ───────── 控制區 ───────── */
 
 .controls {
@@ -795,6 +863,29 @@ button:disabled {
 
 .num:disabled:not(.done) {
   opacity: 0.6;
+}
+
+/* 剛用完的數字：數字鍵往下一沉，花布版的縫線從左往右被抽掉 */
+.num.just-done {
+  animation: key-settle 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes key-settle {
+  30% {
+    transform: translateY(4px) scale(0.92);
+  }
+}
+
+:root:not([data-style]) .num.just-done::after {
+  display: block;
+  animation: unstitch 0.55s cubic-bezier(0.55, 0, 0.45, 1) 0.1s forwards;
+}
+
+@keyframes unstitch {
+  to {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+  }
 }
 
 /* 筆記模式：數字鍵換成筆記用的綠色圓體，外圍出現虛線框 */
@@ -1455,5 +1546,11 @@ kbd {
     animation-duration: 0.01ms !important;
     animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* 填滿一段的提示仍要看得到：不縫、不閃，只淡入再淡出 */
+  .seam {
+    clip-path: none;
+    animation: seam-fade 1.6s ease both !important;
   }
 }

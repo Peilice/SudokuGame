@@ -4,6 +4,7 @@ import { solve } from '../src/core/solver';
 import {
   createGame,
   eraseCell,
+  filledUnits,
   placeDigit,
   redo,
   toggleNote,
@@ -57,6 +58,20 @@ describe('game state', () => {
     placeDigit(game, 2, 4);
     placeDigit(game, 2, 4);
     expect(game.values[2]).toBe(0);
+  });
+
+  it('單位填滿且沒有衝突才算填滿', () => {
+    const game = newGame();
+    const row0 = [0, 1, 2, 3, 4, 5, 6, 7, 8].filter((i) => !PUZZLE[i]);
+    row0.slice(0, -1).forEach((i) => placeDigit(game, i, SOLUTION[i]));
+    expect(filledUnits(game).has(0)).toBe(false);
+
+    const last = row0[row0.length - 1];
+    placeDigit(game, last, 5); // 和第 0 格的 5 重複
+    expect(filledUnits(game).has(0)).toBe(false);
+
+    placeDigit(game, last, SOLUTION[last]);
+    expect(filledUnits(game).has(0)).toBe(true);
   });
 
   it('填完正確答案後標記完成', () => {

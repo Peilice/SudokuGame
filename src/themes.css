@@ -182,7 +182,7 @@
   --thread: #d6cfe3;
   --hem: #00a7c4;
   --box-line: #1b1530;
-  --leaf: #d6177a;
+  --leaf: #0a7ea4; /* 玩家的數字用青藍，和衝突的紅色分得開 */
   --leaf-ink: #ffffff;
   --gold: #ffd84d;
   --gold-edge: transparent;
@@ -196,6 +196,7 @@
 
   --neon-accent: #00869e;
   --neon-title: #d6177a;
+  --neon-sign: #d6177a;
   --neon-note: #6b5f86;
   --neon-timer: #1b1530;
   --neon-border: #1b1530;
@@ -205,12 +206,14 @@
   --glow-title: none;
   --glow-tag: none;
   --glow-digit: none;
+  --glow-sign: none;
   --glow-given: none;
   --glow-key: none;
   --glow-timer: none;
   --glow-bad: none;
   --glow-bad-box: none;
   --glow-sel: inset 0 0 0 0 transparent;
+  --glow-seam: none;
   --board-shadow: 6px 6px 0 #d6177a;
 
   --font-neon: 'Tilt Neon', var(--font-ui);
@@ -228,8 +231,8 @@
     --thread: #1d3542;
     --hem: #4de8ff;
     --box-line: #3fd8f2;
-    --leaf: #ff5aa8;
-    --leaf-ink: #1a0610;
+    --leaf: #4de8ff;
+    --leaf-ink: #04161c;
     --gold: #3d1534;
     --gold-edge: #ff5aa8;
     --hl-related: #0f1a26;
@@ -242,7 +245,8 @@
 
     --neon-accent: #4de8ff;
     --neon-title: #ffe9f4;
-    --neon-note: #7fe3f7;
+    --neon-sign: #ff5aa8;
+    --neon-note: #c4b5ec; /* 筆記用淡紫，和青色的玩家數字分開 */
     --neon-timer: #ffd84d;
     --neon-border: rgb(77 232 255 / 70%);
     --neon-timer-border: rgb(255 216 77 / 70%);
@@ -251,13 +255,15 @@
       radial-gradient(300px 200px at 70% 20%, rgb(255 214 77 / 8%), transparent 70%);
     --glow-title: 0 0 4px #ff5aa8, 0 0 12px #ff5aa8, 0 0 26px #ff2d8a;
     --glow-tag: 0 0 8px rgb(77 232 255 / 60%), inset 0 0 6px rgb(77 232 255 / 40%);
-    --glow-digit: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
+    --glow-digit: 0 0 6px rgb(77 232 255 / 85%), 0 0 16px rgb(77 232 255 / 45%);
+    --glow-sign: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
     --glow-given: 0 0 5px rgb(255 220 180 / 45%);
-    --glow-key: 0 0 8px rgb(255 90 168 / 70%);
+    --glow-key: 0 0 8px rgb(77 232 255 / 65%);
     --glow-timer: 0 0 8px #ffb02e;
     --glow-bad: 0 0 6px #ff4a5c, 0 0 16px #ff4a5c;
     --glow-bad-box: 0 0 8px #ff4a5c;
     --glow-sel: inset 0 0 14px rgb(255 90 168 / 60%);
+    --glow-seam: 0 0 10px rgb(77 232 255 / 70%), inset 0 0 10px rgb(77 232 255 / 35%);
     --board-shadow: 0 0 14px rgb(63 216 242 / 70%), 0 0 40px rgb(63 216 242 / 25%), inset 0 0 12px rgb(63 216 242 / 40%);
   }
 }
@@ -273,8 +279,8 @@
   --thread: #1d3542;
   --hem: #4de8ff;
   --box-line: #3fd8f2;
-  --leaf: #ff5aa8;
-  --leaf-ink: #1a0610;
+  --leaf: #4de8ff;
+  --leaf-ink: #04161c;
   --gold: #3d1534;
   --gold-edge: #ff5aa8;
   --hl-related: #0f1a26;
@@ -287,7 +293,8 @@
 
   --neon-accent: #4de8ff;
   --neon-title: #ffe9f4;
-  --neon-note: #7fe3f7;
+  --neon-sign: #ff5aa8;
+  --neon-note: #c4b5ec; /* 筆記用淡紫，和青色的玩家數字分開 */
   --neon-timer: #ffd84d;
   --neon-border: rgb(77 232 255 / 70%);
   --neon-timer-border: rgb(255 216 77 / 70%);
@@ -296,13 +303,15 @@
     radial-gradient(300px 200px at 70% 20%, rgb(255 214 77 / 8%), transparent 70%);
   --glow-title: 0 0 4px #ff5aa8, 0 0 12px #ff5aa8, 0 0 26px #ff2d8a;
   --glow-tag: 0 0 8px rgb(77 232 255 / 60%), inset 0 0 6px rgb(77 232 255 / 40%);
-  --glow-digit: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
+  --glow-digit: 0 0 6px rgb(77 232 255 / 85%), 0 0 16px rgb(77 232 255 / 45%);
+  --glow-sign: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
   --glow-given: 0 0 5px rgb(255 220 180 / 45%);
-  --glow-key: 0 0 8px rgb(255 90 168 / 70%);
+  --glow-key: 0 0 8px rgb(77 232 255 / 65%);
   --glow-timer: 0 0 8px #ffb02e;
   --glow-bad: 0 0 6px #ff4a5c, 0 0 16px #ff4a5c;
   --glow-bad-box: 0 0 8px #ff4a5c;
   --glow-sel: inset 0 0 14px rgb(255 90 168 / 60%);
+  --glow-seam: 0 0 10px rgb(77 232 255 / 70%), inset 0 0 10px rgb(77 232 255 / 35%);
   --board-shadow: 0 0 14px rgb(63 216 242 / 70%), 0 0 40px rgb(63 216 242 / 25%), inset 0 0 12px rgb(63 216 242 / 40%);
 }
 
@@ -449,13 +458,59 @@
   pointer-events: none;
 }
 
+/* 填滿一段：那一段亮起一圈青色燈管，先閃兩下才穩住 */
+:root[data-style='neon'] .seam {
+  border-style: solid;
+  border-width: max(2px, calc(var(--cell) * 0.035));
+  border-radius: 8px;
+  box-shadow: var(--glow-seam);
+  animation-name: seam-flicker;
+}
+
+@keyframes seam-flicker {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  14% {
+    opacity: 0.15;
+  }
+  22%,
+  78% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 剛用完的數字：燈管熄掉前閃一下 */
+:root[data-style='neon'] .num.just-done .num-digit {
+  animation: tube-off 0.6s linear;
+}
+
+@keyframes tube-off {
+  0% {
+    text-shadow: var(--glow-key);
+  }
+  20%,
+  50% {
+    opacity: 0.25;
+  }
+  35% {
+    opacity: 1;
+  }
+}
+
 /* 完成：粉紅霓虹招牌 */
 :root[data-style='neon'] .stamp {
-  border-color: var(--leaf);
-  outline-color: var(--leaf);
-  color: var(--leaf);
-  text-shadow: var(--glow-digit);
-  box-shadow: var(--glow-digit);
+  border-color: var(--neon-sign);
+  outline-color: var(--neon-sign);
+  color: var(--neon-sign);
+  text-shadow: var(--glow-sign);
+  box-shadow: var(--glow-sign);
   -webkit-mask: none;
   mask: none;
 }
@@ -786,6 +841,13 @@
 
 :root[data-style='scandi'] .board.is-paused .cell::before {
   visibility: hidden;
+}
+
+/* 填滿一段：一圈鼠尾草綠的圓角細框畫過那一段 */
+:root[data-style='scandi'] .seam {
+  border-style: solid;
+  border-color: var(--leaf);
+  border-radius: 10px;
 }
 
 /* 完成：一枚簡潔的陶土色圓角章 */
@@ -1193,6 +1255,46 @@
   inset: 13%;
   border: max(2px, calc(var(--cell) * 0.04)) solid var(--seal);
   border-radius: 50%;
+}
+
+/* 填滿一段：那一段的木面被打亮，一道光澤從頭掃到尾 */
+:root[data-style='wood'] .seam {
+  --sheen-size: 300% 100%;
+  --sheen-from: 100% 0;
+  --sheen-angle: 100deg;
+  border: 0;
+  border-radius: 6px;
+  background: linear-gradient(var(--sheen-angle), transparent 36%, rgb(255 242 210 / 60%) 50%, transparent 64%) no-repeat;
+  background-size: var(--sheen-size);
+  box-shadow: inset 0 0 0 2px var(--gold-edge), inset 0 0 14px rgb(247 195 90 / 45%);
+  animation-name: seam-sheen;
+}
+
+:root[data-style='wood'] .seam-col {
+  --sheen-size: 100% 300%;
+  --sheen-from: 0 100%;
+  --sheen-angle: 190deg;
+}
+
+@keyframes seam-sheen {
+  0% {
+    background-position: var(--sheen-from);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  10% {
+    opacity: 1;
+  }
+  55% {
+    background-position: 0 0;
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 0 0;
+    opacity: 0;
+  }
 }
 
 /* 面板：淺色楓木板 */

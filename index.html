@@ -8,6 +8,13 @@
     <meta name="description" content="單機數獨遊戲，四種難度、筆記模式、自動存檔。" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238e3b3d'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' font-weight='900' text-anchor='middle' fill='%23f8f3ea'%3E9%3C/text%3E%3C/svg%3E" />
     <title>數獨</title>
+    <script>
+      // 在畫面出現前先套用上次選的頁面風格，避免先閃一下預設的花布
+      try {
+        var s = localStorage.getItem('sudoku.style');
+        if (s === 'neon' || s === 'scandi' || s === 'wood') document.documentElement.dataset.style = s;
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <header class="masthead">
@@ -99,6 +106,10 @@
         <p class="generating" hidden><span class="spinner" aria-hidden="true"></span><span class="generating-text">出題中…</span></p>
         <button class="btn btn-ghost" id="home-cancel" type="button" hidden>取消出題</button>
         <p class="legend">每個難度各自保存一盤，回到主畫面不會遺失；只有在同一個難度開新局，才會取代那一盤。</p>
+        <div class="style-picker" role="radiogroup" aria-labelledby="style-picker-title">
+          <h3 class="style-picker-title" id="style-picker-title">頁面風格</h3>
+          <div class="style-options" id="style-options"></div>
+        </div>
       </section>
     </main>
 
@@ -120,7 +131,7 @@
         <h2 id="new-game-title" tabindex="-1" autofocus>選擇難度</h2>
         <div class="difficulty-list" id="difficulty-list"></div>
         <p class="generating" hidden><span class="spinner" aria-hidden="true"></span><span class="generating-text">出題中…</span></p>
-        <p class="legend">紅圈表示同一列、行或宮裡有重複的數字，不代表答錯。每個難度各自保存一盤進度。</p>
+        <p class="legend">紅色標記表示同一列、行或宮裡有重複的數字，不代表答錯。每個難度各自保存一盤進度。</p>
         <button class="btn btn-ghost" id="cancel-new-game" type="button">返回目前這盤</button>
       </div>
       <div class="dialog-step" id="confirm-step" hidden>

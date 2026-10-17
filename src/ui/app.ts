@@ -15,6 +15,7 @@ import { clearCurrent, loadCurrentGame, loadGame, saveGame } from '../game/stora
 import { dismissHint, isHintDismissed, type HintId } from './hints';
 import { Timer, formatTime } from '../game/timer';
 import { buildBoard, buildNumpad, renderBoard, renderNumpad, type BoardView } from './board';
+import { CONFLICT_HINT, PAGE_STYLES, PAGE_STYLE_LABEL, applyPageStyle, loadPageStyle, type PageStyle } from './theme';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -47,8 +48,7 @@ export class App {
   private stampTimer = 0;
   private activeHint: HintId | null = null;
 
-  private static readonly HINT_TEXT: Record<HintId, string> = {
-    conflict: '紅圈表示同一列、行或宮裡有重複的數字，紅底線是和它重複的題目數字。這只是提醒，不代表答錯。',
+  private static readonly HINT_TEXT: Record<Exclude<HintId, 'conflict'>, string> = {
     notes: '筆記模式：點數字會在格子裡寫下小小的候選數字，再點一次同一個數字可以擦掉。按「筆記中」回到一般填寫。',
   };
 
@@ -57,6 +57,7 @@ export class App {
     this.numButtons = buildNumpad($('numpad'));
     this.buildDifficultyList($('difficulty-list'));
     this.buildDifficultyList($('home-list'), true);
+    this.buildStylePicker($('style-options'));
     this.bindEvents();
 
     const saved = loadCurrentGame();
@@ -337,7 +338,7 @@ export class App {
   private showHint(id: HintId): void {
     if (isHintDismissed(id) || this.activeHint === id) return;
     this.activeHint = id;
-    $('hint-text').textContent = App.HINT_TEXT[id];
+    $('hint-text').textContent = id === 'conflict' ? CONFLICT_HINT[loadPageStyle()] : App.HINT_TEXT[id];
     $('hint').hidden = false;
   }
 
@@ -429,6 +430,31 @@ export class App {
       row.append(btn, restart);
       list.append(row);
     }
+  }
+
+  /** 主畫面的頁面風格：每個選項是一個原生 radio，配一塊固定配色的色票 */
+  private buildStylePicker(list: HTMLElement): void {
+    const current = loadPageStyle();
+    applyPageStyle(current, false);
+    for (const style of PAGE_STYLES) {
+      const option = document.createElement('label');
+      option.className = 'style-option';
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'page-style';
+      input.value = style;
+      input.checked = style === current;
+      const chip = document.createElement('span');
+      chip.className = `style-chip style-chip-${style}`;
+      chip.setAttribute('aria-hidden', 'true');
+      chip.textContent = '5';
+      const name = document.createElement('span');
+      name.className = 'style-name';
+      name.textContent = PAGE_STYLE_LABEL[style];
+      option.append(input, chip, name);
+      list.append(option);
+    }
+    list.addEventListener('change', (e) => applyPageStyle((e.target as HTMLInputElement).value as PageStyle));
   }
 
   private bindEvents(): void {

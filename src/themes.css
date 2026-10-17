@@ -1,0 +1,1279 @@
+/*
+ * 其他頁面風格。花布（style.css）是預設；這裡的規則都掛在 <html data-style="…"> 底下，
+ * 先覆寫共用的色彩 token，再把花布專屬的裝飾（縫線、花布條、白方巾）換成各風格自己的。
+ * 每個風格都有日間與夜間兩組 token，夜間沿用 style.css 的 prefers-color-scheme ＋ data-theme 寫法。
+ */
+
+/* ───────── 主畫面的風格選擇：色票用固定配色，不跟著目前風格變 ───────── */
+
+.style-picker {
+  margin-top: 20px;
+}
+
+.style-picker-title {
+  margin: 0 0 10px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.style-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.style-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.style-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.style-chip {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 76px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 12%);
+  font-size: 1.35rem;
+  line-height: 1;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.style-chip::before {
+  content: '';
+  position: absolute;
+  inset: 24%;
+  z-index: -1;
+}
+
+.style-option:hover .style-chip {
+  transform: translateY(-1px);
+}
+
+/* 選中：外圍一圈墨色框；鍵盤焦點另外再加一圈 */
+.style-option input:checked + .style-chip {
+  box-shadow: 0 0 0 2px var(--cloth), 0 0 0 5px var(--ink);
+}
+
+.style-option input:focus-visible + .style-chip {
+  outline: 3px solid var(--leaf);
+  outline-offset: 7px;
+}
+
+.style-chip-hakka {
+  background:
+    radial-gradient(circle at 18% 22%, #d9a7a3 0 16%, transparent 17%),
+    radial-gradient(circle at 84% 80%, #d9a7a3 0 14%, transparent 15%),
+    #8e3b3d;
+  color: #231a17;
+  font-family: var(--font-print);
+  font-weight: 900;
+}
+
+.style-chip-hakka::before {
+  background: #f8f3ea;
+  outline: 1px dashed #b2343a;
+  outline-offset: -3px;
+}
+
+.style-chip-neon {
+  background: radial-gradient(circle at 20% 10%, rgb(255 90 168 / 35%), transparent 60%), #120a1f;
+  color: #ff5aa8;
+  font-family: 'Tilt Neon', var(--font-ui);
+  text-shadow: 0 0 6px #ff5aa8;
+}
+
+.style-chip-neon::before {
+  inset: 20%;
+  border: 2px solid #4de8ff;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #4de8ff, inset 0 0 6px #4de8ff;
+}
+
+.style-chip-scandi {
+  background: #f3efe8;
+  color: #fff;
+  font-family: 'Outfit', var(--font-ui);
+  font-weight: 500;
+}
+
+.style-chip-scandi::before {
+  border-radius: 10px;
+  background: #c8714b;
+}
+
+.style-chip-wood {
+  background: repeating-linear-gradient(100deg, #4d301f 0 6px, #5a3825 6px 9px, #4a2d1c 9px 14px);
+  color: #4a2a14;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 800;
+}
+
+.style-chip-wood::before {
+  inset: 20% 20% 24%;
+  border-radius: 4px;
+  background: linear-gradient(160deg, #f4dcae, #ddb57c);
+  box-shadow: 0 3px 0 #9c6b3d;
+}
+
+/* ───────── 非花布風格共用：拿掉縫線、花布條與白方巾 ───────── */
+
+:root[data-style] .title-group::after,
+:root[data-style] .board-wrap::before,
+:root[data-style] .num::after,
+:root[data-style] .dialog::after,
+:root[data-style] .hint::after,
+:root[data-style] .win-panel::after,
+:root[data-style] .home-sheet::after,
+:root[data-style] .controls::before {
+  display: none;
+}
+
+:root[data-style] .title-group {
+  padding-left: 4px;
+  padding-right: 4px;
+  background: none;
+  box-shadow: none;
+}
+
+:root[data-style] .board-wrap::after {
+  display: none;
+}
+
+:root[data-style] .dialog,
+:root[data-style] .home-sheet {
+  padding-top: 24px;
+  background: var(--cloth);
+}
+
+/* ═════════════════ 3. 夜市霓虹 ═════════════════
+ * 夜間是主角：黑色壓克力盤面、青色燈管格線、粉紅霓虹的玩家數字。
+ * 日間是「白天的招牌」：白底粗黑框，配青色與桃紅的錯位色塊陰影。 */
+
+:root[data-style='neon'] {
+  color-scheme: light;
+  --fabric: #e9e6ef;
+  --cloth: #ffffff;
+  --cloth-2: #f3f0f8;
+  --cloth-3: #e4dfec;
+  --ink: #1b1530;
+  --ink-soft: #5e5578;
+  --thread: #d6cfe3;
+  --hem: #00a7c4;
+  --box-line: #1b1530;
+  --leaf: #d6177a;
+  --leaf-ink: #ffffff;
+  --gold: #ffd84d;
+  --gold-edge: transparent;
+  --hl-related: #f1ecf8;
+  --hl-same: #d4f4fa;
+  --hl-same-ink: #00525f;
+  --seal: #e3122d;
+  --danger-ink: #ffffff;
+  --patch-shadow: 4px 4px 0 #00a7c4;
+  --sheet-shadow: 6px 6px 0 #d6177a;
+
+  --neon-accent: #00869e;
+  --neon-title: #d6177a;
+  --neon-note: #6b5f86;
+  --neon-timer: #1b1530;
+  --neon-border: #1b1530;
+  --neon-timer-border: #1b1530;
+  --neon-bg-glow: radial-gradient(520px 280px at 0% 0%, rgb(214 23 122 / 12%), transparent 70%),
+    radial-gradient(520px 320px at 100% 100%, rgb(0 167 196 / 14%), transparent 70%);
+  --glow-title: none;
+  --glow-tag: none;
+  --glow-digit: none;
+  --glow-given: none;
+  --glow-key: none;
+  --glow-timer: none;
+  --glow-bad: none;
+  --glow-bad-box: none;
+  --glow-sel: inset 0 0 0 0 transparent;
+  --board-shadow: 6px 6px 0 #d6177a;
+
+  --font-neon: 'Tilt Neon', var(--font-ui);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style='neon']:not([data-theme='light']) {
+    color-scheme: dark;
+    --fabric: #120a1f;
+    --cloth: #0b0713;
+    --cloth-2: #171026;
+    --cloth-3: #1f1630;
+    --ink: #f3eaff;
+    --ink-soft: #b3a6cf;
+    --thread: #1d3542;
+    --hem: #4de8ff;
+    --box-line: #3fd8f2;
+    --leaf: #ff5aa8;
+    --leaf-ink: #1a0610;
+    --gold: #3d1534;
+    --gold-edge: #ff5aa8;
+    --hl-related: #0f1a26;
+    --hl-same: #2a2412;
+    --hl-same-ink: #ffd84d;
+    --seal: #ff4a5c;
+    --danger-ink: #1a0508;
+    --patch-shadow: 0 0 10px rgb(77 232 255 / 25%), inset 0 0 10px rgb(77 232 255 / 8%);
+    --sheet-shadow: 0 0 18px rgb(255 90 168 / 40%), inset 0 0 14px rgb(255 90 168 / 12%);
+
+    --neon-accent: #4de8ff;
+    --neon-title: #ffe9f4;
+    --neon-note: #7fe3f7;
+    --neon-timer: #ffd84d;
+    --neon-border: rgb(77 232 255 / 70%);
+    --neon-timer-border: rgb(255 216 77 / 70%);
+    --neon-bg-glow: radial-gradient(520px 300px at 5% 0%, rgb(255 90 168 / 28%), transparent 70%),
+      radial-gradient(520px 360px at 100% 85%, rgb(77 232 255 / 20%), transparent 70%),
+      radial-gradient(300px 200px at 70% 20%, rgb(255 214 77 / 8%), transparent 70%);
+    --glow-title: 0 0 4px #ff5aa8, 0 0 12px #ff5aa8, 0 0 26px #ff2d8a;
+    --glow-tag: 0 0 8px rgb(77 232 255 / 60%), inset 0 0 6px rgb(77 232 255 / 40%);
+    --glow-digit: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
+    --glow-given: 0 0 5px rgb(255 220 180 / 45%);
+    --glow-key: 0 0 8px rgb(255 90 168 / 70%);
+    --glow-timer: 0 0 8px #ffb02e;
+    --glow-bad: 0 0 6px #ff4a5c, 0 0 16px #ff4a5c;
+    --glow-bad-box: 0 0 8px #ff4a5c;
+    --glow-sel: inset 0 0 14px rgb(255 90 168 / 60%);
+    --board-shadow: 0 0 14px rgb(63 216 242 / 70%), 0 0 40px rgb(63 216 242 / 25%), inset 0 0 12px rgb(63 216 242 / 40%);
+  }
+}
+
+:root[data-style='neon'][data-theme='dark'] {
+  color-scheme: dark;
+  --fabric: #120a1f;
+  --cloth: #0b0713;
+  --cloth-2: #171026;
+  --cloth-3: #1f1630;
+  --ink: #f3eaff;
+  --ink-soft: #b3a6cf;
+  --thread: #1d3542;
+  --hem: #4de8ff;
+  --box-line: #3fd8f2;
+  --leaf: #ff5aa8;
+  --leaf-ink: #1a0610;
+  --gold: #3d1534;
+  --gold-edge: #ff5aa8;
+  --hl-related: #0f1a26;
+  --hl-same: #2a2412;
+  --hl-same-ink: #ffd84d;
+  --seal: #ff4a5c;
+  --danger-ink: #1a0508;
+  --patch-shadow: 0 0 10px rgb(77 232 255 / 25%), inset 0 0 10px rgb(77 232 255 / 8%);
+  --sheet-shadow: 0 0 18px rgb(255 90 168 / 40%), inset 0 0 14px rgb(255 90 168 / 12%);
+
+  --neon-accent: #4de8ff;
+  --neon-title: #ffe9f4;
+  --neon-note: #7fe3f7;
+  --neon-timer: #ffd84d;
+  --neon-border: rgb(77 232 255 / 70%);
+  --neon-timer-border: rgb(255 216 77 / 70%);
+  --neon-bg-glow: radial-gradient(520px 300px at 5% 0%, rgb(255 90 168 / 28%), transparent 70%),
+    radial-gradient(520px 360px at 100% 85%, rgb(77 232 255 / 20%), transparent 70%),
+    radial-gradient(300px 200px at 70% 20%, rgb(255 214 77 / 8%), transparent 70%);
+  --glow-title: 0 0 4px #ff5aa8, 0 0 12px #ff5aa8, 0 0 26px #ff2d8a;
+  --glow-tag: 0 0 8px rgb(77 232 255 / 60%), inset 0 0 6px rgb(77 232 255 / 40%);
+  --glow-digit: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
+  --glow-given: 0 0 5px rgb(255 220 180 / 45%);
+  --glow-key: 0 0 8px rgb(255 90 168 / 70%);
+  --glow-timer: 0 0 8px #ffb02e;
+  --glow-bad: 0 0 6px #ff4a5c, 0 0 16px #ff4a5c;
+  --glow-bad-box: 0 0 8px #ff4a5c;
+  --glow-sel: inset 0 0 14px rgb(255 90 168 / 60%);
+  --board-shadow: 0 0 14px rgb(63 216 242 / 70%), 0 0 40px rgb(63 216 242 / 25%), inset 0 0 12px rgb(63 216 242 / 40%);
+}
+
+:root[data-style='neon'] body {
+  background: var(--neon-bg-glow) fixed, var(--fabric);
+}
+
+:root[data-style='neon'] .brand {
+  color: var(--neon-title);
+  font-family: var(--font-ui);
+  letter-spacing: 0.12em;
+  text-shadow: var(--glow-title);
+}
+
+:root[data-style='neon'] .difficulty-tag {
+  padding: 2px 8px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  color: var(--neon-accent);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  box-shadow: var(--glow-tag);
+}
+
+/* 按鈕：圓角燈箱，日間是粗黑框＋青色錯位陰影，夜間是發光的青色細框 */
+:root[data-style='neon'] :is(.icon-btn, .text-btn, .timer, .tool, .num, .hint-close, .home-restart, .btn-ghost) {
+  border: 2px solid var(--neon-border);
+  border-radius: 12px;
+  background: var(--cloth);
+  box-shadow: var(--patch-shadow);
+}
+
+:root[data-style='neon'] :is(.icon-btn, .text-btn, .tool, .num, .hint-close, .home-restart, .btn-ghost):not(:disabled):hover {
+  background: var(--cloth-2);
+}
+
+:root[data-style='neon'] .timer {
+  border-color: var(--neon-timer-border);
+  color: var(--neon-timer);
+  font-family: var(--font-neon);
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-shadow: var(--glow-timer);
+}
+
+:root[data-style='neon'] .tool:disabled {
+  border-color: var(--thread);
+  box-shadow: none;
+}
+
+:root[data-style='neon'] .tool-notes[aria-pressed='true'] {
+  background: var(--leaf);
+  color: var(--leaf-ink);
+}
+
+:root[data-style='neon'] .num-digit {
+  font-family: var(--font-neon);
+  font-weight: 400;
+  text-shadow: var(--glow-key);
+}
+
+:root[data-style='neon'] .num-left {
+  color: var(--neon-accent);
+}
+
+:root[data-style='neon'] .num.done {
+  border-color: var(--thread);
+  background: var(--cloth-3);
+  box-shadow: none;
+}
+
+:root[data-style='neon'] .num.done .num-digit {
+  text-shadow: none;
+}
+
+:root[data-style='neon'] .notes-mode .numpad {
+  border-color: var(--neon-accent);
+  border-radius: 14px;
+}
+
+:root[data-style='neon'] .notes-mode .num-digit {
+  font-family: var(--font-neon);
+  font-weight: 400;
+}
+
+/* 盤面 */
+:root[data-style='neon'] .board {
+  border-radius: 10px;
+  background: var(--cloth);
+  box-shadow: var(--board-shadow);
+}
+
+:root[data-style='neon'] .cell.box-right {
+  border-right-width: 3px;
+}
+
+:root[data-style='neon'] .cell.box-bottom {
+  border-bottom-width: 3px;
+}
+
+:root[data-style='neon'] .cell.selected {
+  box-shadow: inset 0 0 0 2px var(--gold-edge), var(--glow-sel);
+}
+
+:root[data-style='neon'] .cell.given .cell-value {
+  font-family: var(--font-neon);
+  font-size: calc(var(--cell) * 0.62);
+  font-weight: 400;
+  text-shadow: var(--glow-given);
+}
+
+:root[data-style='neon'] .cell.user .cell-value {
+  font-family: var(--font-neon);
+  font-size: calc(var(--cell) * 0.62);
+  font-weight: 400;
+  text-shadow: var(--glow-digit);
+}
+
+:root[data-style='neon'] .cell-notes span {
+  color: var(--neon-note);
+  font-family: var(--font-neon);
+  font-weight: 400;
+}
+
+:root[data-style='neon'] .cell-notes span.match {
+  color: var(--hl-same-ink);
+}
+
+/* 衝突：數字轉紅並亮起一條紅色燈管底線 */
+:root[data-style='neon'] .cell.conflict .cell-value {
+  color: var(--seal);
+  text-shadow: var(--glow-bad);
+}
+
+:root[data-style='neon'] .cell.conflict::after {
+  content: '';
+  position: absolute;
+  inset: auto 24% 11%;
+  height: max(2.5px, calc(var(--cell) * 0.05));
+  border: 0;
+  border-radius: 2px;
+  background: var(--seal);
+  box-shadow: var(--glow-bad-box);
+  pointer-events: none;
+}
+
+/* 完成：粉紅霓虹招牌 */
+:root[data-style='neon'] .stamp {
+  border-color: var(--leaf);
+  outline-color: var(--leaf);
+  color: var(--leaf);
+  text-shadow: var(--glow-digit);
+  box-shadow: var(--glow-digit);
+  -webkit-mask: none;
+  mask: none;
+}
+
+:root[data-style='neon'] .stamp-word {
+  font-family: var(--font-ui);
+}
+
+/* 面板：對話框、主畫面、說明、完成區 */
+:root[data-style='neon'] :is(.dialog, .home-sheet) {
+  border: 2px solid var(--leaf);
+  border-radius: 14px;
+  box-shadow: var(--sheet-shadow);
+}
+
+:root[data-style='neon'] .dialog::backdrop {
+  background: rgb(10 4 20 / 70%);
+}
+
+:root[data-style='neon'] :is(.hint, .win-panel) {
+  border: 2px solid var(--neon-border);
+  border-radius: 12px;
+}
+
+:root[data-style='neon'] .difficulty-list {
+  border-top-color: var(--neon-accent);
+}
+
+:root[data-style='neon'] .difficulty-name {
+  font-family: var(--font-ui);
+}
+
+:root[data-style='neon'] .btn {
+  border-radius: 12px;
+}
+
+:root[data-style='neon'] kbd {
+  border-radius: 4px;
+}
+
+@media (min-width: 860px) and (min-height: 600px) {
+  :root[data-style='neon'] .controls {
+    border: 2px solid var(--neon-border);
+    border-radius: 16px;
+  }
+
+  :root[data-style='neon'] .win-panel {
+    border: 0;
+  }
+}
+
+/* ═════════════════ 5. 北歐極簡 ═════════════════
+ * 燕麥白、大量留白。3×3 宮之間用空隙分開而不畫粗線，每宮是一塊圓角；
+ * 選取是陶土色的實心圓角塊，玩家的數字是鼠尾草綠。 */
+
+:root[data-style='scandi'] {
+  color-scheme: light;
+  --fabric: #f3efe8;
+  --cloth: #fbf9f5;
+  --cloth-2: #ebe5db;
+  --cloth-3: #e3ddd2;
+  --ink: #2b2a28;
+  --ink-soft: #6f695f;
+  --thread: #e6e0d5;
+  --hem: #e6e0d5;
+  --box-line: #f3efe8; /* 宮與宮之間的空隙＝頁面底色 */
+  --leaf: #557358;
+  --leaf-ink: #ffffff;
+  --gold: #c8714b;
+  --gold-edge: transparent;
+  --hl-related: #f1ebe1;
+  --hl-same: #e2eadc;
+  --hl-same-ink: #3d5a41;
+  --seal: #b23f2b;
+  --danger-ink: #ffffff;
+  --patch-shadow: none;
+  --sheet-shadow: 0 1px 2px rgb(60 50 40 / 6%), 0 18px 40px -20px rgb(60 50 40 / 30%);
+
+  --scandi-sel-ink: #ffffff;
+  --font-scandi: 'Outfit', var(--font-ui);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style='scandi']:not([data-theme='light']) {
+    color-scheme: dark;
+    --fabric: #1c1b19;
+    --cloth: #262522;
+    --cloth-2: #2f2d2a;
+    --cloth-3: #36332f;
+    --ink: #ece7df;
+    --ink-soft: #a39c91;
+    --thread: #34322e;
+    --hem: #34322e;
+    --box-line: #1c1b19;
+    --leaf: #a6c3a8;
+    --leaf-ink: #1c241d;
+    --gold: #d9825b;
+    --gold-edge: transparent;
+    --hl-related: #2d2b27;
+    --hl-same: #2c3529;
+    --hl-same-ink: #cfe3d0;
+    --seal: #f08a72;
+    --danger-ink: #2a1510;
+    --patch-shadow: none;
+    --sheet-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 18px 40px -20px rgb(0 0 0 / 70%);
+
+    --scandi-sel-ink: #1c1b19;
+  }
+}
+
+:root[data-style='scandi'][data-theme='dark'] {
+  color-scheme: dark;
+  --fabric: #1c1b19;
+  --cloth: #262522;
+  --cloth-2: #2f2d2a;
+  --cloth-3: #36332f;
+  --ink: #ece7df;
+  --ink-soft: #a39c91;
+  --thread: #34322e;
+  --hem: #34322e;
+  --box-line: #1c1b19;
+  --leaf: #a6c3a8;
+  --leaf-ink: #1c241d;
+  --gold: #d9825b;
+  --gold-edge: transparent;
+  --hl-related: #2d2b27;
+  --hl-same: #2c3529;
+  --hl-same-ink: #cfe3d0;
+  --seal: #f08a72;
+  --danger-ink: #2a1510;
+  --patch-shadow: none;
+  --sheet-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 18px 40px -20px rgb(0 0 0 / 70%);
+
+  --scandi-sel-ink: #1c1b19;
+}
+
+:root[data-style='scandi'] body {
+  background: var(--fabric);
+  font-family: var(--font-scandi);
+}
+
+:root[data-style='scandi'] .brand {
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+}
+
+:root[data-style='scandi'] .difficulty-tag {
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+:root[data-style='scandi'] :is(.icon-btn, .text-btn, .tool, .hint-close) {
+  border-radius: 14px;
+  background: var(--cloth-2);
+  box-shadow: none;
+}
+
+:root[data-style='scandi'] :is(.icon-btn, .text-btn, .tool, .hint-close):not(:disabled):hover {
+  background: var(--cloth-3);
+}
+
+:root[data-style='scandi'] .text-btn,
+:root[data-style='scandi'] .tool {
+  font-weight: 500;
+}
+
+:root[data-style='scandi'] .timer {
+  background: none;
+  box-shadow: none;
+  color: var(--ink-soft);
+  font-family: var(--font-scandi);
+  font-size: 1.3rem;
+  font-weight: 300;
+}
+
+:root[data-style='scandi'] .tool:disabled {
+  background: var(--cloth-2);
+}
+
+:root[data-style='scandi'] .tool-notes[aria-pressed='true'] {
+  background: var(--leaf);
+  color: var(--leaf-ink);
+}
+
+:root[data-style='scandi'] .num {
+  border: 1px solid var(--thread);
+  border-radius: 14px;
+  background: var(--cloth);
+  box-shadow: none;
+}
+
+:root[data-style='scandi'] .num:not(:disabled):hover {
+  background: var(--hl-related);
+}
+
+:root[data-style='scandi'] .num-digit {
+  font-family: var(--font-scandi);
+  font-weight: 400;
+}
+
+:root[data-style='scandi'] .num-left {
+  font-weight: 400;
+}
+
+:root[data-style='scandi'] .num.done {
+  border-style: dashed;
+  background: transparent;
+}
+
+:root[data-style='scandi'] .notes-mode .numpad {
+  border-color: var(--leaf);
+  border-radius: 18px;
+}
+
+:root[data-style='scandi'] .notes-mode .num-digit {
+  font-family: var(--font-scandi);
+  font-weight: 400;
+}
+
+/* 盤面：不要外框，宮與宮之間留 6px 空隙，每宮四角是圓的 */
+:root[data-style='scandi'] .board {
+  border: 0;
+  background: transparent;
+}
+
+:root[data-style='scandi'] .cell {
+  background-color: var(--cloth);
+}
+
+:root[data-style='scandi'] .cell.box-right {
+  border-right-width: 6px;
+}
+
+:root[data-style='scandi'] .cell.box-bottom {
+  border-bottom-width: 6px;
+}
+
+:root[data-style='scandi'] .board-row:nth-child(3n + 1) .cell:nth-child(3n + 1) {
+  border-top-left-radius: 12px;
+}
+
+:root[data-style='scandi'] .board-row:nth-child(3n + 1) .cell:nth-child(3n) {
+  border-top-right-radius: 12px;
+}
+
+:root[data-style='scandi'] .board-row:nth-child(3n) .cell:nth-child(3n + 1) {
+  border-bottom-left-radius: 12px;
+}
+
+:root[data-style='scandi'] .board-row:nth-child(3n) .cell:nth-child(3n) {
+  border-bottom-right-radius: 12px;
+}
+
+:root[data-style='scandi'] .cell.related {
+  background-color: var(--hl-related);
+}
+
+:root[data-style='scandi'] .cell.same-digit {
+  background-color: var(--hl-same);
+}
+
+/* 選取：格子裡浮出一塊陶土色圓角塊 */
+:root[data-style='scandi'] .cell.selected {
+  background: var(--cloth);
+  box-shadow: none;
+}
+
+:root[data-style='scandi'] .cell.selected::before {
+  content: '';
+  position: absolute;
+  inset: 7%;
+  border-radius: 10px;
+  background: var(--gold);
+}
+
+:root[data-style='scandi'] .cell-value,
+:root[data-style='scandi'] .cell-notes {
+  position: relative;
+  z-index: 1;
+}
+
+:root[data-style='scandi'] .cell.selected .cell-value,
+:root[data-style='scandi'] .cell.selected .cell-notes span {
+  color: var(--scandi-sel-ink);
+}
+
+:root[data-style='scandi'] .cell.given .cell-value {
+  font-family: var(--font-scandi);
+  font-size: calc(var(--cell) * 0.6);
+  font-weight: 500;
+}
+
+:root[data-style='scandi'] .cell.user .cell-value {
+  font-family: var(--font-scandi);
+  font-size: calc(var(--cell) * 0.6);
+  font-weight: 400;
+}
+
+:root[data-style='scandi'] .cell-notes span {
+  font-family: var(--font-scandi);
+  font-weight: 400;
+}
+
+/* 衝突：數字轉磚紅，下方一道短底線 */
+:root[data-style='scandi'] .cell.conflict .cell-value {
+  color: var(--seal);
+}
+
+:root[data-style='scandi'] .cell.conflict::after {
+  content: '';
+  position: absolute;
+  inset: auto 34% 14%;
+  z-index: 2;
+  height: max(2px, calc(var(--cell) * 0.045));
+  border: 0;
+  border-radius: 2px;
+  background: var(--seal);
+  pointer-events: none;
+}
+
+:root[data-style='scandi'] .cell.selected.conflict::after {
+  background: var(--scandi-sel-ink);
+}
+
+:root[data-style='scandi'] .board.is-paused .cell::before {
+  visibility: hidden;
+}
+
+/* 完成：一枚簡潔的陶土色圓角章 */
+:root[data-style='scandi'] .stamp {
+  border-width: max(2px, calc(var(--board-size) * 0.006));
+  border-color: var(--gold);
+  border-radius: 999px;
+  outline: 0;
+  background: var(--cloth);
+  color: var(--gold);
+  -webkit-mask: none;
+  mask: none;
+}
+
+:root[data-style='scandi'] .stamp-word {
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+
+:root[data-style='scandi'] :is(.dialog, .home-sheet) {
+  border-radius: 20px;
+  padding: 28px 24px 22px;
+  box-shadow: var(--sheet-shadow);
+}
+
+:root[data-style='scandi'] .dialog::backdrop {
+  background: rgb(30 26 22 / 45%);
+}
+
+:root[data-style='scandi'] :is(.dialog, .home-sheet) h2 {
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+:root[data-style='scandi'] .difficulty-list {
+  gap: 4px;
+  border-top: 0;
+}
+
+:root[data-style='scandi'] .difficulty-option,
+:root[data-style='scandi'] .home-row {
+  border-bottom: 0;
+  border-radius: 12px;
+}
+
+:root[data-style='scandi'] .difficulty-name {
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+
+:root[data-style='scandi'] .home-restart,
+:root[data-style='scandi'] .btn {
+  border-radius: 12px;
+}
+
+:root[data-style='scandi'] :is(.hint, .win-panel) {
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+:root[data-style='scandi'] .hint {
+  background: var(--cloth-2);
+}
+
+:root[data-style='scandi'] .hint-close {
+  background: var(--cloth);
+}
+
+:root[data-style='scandi'] .shortcuts div {
+  border-bottom-style: solid;
+}
+
+:root[data-style='scandi'] kbd {
+  border-radius: 6px;
+  font-family: var(--font-scandi);
+}
+
+@media (min-width: 860px) and (min-height: 600px) {
+  :root[data-style='scandi'] .controls {
+    margin-top: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+/* ═════════════════ 6. 木製桌遊 ═════════════════
+ * 胡桃木桌面上放一塊楓木棋盤：題目是燒烙的深色字，玩家的數字是放上去的圓木片，
+ * 按鈕是有厚度的木塊，數字鍵像拼字遊戲的字母牌，剩餘數量寫在右下角。 */
+
+:root[data-style='wood'] {
+  color-scheme: light;
+  --fabric: #4c301f;
+  --cloth: #efd6a9;
+  --cloth-2: #e4c48f;
+  --cloth-3: #d6b27a;
+  --ink: #3e2412;
+  --ink-soft: #6b4629;
+  --thread: #b48a58;
+  --hem: #8e5e33;
+  --box-line: #6b4226;
+  --leaf: #2f5a3a;
+  --leaf-ink: #f6e7cc;
+  --gold: #f5dc9a;
+  --gold-edge: #e0a93c;
+  --hl-related: rgb(255 250 235 / 58%);
+  --hl-same: rgb(124 160 96 / 32%);
+  --hl-same-ink: #1f3d27;
+  --seal: #b8321f;
+  --danger-ink: #ffffff;
+  --patch-shadow: 0 4px 0 #8e5e33, 0 6px 8px rgb(0 0 0 / 35%);
+  --sheet-shadow: 0 6px 0 #8e5e33, 0 12px 24px rgb(0 0 0 / 50%);
+
+  --maple: #ead0a2;
+  --maple-2: #dcb984;
+  --grain: rgb(120 70 20 / 7%);
+  --chip: #f4ddb2;
+  --chip-2: #d8ae76;
+  --chip-ink: #2f5a3a;
+  --chip-bad: #f6c2ae;
+  --chip-bad-2: #dd8a6e;
+  --chip-bad-ink: #6e160b;
+  --sel-tint: rgb(255 246 200 / 80%);
+  --block-1: #f2d9aa;
+  --block-2: #ddb57d;
+  --block-edge: #8e5e33;
+  --frame-1: #8a5632;
+  --frame-2: #5e3820;
+  --title-ink: #f6e3c2;
+  --tag-ink: #e8c48a;
+
+  --font-wood: 'Roboto Slab', var(--font-print);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style='wood']:not([data-theme='light']) {
+    color-scheme: dark;
+    --fabric: #1d130c;
+    --cloth: #5e3f27;
+    --cloth-2: #6d4a2f;
+    --cloth-3: #4a301c;
+    --ink: #f3dfbf;
+    --ink-soft: #dcbd94;
+    --thread: #4e3320;
+    --hem: #2a190d;
+    --box-line: #2c1a0f;
+    --leaf: #8fc59b;
+    --leaf-ink: #1c2a20;
+    --gold: #8a6a2c;
+    --gold-edge: #f7c35a;
+    --hl-related: rgb(255 220 170 / 10%);
+    --hl-same: rgb(140 190 110 / 25%);
+    --hl-same-ink: #d6f0d8;
+    --seal: #ff7a5c;
+    --danger-ink: #2a0f08;
+    --patch-shadow: 0 4px 0 #2a190d, 0 6px 8px rgb(0 0 0 / 50%);
+    --sheet-shadow: 0 6px 0 #22140a, 0 12px 24px rgb(0 0 0 / 60%);
+
+    --maple: #7a5233;
+    --maple-2: #6a452a;
+    --grain: rgb(0 0 0 / 10%);
+    --chip: #c99a63;
+    --chip-2: #9c6e3f;
+    --chip-ink: #1d3523;
+    --chip-bad: #e9937a;
+    --chip-bad-2: #b85a40;
+    --chip-bad-ink: #2a0904;
+    --sel-tint: rgb(255 205 120 / 42%);
+    --block-1: #6d4a2f;
+    --block-2: #563820;
+    --block-edge: #2a190d;
+    --frame-1: #3e2614;
+    --frame-2: #26170c;
+    --title-ink: #f6e3c2;
+    --tag-ink: #e8c48a;
+  }
+}
+
+:root[data-style='wood'][data-theme='dark'] {
+  color-scheme: dark;
+  --fabric: #1d130c;
+  --cloth: #5e3f27;
+  --cloth-2: #6d4a2f;
+  --cloth-3: #4a301c;
+  --ink: #f3dfbf;
+  --ink-soft: #dcbd94;
+  --thread: #4e3320;
+  --hem: #2a190d;
+  --box-line: #2c1a0f;
+  --leaf: #8fc59b;
+  --leaf-ink: #1c2a20;
+  --gold: #8a6a2c;
+  --gold-edge: #f7c35a;
+  --hl-related: rgb(255 220 170 / 10%);
+  --hl-same: rgb(140 190 110 / 25%);
+  --hl-same-ink: #d6f0d8;
+  --seal: #ff7a5c;
+  --danger-ink: #2a0f08;
+  --patch-shadow: 0 4px 0 #2a190d, 0 6px 8px rgb(0 0 0 / 50%);
+  --sheet-shadow: 0 6px 0 #22140a, 0 12px 24px rgb(0 0 0 / 60%);
+
+  --maple: #7a5233;
+  --maple-2: #6a452a;
+  --grain: rgb(0 0 0 / 10%);
+  --chip: #c99a63;
+  --chip-2: #9c6e3f;
+  --chip-ink: #1d3523;
+  --chip-bad: #e9937a;
+  --chip-bad-2: #b85a40;
+  --chip-bad-ink: #2a0904;
+  --sel-tint: rgb(255 205 120 / 42%);
+  --block-1: #6d4a2f;
+  --block-2: #563820;
+  --block-edge: #2a190d;
+  --frame-1: #3e2614;
+  --frame-2: #26170c;
+  --title-ink: #f6e3c2;
+  --tag-ink: #e8c48a;
+}
+
+/* 胡桃木桌面：細紋＋寬幅的深淺木色 */
+:root[data-style='wood'] body {
+  background:
+    repeating-linear-gradient(97deg, rgb(0 0 0 / 8%) 0 3px, transparent 3px 11px, rgb(255 255 255 / 3%) 11px 13px, transparent 13px 27px),
+    repeating-linear-gradient(97deg, rgb(0 0 0 / 12%) 0 40px, transparent 40px 90px),
+    var(--fabric);
+  background-attachment: fixed;
+}
+
+:root[data-style='wood'] .brand {
+  color: var(--title-ink);
+  text-shadow: 0 2px 0 rgb(0 0 0 / 40%);
+}
+
+:root[data-style='wood'] .difficulty-tag {
+  color: var(--tag-ink);
+}
+
+/* 木塊按鈕：有厚度，按下會往下沉 */
+:root[data-style='wood'] :is(.icon-btn, .text-btn, .timer, .tool, .num, .hint-close) {
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(100deg, var(--grain) 0 2px, transparent 2px 7px),
+    linear-gradient(170deg, var(--block-1), var(--block-2));
+  color: var(--ink);
+  box-shadow: var(--patch-shadow);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+}
+
+:root[data-style='wood'] :is(.icon-btn, .text-btn, .tool, .num, .hint-close):not(:disabled):hover {
+  filter: brightness(1.05);
+}
+
+:root[data-style='wood'] :is(.icon-btn, .text-btn, .tool, .num, .hint-close):not(:disabled):active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--block-edge), 0 2px 3px rgb(0 0 0 / 30%);
+}
+
+:root[data-style='wood'] .timer {
+  font-family: var(--font-wood);
+  font-weight: 800;
+}
+
+:root[data-style='wood'] .tool:disabled {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--block-edge);
+}
+
+:root[data-style='wood'] .tool-notes[aria-pressed='true'] {
+  background: linear-gradient(170deg, #3d7049, var(--leaf));
+  color: var(--leaf-ink);
+}
+
+:root[data-style='wood'] .num-digit {
+  font-family: var(--font-wood);
+  font-weight: 800;
+}
+
+:root[data-style='wood'] .num-left {
+  font-family: var(--font-wood);
+  font-weight: 500;
+}
+
+/* 用完的數字：木牌拿走，只剩桌上凹下去的空位 */
+:root[data-style='wood'] .num.done {
+  background: rgb(0 0 0 / 18%);
+  box-shadow: inset 0 2px 5px rgb(0 0 0 / 35%);
+}
+
+:root[data-style='wood'] .num.done .num-digit {
+  color: var(--tag-ink);
+}
+
+:root[data-style='wood'] .notes-mode .numpad {
+  border-color: var(--tag-ink);
+  border-radius: 12px;
+}
+
+:root[data-style='wood'] .notes-mode .num-digit {
+  font-family: var(--font-wood);
+  font-weight: 800;
+}
+
+/* 盤面：外圍一圈深色木框，盤面是有木紋的楓木 */
+:root[data-style='wood'] .board-wrap::after {
+  display: block;
+  border-radius: 10px;
+  background: linear-gradient(160deg, var(--frame-1), var(--frame-2));
+  box-shadow: inset 0 2px 0 rgb(255 255 255 / 15%), 0 10px 24px rgb(0 0 0 / 45%);
+}
+
+:root[data-style='wood'] .board {
+  border-radius: 4px;
+  background: var(--maple);
+}
+
+:root[data-style='wood'] .cell {
+  --tint: transparent;
+  background:
+    linear-gradient(var(--tint), var(--tint)),
+    repeating-linear-gradient(92deg, var(--grain) 0 2px, transparent 2px 9px, var(--grain) 9px 10px, transparent 10px 17px),
+    linear-gradient(170deg, var(--maple), var(--maple-2));
+}
+
+:root[data-style='wood'] .cell.box-right {
+  border-right-width: 3px;
+}
+
+:root[data-style='wood'] .cell.box-bottom {
+  border-bottom-width: 3px;
+}
+
+:root[data-style='wood'] .cell.related {
+  --tint: var(--hl-related);
+}
+
+:root[data-style='wood'] .cell.same-digit {
+  --tint: var(--hl-same);
+}
+
+/* 選取：像被檯燈照亮的一格 */
+:root[data-style='wood'] .cell.selected {
+  --tint: var(--sel-tint);
+  box-shadow: inset 0 0 0 2px var(--gold-edge), inset 0 0 12px rgb(247 195 90 / 80%);
+}
+
+:root[data-style='wood'] .board.is-paused .cell {
+  --tint: transparent;
+}
+
+:root[data-style='wood'] .cell.given .cell-value {
+  font-family: var(--font-wood);
+  font-size: calc(var(--cell) * 0.6);
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 30%);
+}
+
+/* 玩家的數字：一枚圓木片 */
+:root[data-style='wood'] .cell.user::before {
+  content: '';
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--chip), var(--chip-2));
+  box-shadow: 0 2px 0 rgb(90 50 20 / 55%), 0 3px 5px rgb(0 0 0 / 30%), inset 0 0 0 2px rgb(255 255 255 / 25%);
+}
+
+:root[data-style='wood'] .cell.user .cell-value {
+  position: relative;
+  z-index: 1;
+  color: var(--chip-ink);
+  font-family: var(--font-wood);
+  font-size: calc(var(--cell) * 0.5);
+  font-weight: 800;
+}
+
+:root[data-style='wood'] .cell-notes span {
+  font-family: var(--font-wood);
+  font-weight: 500;
+}
+
+:root[data-style='wood'] .board.is-paused .cell::before {
+  visibility: hidden;
+}
+
+/* 衝突：玩家的木片泛紅並加一圈紅框；題目數字轉紅並圈起來 */
+:root[data-style='wood'] .cell.user.conflict::before {
+  background: radial-gradient(circle at 35% 30%, var(--chip-bad), var(--chip-bad-2));
+  box-shadow: 0 0 0 max(2px, calc(var(--cell) * 0.04)) var(--seal), 0 3px 5px rgb(0 0 0 / 30%);
+}
+
+:root[data-style='wood'] .cell.user.conflict .cell-value {
+  color: var(--chip-bad-ink);
+}
+
+:root[data-style='wood'] .cell.conflict:not(.given)::after {
+  display: none;
+}
+
+:root[data-style='wood'] .cell.given.conflict .cell-value {
+  color: var(--seal);
+}
+
+:root[data-style='wood'] .cell.given.conflict::after {
+  inset: 13%;
+  border: max(2px, calc(var(--cell) * 0.04)) solid var(--seal);
+  border-radius: 50%;
+}
+
+/* 面板：淺色楓木板 */
+:root[data-style='wood'] :is(.dialog, .home-sheet, .hint, .win-panel) {
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(95deg, var(--grain) 0 2px, transparent 2px 8px),
+    linear-gradient(170deg, var(--cloth), var(--cloth-2));
+}
+
+:root[data-style='wood'] .dialog::backdrop {
+  background: rgb(20 10 4 / 65%);
+}
+
+:root[data-style='wood'] .difficulty-list {
+  border-top-width: 3px;
+}
+
+:root[data-style='wood'] .difficulty-option,
+:root[data-style='wood'] .home-row {
+  border-bottom-style: solid;
+}
+
+:root[data-style='wood'] .home-row .difficulty-option {
+  border-bottom: 0;
+}
+
+:root[data-style='wood'] .btn,
+:root[data-style='wood'] .home-restart {
+  border-radius: 8px;
+}
+
+:root[data-style='wood'] .hint-close {
+  box-shadow: 0 3px 0 var(--block-edge);
+}
+
+:root[data-style='wood'] .shortcuts div {
+  border-bottom-style: solid;
+}
+
+:root[data-style='wood'] kbd {
+  border-radius: 4px;
+  background: var(--block-1);
+  box-shadow: 0 2px 0 var(--block-edge);
+}
+
+/* 數字鍵排成 3×3 時，剩餘數量放在右下角，像字母牌上的分數 */
+@media (max-width: 859px) and (min-height: 760px) {
+  :root[data-style='wood'] .num {
+    position: relative;
+  }
+
+  :root[data-style='wood'] .num-left {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    font-size: 0.72rem;
+    opacity: 0.8;
+  }
+}
+
+@media (min-width: 860px) and (min-height: 600px) {
+  :root[data-style='wood'] .controls {
+    border-radius: 10px;
+    background:
+      repeating-linear-gradient(95deg, var(--grain) 0 2px, transparent 2px 8px),
+      linear-gradient(170deg, var(--cloth), var(--cloth-2));
+  }
+
+  :root[data-style='wood'] .num {
+    position: relative;
+  }
+
+  :root[data-style='wood'] .num-left {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    opacity: 0.8;
+  }
+
+  :root[data-style='wood'] .win-panel {
+    background: none;
+  }
+}

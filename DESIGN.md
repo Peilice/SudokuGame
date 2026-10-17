@@ -176,8 +176,8 @@ typography:
     lineHeight: 1.1
     letterSpacing: "0.18em"
   headline:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "1.35rem"
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "1.375rem"
     fontWeight: 900
     letterSpacing: "0.04em"
   print-digit:
@@ -212,19 +212,19 @@ typography:
     lineHeight: 1
   difficulty-name:
     fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
-    fontSize: "1.15rem"
+    fontSize: "1.125rem"
     fontWeight: 900
   difficulty-tag-desktop:
     fontFamily: "'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif"
     fontSize: "1rem"
     fontWeight: 900
   overlay:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "1.15rem"
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "1.125rem"
     fontWeight: 700
   kbd:
     fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
-    fontSize: "0.78rem"
+    fontSize: "0.75rem"
     fontWeight: 700
   neon-digit:
     fontFamily: "'Tilt Neon', 'Noto Sans TC', sans-serif"
@@ -239,28 +239,29 @@ typography:
     fontWeight: 800
   timer:
     fontFamily: "'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif"
-    fontSize: "1.08rem"
+    fontSize: "1.125rem"
     fontWeight: 700
     fontFeature: "tnum"
   body:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "0.9rem"
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.55
+    lineHeight: 1.6
+  meta:
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.6
   label:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "0.85rem"
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "0.875rem"
     fontWeight: 700
   button:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "0.95rem"
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontSize: "1rem"
     fontWeight: 700
   caption:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
-    fontSize: "0.7rem"
-    fontWeight: 700
-  caption-grid:
-    fontFamily: "'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
+    fontFamily: "'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 700
 rounded:
@@ -386,6 +387,7 @@ components:
 - 花布是頁面的地，白棉布是唯一的工作面；兩者之間沒有第三種材質。
 - 全站方角、零圓角，布塊之間靠縫線與淡陰影分層。
 - 三種數字字形各有任務：Noto Serif 900（題目、數字鍵）、Zen Maru Gothic 700（玩家數字、筆記、計時）、思源宋體 Black 子集（刊名、難度、完成印）。
+- 介面字是內海字體的手寫原子筆字（說明、按鈕、標題），和印的題目、圓體的玩家數字分開。
 - 縫線是簽名：布塊收邊的虛線、衝突的平針縫圈、宮線的深胭脂紅。
 - 對話框頂端露出一條 30px 的花布，和頁面的地是同一塊布。
 
@@ -438,22 +440,25 @@ components:
 
 **Display Font:** Sudoku Display（思源宋體 Black 子集，只含「數獨完成簡單中等困難專家」）
 **Digit Fonts:** Noto Serif 900（題目、數字鍵）、Zen Maru Gothic 700（玩家數字、筆記、計時）
-**Body Font:** Noto Sans TC → PingFang TC → Microsoft JhengHei 系統字堆疊
+**UI Font:** Sudoku UI（內海字體 NaikaiFont 子集，Regular 400／Bold 700，只含介面用到的約 340 字），缺字時退回 PingFang TC → Microsoft JhengHei
 
-數字字形依「誰寫的」分工：印出來的題目用有襯線的粗宋體，玩家寫的用圓體。Zen Maru Gothic 的 4 是封閉的，延續上一版為長輩辨識度做的選擇。字型都自架（`@fontsource` 與專案內的 woff），不呼叫外部字型服務。
+數字字形依「誰寫的」分工：印出來的題目用有襯線的粗宋體，玩家寫的用圓體。介面字是手寫的原子筆字，像縫在布上的手寫布標，四種風格共用（霓虹與極簡的拉丁字與數字仍先用 Tilt Neon、Outfit）。極簡用到的 500 落到 Regular、900 落到 Bold，不會出現瀏覽器合成的假粗體。介面文案新增中文字時，要用 `scripts/subset-ui-font.py` 重新子集化，否則新字會退回系統字。Zen Maru Gothic 的 4 是封閉的，延續上一版為長輩辨識度做的選擇。字型都自架（`@fontsource` 與專案內的 woff），不呼叫外部字型服務。
 
 ### Hierarchy
 - **Display**（900，1.4rem／桌機 1.7rem，字距 0.1–0.12em）：布標上的「數獨」。難度標籤同字體 0.88rem／1rem、綠色。
 - **Stamp**（900，盤面寬度的 16%）：完成印章裡的「完成」。
-- **Headline**（900，1.35rem）：對話框標題、過關標題。
+- **Headline**（900，1.375rem，`--text-title`）：對話框標題、過關標題。
 - **Board digits**（盤面格寬的 60%）：題目 Noto Serif 900 墨黑；玩家 Zen Maru 700 綠色。
 - **Notes**（Zen Maru 700，格寬的 30%，最小 10.5px）：淡墨。
 - **Key digits**（Noto Serif 900，1.6rem；手機 3×3 時 1.8rem；桌機 2.2rem）。
-- **Body**（400，0.9rem，行高 1.55）：說明布條、圖例。
-- **Label／Button**（700，0.85rem／0.95rem）：工具按鈕、頁首按鈕。
-- **Caption**（700，0.7rem）：數字鍵上的「剩 N」。
+- **Lead**（1.125rem，`--text-lead`）：計時、難度名稱、「已暫停」。
+- **Body**（400，1rem，行高 1.6，`--text-body`）：要讀完的說明（玩法清單、確認文字、桌機右欄的提示）與所有按鈕字。
+- **Meta**（0.875rem，`--text-meta`）：附註與標籤，包括存檔說明、難度說明、工具標籤、快捷鍵清單、摺疊標題、最佳紀錄，以及手機上浮起來的提示（避免長到蓋住盤面）。
+- **Caption**（700，0.75rem，`--text-caption`）：數字鍵上的「剩 N」（不換行）、按鍵字 `kbd`。
 
 ### Named Rules
+**The 兩階小字 Rule.** 介面文字只用 `--text-*` 五個角色字級；小字只有 Meta 14px 與 Caption 12px 兩階，不再新增 0.8、0.9 這類夾在中間的值。要讀完的句子不低於 16px。刊名、數字鍵與盤面數字是展示角色，各自定義。
+
 **The 印與寫 Rule.** 題目用印刷感的宋體，玩家的數字用手感的圓體。兩者不可以共用同一種字形，只靠顏色區分。
 
 ## Layout

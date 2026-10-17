@@ -11,6 +11,26 @@
 }
 
 /*
+ * 介面字：內海字體（NaikaiFont，瀨戶字體的繁體中文補字版，SIL OFL 1.1，授權見 fonts/OFL-NaikaiFont.txt）。
+ * 手寫的原子筆字，像縫在布上的手寫布標；題目是印的、玩家的數字是圓體寫的，介面字是手寫的說明。
+ * 只子集化介面用到的字（約 340 字），文案新增中文字時要重跑 scripts/subset-ui-font.py。
+ * 極簡風格用到的 500 會落到 Regular，900 落到 Bold，都不會變成瀏覽器合成的假粗體。
+ */
+@font-face {
+  font-family: 'Sudoku UI';
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/naikai-ui-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Sudoku UI';
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/naikai-ui-700.woff2') format('woff2');
+}
+
+/*
  * 洗舊的客家花布：頁面是一整片褪色的牡丹花布，盤面與按鈕是縫在上面的白棉布。
  * 題目＝黑色粗宋體、玩家的數字＝綠色圓體、筆記＝淡墨小圓體、
  * 選取＝金黃、衝突＝紅線平針縫的虛線圈、完成＝紅印。
@@ -47,10 +67,20 @@
   --patch-shadow: 0 1px 2px rgb(40 8 10 / 18%), 0 8px 18px -10px rgb(40 8 10 / 60%);
   --sheet-shadow: 0 2px 3px rgb(40 8 10 / 20%), 0 20px 36px -16px rgb(40 8 10 / 75%);
 
-  --font-ui: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-ui: 'Sudoku UI', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
   --font-print: 'Noto Serif', 'Noto Serif TC', 'PMingLiU', serif;
   --font-round: 'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   --font-display: 'Sudoku Display', 'Noto Serif TC', 'PMingLiU', serif;
+
+  /*
+   * 介面文字的角色字級（盤面與數字鍵的數字另外跟著格寬走）。
+   * 小字只有兩階：附註 14px、角標 12px；要讀完的說明一律 16px。
+   */
+  --text-caption: 0.75rem; /* 剩 N、按鍵字 */
+  --text-meta: 0.875rem; /* 附註、工具標籤、快捷鍵清單 */
+  --text-body: 1rem; /* 說明、按鈕 */
+  --text-lead: 1.125rem; /* 計時、難度名、暫停字樣 */
+  --text-title: 1.375rem; /* 對話框與過關標題 */
 
   --masthead-h: 64px;
   --hem-gap: 10px; /* 白方巾超出盤面的布邊 */
@@ -281,7 +311,7 @@ button:disabled {
   min-width: 4.4em;
   padding: 0 10px;
   font-family: var(--font-round);
-  font-size: 1.08rem;
+  font-size: var(--text-lead);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -300,7 +330,7 @@ button:disabled {
 
 .text-btn {
   padding: 0 12px 0 8px;
-  font-size: 0.95rem;
+  font-size: var(--text-body);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -594,7 +624,7 @@ button:disabled {
 .board-overlay p {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 1.15rem;
+  font-size: var(--text-lead);
   font-weight: 700;
 }
 
@@ -788,7 +818,7 @@ button:disabled {
   border: 0;
   background: var(--cloth);
   color: var(--ink);
-  font-size: 0.85rem;
+  font-size: var(--text-meta);
   font-weight: 700;
   box-shadow: var(--patch-shadow);
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -818,7 +848,7 @@ button:disabled {
 
 .numpad {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 6px;
   padding: 4px;
   border: 2px dashed transparent;
@@ -858,11 +888,12 @@ button:disabled {
 }
 
 .num-left {
-  min-height: 0.7rem;
+  min-height: 0.75rem;
   color: var(--ink-soft);
-  font-size: 0.7rem;
+  font-size: var(--text-caption);
   font-weight: 700;
   line-height: 1;
+  white-space: nowrap;
 }
 
 /* 用完的數字：布塊拆下，只剩凹下去的底布、數字劃掉；夜間版同樣比布面暗，不會比可用的鍵搶眼 */
@@ -924,6 +955,7 @@ button:disabled {
   min-height: 46px;
   padding: 11px 20px;
   border: 0;
+  font-size: var(--text-body);
   font-weight: 700;
   transition: filter 0.15s ease, background-color 0.15s ease;
 }
@@ -972,7 +1004,7 @@ button:disabled {
 
 .win-title {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: var(--text-title);
   font-weight: 900;
   letter-spacing: 0.06em;
 }
@@ -990,7 +1022,7 @@ button:disabled {
   margin: 0;
   color: var(--leaf);
   font-family: var(--font-round);
-  font-size: 0.9rem;
+  font-size: var(--text-meta);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -1049,8 +1081,9 @@ button:disabled {
 .hint-text {
   flex: 1;
   margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.55;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  text-wrap: pretty;
 }
 
 .hint-close {
@@ -1061,7 +1094,7 @@ button:disabled {
   padding: 0 12px;
   border: 0;
   background: var(--cloth-2);
-  font-size: 0.9rem;
+  font-size: var(--text-body);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -1074,7 +1107,7 @@ button:disabled {
   display: none;
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.82rem;
+  font-size: var(--text-meta);
 }
 
 .shortcuts div {
@@ -1106,7 +1139,7 @@ kbd {
   box-shadow: inset 0 -1px 0 var(--thread), 0 0 0 1px var(--thread);
   color: var(--ink);
   font-family: var(--font-round);
-  font-size: 0.78rem;
+  font-size: var(--text-caption);
   font-weight: 700;
   text-align: center;
 }
@@ -1128,9 +1161,6 @@ kbd {
     font-size: 1.8rem;
   }
 
-  .num-left {
-    font-size: 0.75rem;
-  }
 }
 
 /* ───────── 桌機：盤面在左，控制區是右邊一塊布 ───────── */
@@ -1254,9 +1284,20 @@ kbd {
     grid-template-columns: 1fr;
   }
 
+  /* 右欄只有 280px：按鈕移到文字下方，說明才有完整的行寬 */
   .hint {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 14px 16px 12px;
     background: var(--cloth-2);
     box-shadow: none;
+  }
+
+  .hint-close {
+    align-self: flex-end;
+    min-height: 36px;
+    background: var(--cloth-3);
   }
 
   .shortcuts {
@@ -1339,7 +1380,7 @@ kbd {
 
 .home-sheet h2 {
   margin: 0 0 14px;
-  font-size: 1.35rem;
+  font-size: var(--text-title);
   font-weight: 900;
   letter-spacing: 0.04em;
 }
@@ -1377,7 +1418,7 @@ kbd {
   min-height: 46px;
   padding: 0 4px;
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: var(--text-meta);
   font-weight: 700;
   letter-spacing: 0.06em;
   list-style: none;
@@ -1428,8 +1469,9 @@ kbd {
   margin: 0 0 14px;
   padding: 0 4px 0 22px;
   color: var(--ink);
-  font-size: 0.88rem;
-  line-height: 1.6;
+  font-size: var(--text-body);
+  line-height: 1.65;
+  text-wrap: pretty;
 }
 
 .help-list li::marker {
@@ -1465,7 +1507,7 @@ kbd {
   background: transparent;
   box-shadow: inset 0 0 0 1.5px var(--thread);
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: var(--text-meta);
   font-weight: 700;
   transition: background-color 0.15s ease;
 }
@@ -1520,7 +1562,7 @@ kbd {
 
 .dialog h2 {
   margin: 0 0 14px;
-  font-size: 1.35rem;
+  font-size: var(--text-title);
   font-weight: 900;
   letter-spacing: 0.04em;
 }
@@ -1563,19 +1605,19 @@ kbd {
 
 .difficulty-name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: var(--text-lead);
   font-weight: 900;
 }
 
 .difficulty-hint {
   color: var(--ink-soft);
-  font-size: 0.88rem;
+  font-size: var(--text-meta);
 }
 
 .legend {
   margin: 0 0 16px;
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: var(--text-meta);
   line-height: 1.6;
 }
 
@@ -1590,7 +1632,9 @@ kbd {
 .confirm-text {
   margin: 0 0 20px;
   color: var(--ink-soft);
+  font-size: var(--text-body);
   line-height: 1.6;
+  text-wrap: pretty;
 }
 
 .dialog-actions {
@@ -1605,7 +1649,7 @@ kbd {
   gap: 8px;
   margin: 0 0 12px;
   color: var(--ink-soft);
-  font-size: 0.92rem;
+  font-size: var(--text-meta);
 }
 
 .generating[hidden] {
@@ -1703,6 +1747,12 @@ kbd {
     bottom: calc(100% + 8px);
     left: 0;
     box-shadow: var(--sheet-shadow);
+  }
+
+  /* 浮起來的提示是一閃而過的附註，不能長到蓋住盤面，用附註字級 */
+  .hint-text {
+    font-size: var(--text-meta);
+    line-height: 1.55;
   }
 }
 

@@ -19,7 +19,7 @@
   align-items: center;
   gap: 6px;
   color: var(--ink);
-  font-size: 0.82rem;
+  font-size: var(--text-meta);
   font-weight: 700;
   cursor: pointer;
 }
@@ -1348,7 +1348,7 @@
     position: absolute;
     right: 8px;
     bottom: 7px;
-    font-size: 0.72rem;
+    font-size: var(--text-caption);
     opacity: 0.8;
   }
 }

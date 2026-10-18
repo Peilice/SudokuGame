@@ -17,6 +17,7 @@ import { clearCurrent, loadBest, loadCurrentGame, loadGame, recordBest, saveGame
 import { dismissHint, isHintDismissed, type HintId } from './hints';
 import { Timer, formatTime } from '../game/timer';
 import { buildBoard, buildNumpad, renderBoard, renderNumpad, type BoardView } from './board';
+import { buildHelpDemos } from './help';
 import { CONFLICT_HINT, PAGE_STYLES, PAGE_STYLE_LABEL, applyPageStyle, loadPageStyle, type PageStyle } from './theme';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -54,6 +55,7 @@ export class App {
   private readonly numButtons: HTMLButtonElement[];
   private readonly timerEl = $('timer');
   private readonly newGameDialog = $<HTMLDialogElement>('new-game-dialog');
+  private readonly helpDialog = $<HTMLDialogElement>('help-dialog');
   private readonly timer = new Timer(0, (ms) => (this.timerEl.textContent = formatTime(ms)));
   private worker: Worker | null = null;
   private stampTimer = 0;
@@ -75,6 +77,7 @@ export class App {
     this.buildDifficultyList($('difficulty-list'));
     this.buildDifficultyList($('home-list'), true);
     this.buildStylePicker($('style-options'));
+    buildHelpDemos(this.helpDialog);
     this.bindEvents();
 
     const saved = loadCurrentGame();
@@ -260,7 +263,7 @@ export class App {
   }
 
   private get isPlaying(): boolean {
-    return !!this.game && !this.game.completed && !this.paused && !this.newGameDialog.open && !document.hidden;
+    return !!this.game && !this.game.completed && !this.paused && !this.newGameDialog.open && !this.helpDialog.open && !document.hidden;
   }
 
   private resumeTimerIfPlaying(): void {
@@ -462,6 +465,14 @@ export class App {
     this.resumeTimerIfPlaying();
   }
 
+  /** 看說明時計時先停下來，關掉後焦點回到打開它的按鈕 */
+  private openHelp(): void {
+    this.helpDialog.showModal();
+    $('help-body').scrollTop = 0;
+    $('help-title').focus();
+    this.resumeTimerIfPlaying();
+  }
+
   private updateCancelButton(): void {
     const btn = $<HTMLButtonElement>('cancel-new-game');
     // 出題中一律可以取消；沒有盤面可回去時只在出題中顯示
@@ -545,7 +556,7 @@ export class App {
     });
   }
 
-  /** 收起來的風格選單旁顯示目前的風格；玩法說明裡的衝突標記要跟著風格描述 */
+  /** 收起來的風格選單旁顯示目前的風格；說明裡的衝突標記要跟著風格描述 */
   private describeStyle(style: PageStyle): void {
     $('style-current').textContent = PAGE_STYLE_LABEL[style];
     $('help-conflict').textContent = CONFLICT_HINT[style];
@@ -578,6 +589,18 @@ export class App {
     $('resume-btn').addEventListener('click', () => this.setPaused(false));
     $('new-game-btn').addEventListener('click', () => this.openNewGameDialog());
     $('home-btn').addEventListener('click', () => this.goHome());
+    $('help-btn').addEventListener('click', () => this.openHelp());
+    $('home-help').addEventListener('click', () => this.openHelp());
+    $('pause-help').addEventListener('click', () => this.openHelp());
+    $('help-close').addEventListener('click', () => this.helpDialog.close());
+    this.helpDialog.addEventListener('close', () => this.resumeTimerIfPlaying());
+    // 點對話框外的暗處也能關
+    this.helpDialog.addEventListener('click', (e) => {
+      if (e.target !== this.helpDialog) return;
+      const r = this.helpDialog.getBoundingClientRect();
+      const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      if (!inside) this.helpDialog.close();
+    });
     $('home-list').addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       const restart = target.closest<HTMLElement>('[data-restart]')?.dataset.restart;
@@ -635,7 +658,7 @@ export class App {
   }
 
   private onKeyDown(e: KeyboardEvent): void {
-    if (this.newGameDialog.open) return;
+    if (this.newGameDialog.open || this.helpDialog.open) return;
     if (!this.game) return this.onHomeKeyDown(e);
     const ctrl = e.ctrlKey || e.metaKey;
     const key = e.key.toLowerCase();

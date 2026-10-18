@@ -353,8 +353,8 @@ button:disabled {
   stroke: none;
 }
 
-/* 窄手機：頁首多了主畫面鈕，收緊間距、「新遊戲」拿掉加號，避免刊名被擠成直排 */
-@media (max-width: 400px) {
+/* 窄手機：頁首有主畫面與說明鈕，收緊間距、「新遊戲」拿掉加號，避免刊名被擠成直排 */
+@media (max-width: 440px) {
   .masthead-inner {
     gap: 6px;
     padding: 0 8px;
@@ -619,6 +619,22 @@ button:disabled {
 
 .board-overlay[hidden] {
   display: none;
+}
+
+.board-overlay .btn {
+  min-width: 9.5em;
+}
+
+/* 疊在盤面上，要有布底，格線才不會透出來 */
+.board-overlay .btn-ghost {
+  background: var(--cloth);
+}
+
+/* 最窄的手機頁首放不下說明鈕，改從暫停畫面打開 */
+@media (max-width: 389px) {
+  #help-btn {
+    display: none;
+  }
 }
 
 .board-overlay p {
@@ -1402,7 +1418,7 @@ kbd {
   margin: 0 0 14px;
 }
 
-/* 主畫面下方收起來的兩塊：玩法說明、頁面風格。不常用，預設收起，不和難度搶位置 */
+/* 主畫面下方收起來的頁面風格：不常用，預設收起，不和難度搶位置 */
 .home-more {
   border-top: 1px dashed var(--thread);
 }
@@ -1463,19 +1479,19 @@ kbd {
   color: var(--ink-soft);
 }
 
-.help-list {
-  display: grid;
+.home-sheet .help-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin: 0 0 14px;
-  padding: 0 4px 0 22px;
-  color: var(--ink);
-  font-size: var(--text-body);
-  line-height: 1.65;
-  text-wrap: pretty;
 }
 
-.help-list li::marker {
-  color: var(--hem);
+.help-open .icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
 }
 
 .home-row {
@@ -1782,4 +1798,141 @@ kbd {
     clip-path: none;
     animation: seam-fade 1.6s ease both !important;
   }
+}
+
+/* ───────── 玩法說明：每張卡片一小塊示意盤面配一段文字 ───────── */
+
+/* 對話框本身不捲動，只捲內容，花布版的縫邊才會一直框住整個對話框 */
+.help-dialog {
+  width: min(440px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding-bottom: 18px;
+}
+
+.help-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.help-body {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* 捲軸不要壓到縫邊 */
+  margin: 0 -8px;
+  padding: 0 8px;
+}
+
+.help-body h2 {
+  margin-bottom: 4px;
+}
+
+.help-card {
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--thread);
+}
+
+.help-card h3 {
+  margin: 14px 0 4px;
+  font-size: var(--text-lead);
+  font-weight: 700;
+}
+
+.help-card p {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.help-body .legend {
+  margin: 14px 0 4px;
+}
+
+.help-close {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  margin-top: 14px;
+}
+
+.help-demo {
+  /* 示意盤面的一格：筆記的小字要看得清楚 */
+  --cell: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 14px;
+  padding: 16px 8px;
+  background: var(--fabric);
+  pointer-events: none;
+}
+
+/* 一整列 9 格要塞得進手機寬的對話框：扣掉對話框與底布的左右內距、盤面外框 */
+.help-demo[data-demo='progress'] {
+  --cell: min(34px, calc((min(440px, 100vw - 24px) - 88px) / 9));
+}
+
+.help-demo[data-demo='notes'] {
+  --cell: 34px;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+.help-board {
+  width: calc(var(--cols) * var(--cell) + 6px);
+  height: calc(var(--rows) * var(--cell) + 6px);
+  flex: none;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+}
+
+.help-board .cell {
+  cursor: default;
+}
+
+.help-board .cell:last-child {
+  border-right: 0;
+}
+
+/* 示意用的縫線停在縫好的那一刻，不播動畫 */
+.help-board .seam.help-seam {
+  inset: 3px;
+  width: auto;
+  height: auto;
+  animation: none;
+  background-position: 50% 50%;
+}
+
+.help-keys {
+  grid-template-columns: repeat(3, calc(var(--cell) * 1.3));
+  padding: 0;
+  border: 0;
+}
+
+.help-keys .num {
+  flex-direction: column;
+  gap: 3px;
+  min-height: calc(var(--cell) * 1.6);
+}
+
+.help-keys .num-digit {
+  font-size: calc(var(--cell) * 0.7);
+}
+
+.help-arrow {
+  display: grid;
+  color: var(--ink-soft);
+}
+
+.help-arrow .icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
 }

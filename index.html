@@ -31,6 +31,9 @@
           <button class="icon-btn" id="home-btn" type="button" aria-label="回主畫面（進度會保留）" title="回主畫面">
             <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5" /><path d="M5 9v11h5v-6h4v6h5V9" /></svg>
           </button>
+          <button class="icon-btn" id="help-btn" type="button" aria-label="玩法說明" title="玩法說明">
+            <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.2-2.4 3.6" /><path d="M12 17.2h.01" /></svg>
+          </button>
           <span class="timer" id="timer" role="timer" aria-label="經過時間">00:00</span>
           <button class="icon-btn" id="pause-btn" type="button" aria-label="暫停">
             <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
@@ -51,6 +54,7 @@
         <div class="board-overlay" id="pause-overlay" hidden>
           <p>已暫停</p>
           <button class="btn btn-primary" id="resume-btn" type="button">繼續遊戲</button>
+          <button class="btn btn-ghost" id="pause-help" type="button">玩法說明</button>
         </div>
         <div class="stamp" id="stamp" aria-hidden="true">
           <span class="stamp-word">完成</span>
@@ -117,16 +121,10 @@
         <p class="generating" hidden><span class="spinner" aria-hidden="true"></span><span class="generating-text">出題中…</span></p>
         <button class="btn btn-ghost" id="home-cancel" type="button" hidden>取消出題</button>
         <p class="legend">每個難度各存一盤，回到這裡不會遺失。</p>
-        <details class="home-more">
-          <summary>玩法與標記</summary>
-          <ul class="help-list">
-            <li>每一列、每一行、每個 3×3 宮都要填入 1 到 9，不能重複。</li>
-            <li id="help-conflict"></li>
-            <li>按「筆記」後點數字，會在格子裡寫下小小的候選數字；填入答案時，同列、行、宮的相同筆記會自動擦掉。</li>
-            <li>一列、一行或一宮填滿時會縫上一道線；某個數字 9 個都填完時，那顆數字鍵會收起來。</li>
-            <li>進度隨時自動存在這台裝置上，關掉網頁再回來也能接著玩。</li>
-          </ul>
-        </details>
+        <button class="btn btn-ghost help-open" id="home-help" type="button">
+          <svg class="icon icon-stroke" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8 1c0 1.7-2.4 2.2-2.4 3.6" /><path d="M12 17.2h.01" /></svg>
+          <span>玩法說明</span>
+        </button>
         <details class="home-more style-picker">
           <summary>頁面風格<span class="style-current" id="style-current"></span></summary>
           <div class="style-options" id="style-options" role="radiogroup" aria-label="頁面風格"></div>
@@ -153,6 +151,35 @@
           <button class="btn btn-danger" id="confirm-start" type="button">開始新的一盤</button>
         </div>
       </div>
+    </dialog>
+
+    <dialog class="dialog help-dialog" id="help-dialog" aria-labelledby="help-title">
+      <div class="help-body" id="help-body">
+        <h2 id="help-title" tabindex="-1">玩法說明</h2>
+        <!-- 示意圖由 src/ui/help.ts 用真正盤面的 class 畫出來，會跟著頁面風格變 -->
+        <section class="help-card">
+          <div class="help-demo" data-demo="rules" aria-hidden="true"></div>
+          <h3>規則</h3>
+          <p>每一列、每一行、每個 3×3 宮都要填入 1 到 9，不能重複。</p>
+        </section>
+        <section class="help-card">
+          <div class="help-demo" data-demo="conflict" aria-hidden="true"></div>
+          <h3>重複的數字</h3>
+          <p id="help-conflict"></p>
+        </section>
+        <section class="help-card">
+          <div class="help-demo" data-demo="notes" aria-hidden="true"></div>
+          <h3>筆記</h3>
+          <p>按「筆記」後點數字，會在格子裡寫下小小的候選數字。填入答案時，同列、行、宮的相同筆記會自動擦掉。</p>
+        </section>
+        <section class="help-card">
+          <div class="help-demo" data-demo="progress" aria-hidden="true"></div>
+          <h3>填滿與用完</h3>
+          <p>一列、一行或一宮填滿時會縫上一道線；某個數字 9 個都填完時，那顆數字鍵會收起來。</p>
+        </section>
+        <p class="legend">進度隨時自動存在這台裝置上，關掉網頁再回來也能接著玩。</p>
+      </div>
+      <button class="btn btn-primary help-close" id="help-close" type="button">知道了</button>
     </dialog>
 
     <script type="module" src="/src/main.ts"></script>

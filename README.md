@@ -9,6 +9,7 @@
 - 復原／重做、計時（切換分頁自動暫停）、手動暫停
 - 自動存檔，重新整理後可以繼續
 - 手機與桌機版面、自動深色模式
+- 離線遊玩：開啟過一次後，沒有網路也能開啟與出題（可加到主畫面當 App 使用）
 
 ## 操作
 | 動作 | 滑鼠／觸控 | 鍵盤 |
@@ -41,5 +42,7 @@ npm run preview  # 預覽建置結果
 1. `npm run build`
 2. 將 `dist/` 的內容推到 `gh-pages` 分支（例如使用 `npx gh-pages -d dist`）
 3. 在 Settings → Pages 將 Source 設為 `gh-pages` 分支
+
+> 離線用的 `sw.js` 由 `scripts/offline-plugin.ts` 在建置時產生，只在 `npm run build`／`npm run preview` 的結果中生效，開發伺服器不會註冊。
 
 > 注意：建置結果使用 ES module，直接雙擊 `dist/index.html`（`file://`）無法執行，需要透過 HTTP 伺服器開啟。

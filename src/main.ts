@@ -12,3 +12,10 @@ import './themes.css';
 import { App } from './ui/app';
 
 new App();
+
+// 離線遊玩：sw.js 只在建置時產生，開發伺服器不註冊，免得快取干擾熱更新
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}

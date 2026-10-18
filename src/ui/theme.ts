@@ -21,7 +21,7 @@ export const CONFLICT_HINT: Record<PageStyle, string> = {
 const THEME_COLOR: Record<PageStyle, [string, string]> = {
   hakka: ['#8e3b3d', '#2e1c1e'],
   neon: ['#e9e6ef', '#120a1f'],
-  scandi: ['#f3efe8', '#1c1b19'],
+  scandi: ['#ebe7df', '#161514'],
   wood: ['#4c301f', '#1d130c'],
 };
 

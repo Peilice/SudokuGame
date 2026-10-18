@@ -84,32 +84,34 @@ colors:
   neon-title-night: "#ffe9f4"
   neon-amber: "#ffb02e"
   # 極簡（scandi）
-  scandi-fabric: "#f3efe8"
-  scandi-cloth: "#fbf9f5"
-  scandi-cloth-2: "#ebe5db"
-  scandi-cloth-3: "#e3ddd2"
+  scandi-fabric: "#ebe7df"
+  scandi-cloth: "#fdfcf9"
+  scandi-cloth-2: "#e2ddd4"
+  scandi-cloth-3: "#d9d3c8"
   scandi-ink: "#2b2a28"
-  scandi-ink-soft: "#6f695f"
-  scandi-thread: "#e6e0d5"
-  scandi-leaf: "#557358"
+  scandi-ink-soft: "#6b655b"
+  scandi-thread: "#ece8e1"
+  scandi-leaf: "#4f6f53"
   scandi-clay: "#c8714b"
-  scandi-hl-related: "#ece3d4"
-  scandi-hl-same: "#e2eadc"
-  scandi-hl-same-ink: "#3d5a41"
+  scandi-hl-related: "#f1ede5"
+  scandi-hl-same: "#e0eadc"
+  scandi-hl-same-ink: "#3a5a3f"
   scandi-seal: "#b23f2b"
-  scandi-fabric-night: "#1c1b19"
-  scandi-cloth-night: "#262522"
-  scandi-cloth-2-night: "#2f2d2a"
-  scandi-cloth-3-night: "#36332f"
+  scandi-select: "#403d38"
+  scandi-fabric-night: "#161514"
+  scandi-cloth-night: "#23221f"
+  scandi-cloth-2-night: "#2d2b28"
+  scandi-cloth-3-night: "#363431"
   scandi-ink-night: "#ece7df"
   scandi-ink-soft-night: "#a39c91"
-  scandi-thread-night: "#34322e"
+  scandi-thread-night: "#2e2c29"
   scandi-leaf-night: "#a6c3a8"
   scandi-clay-night: "#d9825b"
-  scandi-hl-related-night: "#423f3a"
-  scandi-hl-same-night: "#3a4a37"
+  scandi-hl-related-night: "#2b2a27"
+  scandi-hl-same-night: "#2f3c2e"
   scandi-hl-same-ink-night: "#cfe3d0"
   scandi-seal-night: "#f08a72"
+  scandi-select-night: "#e8e3d9"
   # 木製（wood）
   wood-table: "#4c301f"
   wood-panel: "#efd6a9"
@@ -393,7 +395,7 @@ components:
 
 **其他頁面風格：** 花布是預設風格，本文件以它為準。玩家可以在主畫面底部收起來的「頁面風格」切換另外三種，選擇存在 `localStorage` 的 `sudoku.style`，由 `<html data-style>` 套用，規則都在 `src/themes.css`：
 - **霓虹**（`neon`）：夜間是黑色壓克力盤面配青色燈管格線，玩家的數字是青色霓虹（日間是深青藍），筆記是淡紫；日間是白底粗黑框，配青色與桃紅的錯位陰影。數字用 Tilt Neon。衝突時數字保留原色：玩家的數字外圍亮一圈紅色燈管，重複的題目下方亮一條紅色燈管底線。玩家的數字不可以用粉紅或桃紅，以免和衝突的紅色混淆；粉紅只留給刊名、選取框與完成招牌。
-- **極簡**（`scandi`）：燕麥白底，3×3 宮之間用 6px 空隙隔開、不畫粗線，每宮四角是圓的。選取是陶土色的實心圓角塊，玩家的數字是鼠尾草綠。數字用 Outfit。衝突時數字保留原色：玩家的數字外圍一圈磚紅圓角細框，重複的題目下方一道短底線；在陶土色選取塊上改用選取塊的字色。
+- **極簡**（`scandi`）：燕麥底上放白色的宮，3×3 宮之間用 6px 空隙隔開、不畫粗線，每宮四角是圓的。關聯格的淺燕麥比頁面底色亮，空隙才不會被吃掉。選取是炭黑的實心圓角塊（夜間是燕麥白），所在格和同列同行同色、不留白邊；玩家的數字是鼠尾草綠。紅色只留給衝突，陶土色只在過關的波浪與印章出現。數字用 Outfit。衝突時數字保留原色：玩家的數字外圍一圈磚紅圓角細框，重複的題目下方一道短底線；在選取塊上改用選取塊的字色。
 - **木製**（`wood`）：胡桃木桌面上放楓木棋盤，題目是燒烙的深色字，玩家的數字是立體的圓木片。按鈕是有厚度的木塊；數字鍵像拼字遊戲的字母牌，剩餘數量寫在右下角。數字用 Roboto Slab。衝突時木片泛紅並加紅框，重複的題目數字保留燒烙墨色，下方烙一道紅線。
 
 ## Colors

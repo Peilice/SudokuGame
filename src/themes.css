@@ -554,87 +554,92 @@
 }
 
 /* ═════════════════ 5. 北歐極簡 ═════════════════
- * 燕麥白、大量留白。3×3 宮之間用空隙分開而不畫粗線，每宮是一塊圓角；
- * 選取是陶土色的實心圓角塊，玩家的數字是鼠尾草綠。 */
+ * 燕麥底、白色的宮。3×3 宮之間用空隙分開而不畫粗線，每宮是一塊圓角；
+ * 選取是炭黑的實心圓角塊（夜間是燕麥白），玩家的數字是鼠尾草綠。
+ * 紅色只留給衝突，陶土色只在過關的波浪與印章出現。
+ * 關聯格的淺燕麥要比頁面底色亮，宮與宮之間的空隙才不會被吃掉。 */
 
 :root[data-style='scandi'] {
   color-scheme: light;
-  --fabric: #f3efe8;
-  --cloth: #fbf9f5;
-  --cloth-2: #ebe5db;
-  --cloth-3: #e3ddd2;
+  --fabric: #ebe7df;
+  --cloth: #fdfcf9;
+  --cloth-2: #e2ddd4;
+  --cloth-3: #d9d3c8;
   --ink: #2b2a28;
-  --ink-soft: #6f695f;
-  --thread: #e6e0d5;
-  --hem: #e6e0d5;
-  --box-line: #f3efe8; /* 宮與宮之間的空隙＝頁面底色 */
-  --leaf: #557358;
+  --ink-soft: #6b655b;
+  --thread: #ece8e1;
+  --hem: #ece8e1;
+  --box-line: #ebe7df; /* 宮與宮之間的空隙＝頁面底色 */
+  --leaf: #4f6f53;
   --leaf-ink: #ffffff;
   --gold: #c8714b;
   --gold-edge: transparent;
-  --hl-related: #ece3d4;
-  --hl-same: #e2eadc;
-  --hl-same-ink: #3d5a41;
+  --hl-related: #f1ede5;
+  --hl-same: #e0eadc;
+  --hl-same-ink: #3a5a3f;
   --seal: #b23f2b;
   --danger-ink: #ffffff;
   --patch-shadow: none;
   --sheet-shadow: 0 1px 2px rgb(60 50 40 / 6%), 0 18px 40px -20px rgb(60 50 40 / 30%);
 
-  --scandi-sel-ink: #ffffff;
+  --scandi-sel: #403d38;
+  --scandi-sel-ink: #fdfcf9;
   --font-scandi: 'Outfit', var(--font-ui);
 }
 
 @media (prefers-color-scheme: dark) {
   :root[data-style='scandi']:not([data-theme='light']) {
     color-scheme: dark;
-    --fabric: #1c1b19;
-    --cloth: #262522;
-    --cloth-2: #2f2d2a;
-    --cloth-3: #36332f;
+    --fabric: #161514;
+    --cloth: #23221f;
+    --cloth-2: #2d2b28;
+    --cloth-3: #363431;
     --ink: #ece7df;
     --ink-soft: #a39c91;
-    --thread: #34322e;
-    --hem: #34322e;
-    --box-line: #1c1b19;
+    --thread: #2e2c29;
+    --hem: #2e2c29;
+    --box-line: #161514;
     --leaf: #a6c3a8;
     --leaf-ink: #1c241d;
     --gold: #d9825b;
     --gold-edge: transparent;
-    --hl-related: #423f3a;
-    --hl-same: #3a4a37;
+    --hl-related: #2b2a27;
+    --hl-same: #2f3c2e;
     --hl-same-ink: #cfe3d0;
     --seal: #f08a72;
     --danger-ink: #2a1510;
     --patch-shadow: none;
     --sheet-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 18px 40px -20px rgb(0 0 0 / 70%);
 
+    --scandi-sel: #e8e3d9;
     --scandi-sel-ink: #1c1b19;
   }
 }
 
 :root[data-style='scandi'][data-theme='dark'] {
   color-scheme: dark;
-  --fabric: #1c1b19;
-  --cloth: #262522;
-  --cloth-2: #2f2d2a;
-  --cloth-3: #36332f;
+  --fabric: #161514;
+  --cloth: #23221f;
+  --cloth-2: #2d2b28;
+  --cloth-3: #363431;
   --ink: #ece7df;
   --ink-soft: #a39c91;
-  --thread: #34322e;
-  --hem: #34322e;
-  --box-line: #1c1b19;
+  --thread: #2e2c29;
+  --hem: #2e2c29;
+  --box-line: #161514;
   --leaf: #a6c3a8;
   --leaf-ink: #1c241d;
   --gold: #d9825b;
   --gold-edge: transparent;
-  --hl-related: #423f3a;
-  --hl-same: #3a4a37;
+  --hl-related: #2b2a27;
+  --hl-same: #2f3c2e;
   --hl-same-ink: #cfe3d0;
   --seal: #f08a72;
   --danger-ink: #2a1510;
   --patch-shadow: none;
   --sheet-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 18px 40px -20px rgb(0 0 0 / 70%);
 
+  --scandi-sel: #e8e3d9;
   --scandi-sel-ink: #1c1b19;
 }
 
@@ -767,9 +772,9 @@
   background-color: var(--hl-same);
 }
 
-/* 選取：格子裡浮出一塊陶土色圓角塊 */
+/* 選取：格子裡浮出一塊炭黑圓角塊，格子本身和同列同行同色，不留白邊 */
 :root[data-style='scandi'] .cell.selected {
-  background: var(--cloth);
+  background: var(--hl-related);
   box-shadow: none;
 }
 
@@ -778,7 +783,7 @@
   position: absolute;
   inset: 7%;
   border-radius: 10px;
-  background: var(--gold);
+  background: var(--scandi-sel);
 }
 
 :root[data-style='scandi'] .cell-value,
@@ -831,7 +836,7 @@
   background: var(--seal);
 }
 
-/* 選取塊本身是陶土色，衝突標記改用選取塊上的字色 */
+/* 選取塊是炭黑，紅色標記在上面看不清，改用選取塊上的字色 */
 :root[data-style='scandi'] .cell.selected.conflict:not(.given)::after {
   border-color: var(--scandi-sel-ink);
 }

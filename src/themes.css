@@ -194,7 +194,6 @@
   --neon-bg-glow: radial-gradient(520px 280px at 0% 0%, rgb(214 23 122 / 12%), transparent 70%),
     radial-gradient(520px 320px at 100% 100%, rgb(0 167 196 / 14%), transparent 70%);
   --glow-title: none;
-  --glow-tag: none;
   --glow-digit: none;
   --glow-sign: none;
   --glow-given: none;
@@ -244,7 +243,6 @@
       radial-gradient(520px 360px at 100% 85%, rgb(77 232 255 / 20%), transparent 70%),
       radial-gradient(300px 200px at 70% 20%, rgb(255 214 77 / 8%), transparent 70%);
     --glow-title: 0 0 4px #ff5aa8, 0 0 12px #ff5aa8, 0 0 26px #ff2d8a;
-    --glow-tag: 0 0 8px rgb(77 232 255 / 60%), inset 0 0 6px rgb(77 232 255 / 40%);
     --glow-digit: 0 0 6px rgb(77 232 255 / 85%), 0 0 16px rgb(77 232 255 / 45%);
     --glow-sign: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
     --glow-given: 0 0 5px rgb(255 220 180 / 45%);
@@ -292,7 +290,6 @@
     radial-gradient(520px 360px at 100% 85%, rgb(77 232 255 / 20%), transparent 70%),
     radial-gradient(300px 200px at 70% 20%, rgb(255 214 77 / 8%), transparent 70%);
   --glow-title: 0 0 4px #ff5aa8, 0 0 12px #ff5aa8, 0 0 26px #ff2d8a;
-  --glow-tag: 0 0 8px rgb(77 232 255 / 60%), inset 0 0 6px rgb(77 232 255 / 40%);
   --glow-digit: 0 0 6px rgb(77 232 255 / 85%), 0 0 16px rgb(77 232 255 / 45%);
   --glow-sign: 0 0 6px rgb(255 90 168 / 90%), 0 0 16px rgb(255 90 168 / 55%);
   --glow-given: 0 0 5px rgb(255 220 180 / 45%);
@@ -316,13 +313,9 @@
 }
 
 :root[data-style='neon'] .difficulty-tag {
-  padding: 2px 8px;
-  border: 2px solid currentColor;
-  border-radius: 999px;
   color: var(--neon-accent);
   font-family: var(--font-ui);
   font-weight: 700;
-  box-shadow: var(--glow-tag);
 }
 
 /* 按鈕：圓角燈箱，日間是粗黑框＋青色錯位陰影，夜間是發光的青色細框 */

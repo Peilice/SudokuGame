@@ -9,6 +9,7 @@ import {
   isGiven,
   placeDigit,
   redo,
+  resetGame,
   toggleNote,
   undo,
   type GameState,
@@ -49,6 +50,8 @@ export class App {
   private pendingDifficulty: Difficulty | null = null;
   /** 確認對話框是從主畫面直接打開的，返回時要關掉對話框而不是回到選難度 */
   private confirmFromHome = false;
+  /** 確認對話框是在問要不要重置目前這盤，而不是開新局 */
+  private confirmReset = false;
 
   private readonly boardEl = $<HTMLDivElement>('board');
   private readonly boardView: BoardView;
@@ -115,10 +118,13 @@ export class App {
     if (saved && !saved.completed && this.hasProgress(saved)) {
       this.pendingDifficulty = difficulty;
       this.confirmFromHome = fromHome;
+      this.confirmReset = false;
       const elapsed = saved === this.game ? this.timer.elapsed : saved.elapsedMs;
+      $('confirm-title').textContent = '取代進行中的那盤？';
       $('confirm-text').textContent = `「${DIFFICULTY_LABEL[difficulty]}」還有一盤進行中（已用時 ${formatTime(
         elapsed,
       )}），開新的一盤會取代它。其他難度的進度不受影響。`;
+      $('confirm-start').textContent = '開始新的一盤';
       this.showDialogStep('confirm');
       if (fromHome) {
         this.newGameDialog.showModal();
@@ -414,6 +420,31 @@ export class App {
     if (this.game && !this.paused) this.afterMove(redo(this.game));
   }
 
+  /** 重置會丟掉整盤進度，先確認；確認框關掉後直接回到盤面 */
+  private askReset(): void {
+    if (!this.game || this.paused || this.game.completed || !this.hasProgress(this.game)) return;
+    this.confirmFromHome = true;
+    this.confirmReset = true;
+    $('confirm-title').textContent = '重新開始這一盤？';
+    $('confirm-text').textContent = `填入的數字和筆記會全部清掉，計時從 00:00 重新開始（目前已用時 ${formatTime(
+      this.timer.elapsed,
+    )}）。題目不變。`;
+    $('confirm-start').textContent = '重新開始';
+    this.showDialogStep('confirm');
+    this.newGameDialog.showModal();
+    $('confirm-back').focus();
+    this.resumeTimerIfPlaying();
+  }
+
+  private reset(): void {
+    if (!this.game) return;
+    resetGame(this.game);
+    this.loadState(this.game);
+    saveGame(this.game);
+    this.focusBoard(true);
+    this.announce('這一盤重新開始了');
+  }
+
   private toggleNotesMode(): void {
     this.notesMode = !this.notesMode;
     if (this.notesMode) this.showHint('notes');
@@ -580,7 +611,7 @@ export class App {
     document.querySelector('.tools')!.addEventListener('click', (e) => {
       const action = (e.target as HTMLElement).closest<HTMLElement>('[data-action]')?.dataset.action;
       if (action === 'undo') this.undo();
-      else if (action === 'redo') this.redo();
+      else if (action === 'reset') this.askReset();
       else if (action === 'erase') this.erase();
       else if (action === 'notes') this.toggleNotesMode();
     });
@@ -622,6 +653,10 @@ export class App {
     $('cancel-new-game').addEventListener('click', () => this.cancelNewGame());
     $('confirm-back').addEventListener('click', () => this.leaveConfirm());
     $('confirm-start').addEventListener('click', () => {
+      if (this.confirmReset) {
+        this.newGameDialog.close();
+        return this.reset();
+      }
       const d = this.pendingDifficulty;
       // 從主畫面來的就回主畫面顯示出題進度，否則回到選難度
       if (this.confirmFromHome) this.newGameDialog.close();
@@ -639,6 +674,10 @@ export class App {
       if (this.confirmFromHome) {
         this.confirmFromHome = false;
         if (!this.game && !this.generating) $('home-title').focus({ preventScroll: true });
+      }
+      if (this.confirmReset) {
+        this.confirmReset = false;
+        this.focusBoard(true);
       }
       this.resumeTimerIfPlaying();
     });
@@ -764,7 +803,7 @@ export class App {
     const erasable = sel >= 0 && !isGiven(game, sel) && (game.values[sel] !== 0 || game.notes[sel] !== 0);
     const tool = (name: string) => document.querySelector<HTMLButtonElement>(`[data-action="${name}"]`)!;
     tool('undo').disabled = blocked || !game.undoStack.length;
-    tool('redo').disabled = blocked || !game.redoStack.length;
+    tool('reset').disabled = blocked || !this.hasProgress(game);
     tool('erase').disabled = blocked || !erasable;
     tool('notes').disabled = blocked;
     tool('notes').setAttribute('aria-pressed', String(this.notesMode));

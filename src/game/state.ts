@@ -137,6 +137,16 @@ export function redo(game: GameState): boolean {
   return true;
 }
 
+/** 整盤重新開始：回到題目的初始盤面，筆記、操作紀錄與計時一併清掉 */
+export function resetGame(game: GameState): void {
+  game.values = [...game.puzzle];
+  game.notes = new Array(CELLS).fill(0);
+  game.elapsedMs = 0;
+  game.completed = false;
+  game.undoStack = [];
+  game.redoStack = [];
+}
+
 export function getConflicts(game: GameState): Set<number> {
   return findConflicts(game.values);
 }

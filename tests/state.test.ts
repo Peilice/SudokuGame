@@ -7,6 +7,7 @@ import {
   filledUnits,
   placeDigit,
   redo,
+  resetGame,
   toggleNote,
   undo,
   type GameState,
@@ -51,6 +52,19 @@ describe('game state', () => {
     redo(game);
     expect(game.values[2]).toBe(6);
     expect(game.notes[3]).toBe(0);
+  });
+
+  it('重置會回到題目的初始盤面', () => {
+    const game = newGame();
+    toggleNote(game, 3, 6);
+    placeDigit(game, 2, 4);
+    game.elapsedMs = 5000;
+    resetGame(game);
+    expect(game.values).toEqual(game.puzzle);
+    expect(game.notes.every((n) => n === 0)).toBe(true);
+    expect(game.undoStack).toEqual([]);
+    expect(game.redoStack).toEqual([]);
+    expect(game.elapsedMs).toBe(0);
   });
 
   it('再按一次相同數字會清除', () => {

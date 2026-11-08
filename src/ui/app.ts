@@ -36,7 +36,7 @@ const DIFFICULTY_HINT: Record<Difficulty, string> = {
   easy: '適合暖身',
   medium: '要多觀察幾處',
   hard: '要用到區塊排除',
-  expert: '要靠筆記找出成對的數字',
+  expert: '要靠筆記找出數對、X-Wing',
 };
 
 export class App {

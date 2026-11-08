@@ -20,6 +20,7 @@ export enum TechniqueLevel {
   Single = 1,
   Intersection = 2,
   Subset = 3,
+  Fish = 4,
 }
 
 export type TechniqueName =
@@ -29,7 +30,10 @@ export type TechniqueName =
   | 'Claiming'
   | 'Naked Pair'
   | 'Hidden Pair'
-  | 'Naked Triple';
+  | 'Naked Triple'
+  | 'Hidden Triple'
+  | 'X-Wing'
+  | 'Swordfish';
 
 const LEVEL_OF: Record<TechniqueName, TechniqueLevel> = {
   'Naked Single': TechniqueLevel.Single,
@@ -39,6 +43,9 @@ const LEVEL_OF: Record<TechniqueName, TechniqueLevel> = {
   'Naked Pair': TechniqueLevel.Subset,
   'Hidden Pair': TechniqueLevel.Subset,
   'Naked Triple': TechniqueLevel.Subset,
+  'Hidden Triple': TechniqueLevel.Subset,
+  'X-Wing': TechniqueLevel.Fish,
+  Swordfish: TechniqueLevel.Fish,
 };
 
 /** 一個解題步驟：可能是填入一格，或從某些格子刪除候選數（之後的提示功能會用到） */
@@ -171,19 +178,52 @@ function findNakedSubset({ cands }: SolveState, n: 2 | 3): Step | null {
   return null;
 }
 
-/** Hidden Pair：單位內兩個數字只出現在同樣兩格 → 這兩格刪除其他候選數 */
-function findHiddenPair({ cands }: SolveState): Step | null {
+/** Hidden Subset：單位內 n 個數字只出現在同樣 n 格 → 這 n 格刪除其他候選數 */
+function findHiddenSubset({ cands }: SolveState, n: 2 | 3): Step | null {
+  const name: TechniqueName = n === 2 ? 'Hidden Pair' : 'Hidden Triple';
   for (const unit of UNITS) {
+    const digits: number[] = [];
     const positions: number[][] = [];
-    for (let d = 1; d <= 9; d++) positions[d] = unit.filter((i) => cands[i] & digitBit(d));
-    for (let d1 = 1; d1 <= 8; d1++) {
-      if (positions[d1].length !== 2) continue;
-      for (let d2 = d1 + 1; d2 <= 9; d2++) {
-        const [a, b] = positions[d1];
-        if (positions[d2].length !== 2 || positions[d2][0] !== a || positions[d2][1] !== b) continue;
-        const keep = digitBit(d1) | digitBit(d2);
-        const eliminations = collectEliminations([a, b], ~keep & ALL_DIGITS_MASK, cands);
-        if (eliminations.length) return makeStep('Hidden Pair', { eliminations });
+    for (let d = 1; d <= 9; d++) {
+      positions[d] = unit.filter((i) => cands[i] & digitBit(d));
+      // 只出現一格的是 Hidden Single，已由更簡單的技巧處理
+      if (positions[d].length >= 2 && positions[d].length <= n) digits.push(d);
+    }
+    for (const combo of combinations(digits, n)) {
+      const cells = new Set(combo.flatMap((d) => positions[d]));
+      if (cells.size !== n) continue;
+      const keep = combo.reduce((m, d) => m | digitBit(d), 0);
+      const eliminations = collectEliminations(cells, ~keep & ALL_DIGITS_MASK, cands);
+      if (eliminations.length) return makeStep(name, { eliminations });
+    }
+  }
+  return null;
+}
+
+/**
+ * Fish（X-Wing n=2、Swordfish n=3）：某數字在 n 列中都只出現在同樣 n 行
+ * → 這 n 行的其他列刪除此數字（列、行互換亦同）
+ */
+function findFish({ cands }: SolveState, n: 2 | 3): Step | null {
+  const name: TechniqueName = n === 2 ? 'X-Wing' : 'Swordfish';
+  for (const [bases, covers, coverOf] of [
+    [ROWS, COLS, colOf],
+    [COLS, ROWS, rowOf],
+  ] as const) {
+    for (let d = 1; d <= 9; d++) {
+      const bit = digitBit(d);
+      const candidates: { base: number; coverSet: number[] }[] = [];
+      bases.forEach((line, base) => {
+        const coverSet = line.filter((i) => cands[i] & bit).map(coverOf);
+        if (coverSet.length >= 2 && coverSet.length <= n) candidates.push({ base, coverSet });
+      });
+      for (const combo of combinations(candidates, n)) {
+        const coverLines = new Set(combo.flatMap((c) => c.coverSet));
+        if (coverLines.size !== n) continue;
+        const baseCells = new Set(combo.flatMap((c) => bases[c.base]));
+        const targets = [...coverLines].flatMap((c) => covers[c]).filter((i) => !baseCells.has(i));
+        const eliminations = collectEliminations(targets, bit, cands);
+        if (eliminations.length) return makeStep(name, { eliminations });
       }
     }
   }
@@ -210,8 +250,11 @@ export function findNextStep(state: SolveState): Step | null {
     findPointing(state) ??
     findClaiming(state) ??
     findNakedSubset(state, 2) ??
-    findHiddenPair(state) ??
-    findNakedSubset(state, 3)
+    findHiddenSubset(state, 2) ??
+    findNakedSubset(state, 3) ??
+    findHiddenSubset(state, 3) ??
+    findFish(state, 2) ??
+    findFish(state, 3)
   );
 }
 

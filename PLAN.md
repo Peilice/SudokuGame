@@ -34,7 +34,7 @@
 - 每日挑戰（日期種子）
 - 深色模式切換、音效
 - PWA 離線安裝
-- 更高階技巧（X-Wing、Swordfish 等）
+- 更高階技巧（XY-Wing、Chain 等）
 
 ## 架構
 ```
@@ -64,7 +64,8 @@ tests/             Vitest 單元測試
 2. Hidden Single（隱藏唯一數）
 3. Pointing / Claiming（區塊排除）
 4. Naked Pair / Hidden Pair（數對）
-5. Naked Triple（數組）
+5. Naked Triple / Hidden Triple（數組）
+6. X-Wing / Swordfish（魚形）
 
 解題器每輪優先使用最簡單的技巧。依「解完全盤所需的最難技巧」判定難度：
 
@@ -73,7 +74,9 @@ tests/             Vitest 單元測試
 | 簡單 | 僅需 Single 類，且提示數 ≥ 36 |
 | 中等 | 僅需 Single 類，提示數 < 36 |
 | 困難 | 需要 Pointing / Claiming |
-| 專家 | 需要 Pair / Triple，或上述技巧無法解完（需更高階技巧） |
+| 專家 | 需要 Pair / Triple 或 X-Wing / Swordfish |
+
+所有難度都要求上述技巧能解完全盤，需要更高階技巧或猜測的題目一律捨棄。
 
 ## 開發里程碑
 1. 專案骨架

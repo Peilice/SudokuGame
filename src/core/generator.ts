@@ -67,7 +67,7 @@ export function generatePuzzle(difficulty: Difficulty, rng: Rng = createRng()): 
     const minClues = difficulty === 'easy' ? EASY_MIN_CLUES + Math.floor(rng() * 5) : 0;
     const puzzle = digHoles(solution, rng, minClues);
     const result = grade(puzzle);
-    // 專家題也要求現有技巧能解完，避免出現需要極高階技巧的題目
+    // 專家題也要求現有技巧（最高到 X-Wing／Swordfish）能解完，避免出現需要猜測或極高階技巧的題目
     if (result.difficulty === difficulty && result.logicallySolved) return { puzzle, solution, difficulty };
 
     const distance = Math.abs(DIFFICULTIES.indexOf(result.difficulty) - target) + (result.logicallySolved ? 0 : 0.5);
